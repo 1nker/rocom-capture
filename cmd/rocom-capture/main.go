@@ -21,12 +21,12 @@ func main() {
 	iface := flag.String("iface", "", "实时抓包网卡名")
 	ignoreIPs := flag.String("ignore-ip", "", "额外忽略的 IP(逗号分隔;两端命中即丢包)。实时抓包已自动忽略网卡自身 IP,此项用于离线回放或多网关等场景")
 	port := flag.Int("port", 8195, "游戏服务器端口")
-	addr := flag.String("addr", ":4939", "Web 服务监听地址")
+	socks5Addr := flag.String("socks5", ":4948", "内置 SOCKS5 代理监听地址 (留空则不启动，默认 :4948)") // 新增 SOCKS5 参数
+	addr := flag.String("addr", ":4949", "Web 服务监听地址，默认 :4949")
 	dbPath := flag.String("db", "rocom.db", "SQLite 数据库路径")
 	useTLS := flag.Bool("tls", false, "启用 HTTPS(自签证书;手机经局域网访问以满足屏幕常亮等需 secure context 的 API)")
 	certPath := flag.String("cert", "rocom-cert.pem", "TLS 证书路径(-tls 时不存在则自动生成自签证书)")
 	keyPath := flag.String("key", "rocom-key.pem", "TLS 私钥路径(-tls 时不存在则自动生成)")
-	socks5Addr := flag.String("socks5", ":4940", "内置 SOCKS5 代理监听地址 (留空则不启动，默认 :4949)") // 新增 SOCKS5 参数
 	flag.Parse()
 
 	// ==================== 启动内置的 SOCKS5 服务 ====================
