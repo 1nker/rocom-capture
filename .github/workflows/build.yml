@@ -4,7 +4,7 @@ on:
   push:
     branches: [ "main", "master" ]
     tags:
-      - 'v*'
+      - 'v*' # 当推送形如 v1.0.0 的 tag 时，触发 Release
   pull_request:
     branches: [ "main", "master" ]
 
@@ -24,31 +24,32 @@ jobs:
             zig_target: aarch64-linux-musl
 
     steps:
+      # 1. 拉取代码 (v4 最新版)
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 1. 安装 Go 环境
+      # 2. 部署最新稳定版 Go 环境 (v5 最新版)
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: '1.22'
+          go-version: 'stable' 
           cache: true
 
-      # 2. 安装 Node.js 环境 (构建前端)
+      # 3. 部署最新 LTS 版 Node.js 环境 (v4 最新版)
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: 'lts/*' 
           cache: 'npm'
           cache-dependency-path: web/package-lock.json
 
-      # 3. 安装 Zig (作为 CGO 交叉编译器)
+      # 4. 部署最新版 Zig 编译器 (自动获取 latest)
       - name: Set up Zig
         uses: mlugg/setup-zig@v1
         with:
-          version: 0.13.0
+          version: latest 
 
-      # 4. 构建前端
+      # 5. 构建前端
       - name: Build Web Frontend
         run: |
           cd web
@@ -56,43 +57,50 @@ jobs:
           npm run build
           cd ..
 
-      # 5. 编译 Go 二进制 (配合 Zig 交叉编译与静态链接)
+      # 6. 使用 Zig 静态交叉编译 CGO
       - name: Build Go Binary
         env:
           CGO_ENABLED: 1
           GOOS: linux
           GOARCH: ${{ matrix.goarch }}
           CC: zig cc -target ${{ matrix.zig_target }}
+          CXX: zig c++ -target ${{ matrix.zig_target }}
         run: |
           mkdir -p dist
-          go build -ldflags="-s -w" -o dist/rocom-capture-linux-${{ matrix.goarch }} ./cmd/rocom-capture
+          # 加上 -s -w 减小编译体积
+          go build -ldflags="-s -w" -o dist/rocom-capture-linux-${{ matrix.arch }} ./cmd/rocom-capture
 
-      # 6. 上传构建产物 (可在 GitHub Actions 页面下载)
+      # 7. 上传编译产物 (v4 最新版)
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: rocom-capture-linux-${{ matrix.arch }}
-          path: dist/rocom-capture-linux-*
+          path: dist/rocom-capture-linux-${{ matrix.arch }}
+          retention-days: 7 # 构件在 Actions 页面保留 7 天
 
-  # 可选：如果是带 v 开头的 Tag 触发，自动创建 Release 并上传文件
   release:
+    name: Create Release
     needs: build
     runs-on: ubuntu-latest
+    # 仅在打 tag 时 (如 v1.0.0) 执行发布逻辑
     if: startsWith(github.ref, 'refs/tags/v')
+    
+    # GH Actions 新策略：需要显式赋予写入权限才能发布 Release
+    permissions:
+      contents: write 
+
     steps:
+      # 1. 下载前一个 Job 打包的所有构件 (v4 最新版)
       - name: Download all artifacts
         uses: actions/download-artifact@v4
         with:
-          path: artifact-dir
+          path: artifacts
 
-      - name: Display structure of downloaded files
-        run: ls -R artifact-dir
-
-      - name: Release and Upload Assets
-        uses: softprops/action-gh-release@v1
+      # 2. 发布到 GitHub Releases (v2 最新版)
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v2
         with:
+          generate_release_notes: true # 自动生成 Release 描述/更新日志
           files: |
-            artifact-dir/rocom-capture-linux-amd64/rocom-capture-linux-amd64
-            artifact-dir/rocom-capture-linux-arm64/rocom-capture-linux-arm64
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            artifacts/rocom-capture-linux-amd64/rocom-capture-linux-amd64
+            artifacts/rocom-capture-linux-arm64/rocom-capture-linux-arm64
