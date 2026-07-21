@@ -8,6 +8,7 @@ import (
 	"net/netip"
 	"strings"
 
+	"github.com/armon/go-socks5" // 引入 SOCKS5 库
 	"github.com/whoisnian/rocom-capture/internal/capture"
 	"github.com/whoisnian/rocom-capture/internal/gamedata"
 	"github.com/whoisnian/rocom-capture/internal/pipeline"
@@ -25,7 +26,24 @@ func main() {
 	useTLS := flag.Bool("tls", false, "启用 HTTPS(自签证书;手机经局域网访问以满足屏幕常亮等需 secure context 的 API)")
 	certPath := flag.String("cert", "rocom-cert.pem", "TLS 证书路径(-tls 时不存在则自动生成自签证书)")
 	keyPath := flag.String("key", "rocom-key.pem", "TLS 私钥路径(-tls 时不存在则自动生成)")
+	socks5Addr := flag.String("socks5", ":4940", "内置 SOCKS5 代理监听地址 (留空则不启动，默认 :4949)") // 新增 SOCKS5 参数
 	flag.Parse()
+
+	// ==================== 启动内置的 SOCKS5 服务 ====================
+	if *socks5Addr != "" {
+		go func(listenAddr string) {
+			conf := &socks5.Config{}
+			server, err := socks5.New(conf)
+			if err != nil {
+				log.Fatalf("[SOCKS5] 创建服务失败: %v", err)
+			}
+			log.Printf("[SOCKS5] 代理服务正在运行在 %s", listenAddr)
+			if err := server.ListenAndServe("tcp", listenAddr); err != nil {
+				log.Fatalf("[SOCKS5] 服务异常退出: %v", err)
+			}
+		}(*socks5Addr)
+	}
+	// ================================================================
 
 	db, err := gamedata.Load()
 	if err != nil {
