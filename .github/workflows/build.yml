@@ -27,26 +27,26 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 1. 安装 Go 环境
+      # 1. 安装 Go 环境 (建议使用 stable 自动获取最新稳定版，避免手动猜版本号导致 404)
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: '1.26.5'      # ← 升级
+          go-version: 'stable'
           cache: true
 
       # 2. 安装 Node.js 环境 (构建前端)
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '24'        # ← 升级
+          node-version: '24'
           cache: 'npm'
           cache-dependency-path: web/package-lock.json
 
-      # 3. 安装 Zig (作为 CGO 交叉编译器)
+      # 3. 安装 Zig (务必使用确定的、实际存在的版本，0.13.0 非常稳定)
       - name: Set up Zig
         uses: mlugg/setup-zig@v1
         with:
-          version: 0.17.0           # ← 升级
+          version: '0.13.0'
 
       # 4. 构建前端
       - name: Build Web Frontend
@@ -63,6 +63,7 @@ jobs:
           GOOS: linux
           GOARCH: ${{ matrix.goarch }}
           CC: zig cc -target ${{ matrix.zig_target }}
+          CXX: zig c++ -target ${{ matrix.zig_target }}
         run: |
           mkdir -p dist
           go build -ldflags="-s -w" -o dist/rocom-capture-linux-${{ matrix.goarch }} ./cmd/rocom-capture
@@ -78,6 +79,11 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/v')
+    
+    # 【重点修复】必须赋予写入权限，否则 GitHub Action 无法在仓库创建 Release 页面
+    permissions:
+      contents: write 
+
     steps:
       - name: Download all artifacts
         uses: actions/download-artifact@v4
@@ -87,8 +93,9 @@ jobs:
       - name: Display structure of downloaded files
         run: ls -R artifact-dir
 
+      # 升级为 v2 插件，兼容性更好
       - name: Release and Upload Assets
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           files: |
             artifact-dir/rocom-capture-linux-amd64/rocom-capture-linux-amd64
