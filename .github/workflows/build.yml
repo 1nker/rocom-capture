@@ -66,6 +66,9 @@ jobs:
           CXX: zig c++ -target ${{ matrix.zig_target }}
         run: |
           mkdir -p dist
+          # ====== 新增下面这一行，让云端自动拉取缺失的 SOCKS5 依赖 ======
+          go mod tidy
+          # =======================================================
           go build -ldflags="-s -w" -o dist/rocom-capture-linux-${{ matrix.goarch }} ./cmd/rocom-capture
 
       # 6. 上传构建产物
