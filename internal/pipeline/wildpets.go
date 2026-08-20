@@ -37,7 +37,7 @@ import (
 const (
 	// 出 AOI 后「最后所见」的灰点还留多久(超时由 pushWilds 顺手丢弃)。取 4 小时是为了
 	// 让灰点当作「本次上线在这一带见过什么」的备忘:野生宠刷新周期远长于几分钟,隔一阵回来
-	// 多半还在。灰点不会无限堆积——换场景/传送即清空,自己捉走的当场撤。
+	// 多半还在。灰点不会无限堆积——换场景即清空,自己捉走的当场撤。
 	wildStaleTTL = 4 * time.Hour
 )
 
@@ -57,7 +57,8 @@ type wildPet struct {
 	left       bool      // 已离开 AOI:标记转为「最后所见」,置灰显示,wildStaleTTL 后丢弃
 }
 
-// wildTracker 是一个连接在当前场景会话内的野生宠物观测态(换场景/传送即重置)。
+// wildTracker 是一个连接在当前场景会话内的野生宠物观测态(换场景即重置;同场景内传送只置灰,
+// 见 resetWilds)。
 type wildTracker struct {
 	pets map[uint64]*wildPet
 	res  int32
@@ -104,9 +105,22 @@ func wildKinds(a scene.NpcActor) []string {
 	return out
 }
 
-// resetWilds 换场景/传送时重置野生宠物观测态并推空列表(前端随即清掉上个场景的标记)。
+// resetWilds 换场景时重置野生宠物观测态并推空列表(前端随即清掉上个场景的标记)。
+//
+// **同一场景内的传送不算换场景**(res 不变:大地图传送点、营地魔力之源之间跳来跳去,实测
+// 2026-08-20 那份 pcap 的 0x015c 是 res 10003 → 10003):旧标记的世界坐标仍属这张底图,
+// 玩家走回去还能再遇上,只是此刻不在 AOI 里了——这与「走远了出 AOI」是同一回事,
+// 故一律转成「最后所见」置灰保留(seenAt 不动,TTL 仍从最后一次确认它在算起),而不是抹掉。
+// 服务器传送时不为旧实体补发 actor_leave(客户端自己清空 AOI),故只能在这里代劳。
 func (p *Pipeline) resetWilds(conn, acc string, res int32, now time.Time) {
-	p.conn(conn).wilds = newWildTracker(res)
+	cs := p.conn(conn)
+	if ts := cs.wilds; ts != nil && ts.res == res {
+		for _, w := range ts.pets {
+			w.left = true
+		}
+	} else { // 真换了场景(或首次进场景):上个场景的实体与坐标一律作废
+		cs.wilds = newWildTracker(res)
+	}
 	p.pushWilds(conn, acc, now)
 }
 
