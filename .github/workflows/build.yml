@@ -10,18 +10,33 @@ on:
 
 jobs:
   build:
-    name: Build for Linux (${{ matrix.arch }})
-    runs-on: ubuntu-latest
-    
+    name: Build for ${{ matrix.os }}/${{ matrix.arch }}
     strategy:
+      fail-fast: false
       matrix:
         include:
-          - arch: amd64
+          - os: linux
+            arch: amd64
+            runs-on: ubuntu-latest
+            goos: linux
             goarch: amd64
             zig_target: x86_64-linux-musl
-          - arch: arm64
+            use_zig: true
+          - os: linux
+            arch: arm64
+            runs-on: ubuntu-latest
+            goos: linux
             goarch: arm64
             zig_target: aarch64-linux-musl
+            use_zig: true
+          - os: darwin
+            arch: arm64
+            runs-on: macos-14
+            goos: darwin
+            goarch: arm64
+            use_zig: false
+
+    runs-on: ${{ matrix.runs-on }}
 
     steps:
       - name: Checkout code
@@ -42,8 +57,9 @@ jobs:
           cache: 'npm'
           cache-dependency-path: web/package-lock.json
 
-      # 3. 安装 Zig
+      # 3. 安装 Zig (仅 Linux 交叉编译需要)
       - name: Set up Zig
+        if: matrix.use_zig
         uses: mlugg/setup-zig@v1
         with:
           version: '0.13.0'
@@ -56,25 +72,37 @@ jobs:
           npm run build
           cd ..
 
-      # 5. 编译 Go 二进制 (配合 Zig 交叉编译与静态链接)
-      - name: Build Go Binary
+      # 5. 编译 Go 二进制
+      - name: Build Go Binary (Zig cross-compile)
+        if: matrix.use_zig
         env:
           CGO_ENABLED: 1
-          GOOS: linux
+          GOOS: ${{ matrix.goos }}
           GOARCH: ${{ matrix.goarch }}
           CC: zig cc -target ${{ matrix.zig_target }}
           CXX: zig c++ -target ${{ matrix.zig_target }}
         run: |
           mkdir -p dist
           go mod tidy
-          go build -ldflags="-s -w" -o dist/rocom-capture-linux-${{ matrix.goarch }} ./cmd/rocom-capture
+          go build -ldflags="-s -w" -o dist/rocom-capture-${{ matrix.os }}-${{ matrix.arch }} ./cmd/rocom-capture
+
+      - name: Build Go Binary (native)
+        if: ${{ !matrix.use_zig }}
+        env:
+          CGO_ENABLED: 0
+          GOOS: ${{ matrix.goos }}
+          GOARCH: ${{ matrix.goarch }}
+        run: |
+          mkdir -p dist
+          go mod tidy
+          go build -ldflags="-s -w" -o dist/rocom-capture-${{ matrix.os }}-${{ matrix.arch }} ./cmd/rocom-capture
 
       # 6. 上传构建产物
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: rocom-capture-linux-${{ matrix.arch }}
-          path: dist/rocom-capture-linux-*
+          name: rocom-capture-${{ matrix.os }}-${{ matrix.arch }}
+          path: dist/rocom-capture-*
 
   release:
     needs: build
@@ -99,5 +127,6 @@ jobs:
           files: |
             artifact-dir/rocom-capture-linux-amd64/rocom-capture-linux-amd64
             artifact-dir/rocom-capture-linux-arm64/rocom-capture-linux-arm64
+            artifact-dir/rocom-capture-darwin-arm64/rocom-capture-darwin-arm64
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
