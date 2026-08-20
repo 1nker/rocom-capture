@@ -89,7 +89,7 @@ jobs:
       - name: Build Go Binary (native)
         if: ${{ !matrix.use_zig }}
         env:
-          CGO_ENABLED: 0
+          CGO_ENABLED: 1
           GOOS: ${{ matrix.goos }}
           GOARCH: ${{ matrix.goarch }}
         run: |
