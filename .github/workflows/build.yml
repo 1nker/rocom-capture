@@ -104,6 +104,41 @@ jobs:
           name: rocom-capture-${{ matrix.os }}-${{ matrix.arch }}
           path: dist/rocom-capture-*
 
+  update-embed:
+    name: Update embedded frontend
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/heads/')
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: 'npm'
+          cache-dependency-path: web/package-lock.json
+
+      - name: Build Web Frontend
+        run: |
+          cd web
+          npm ci
+          npm run build
+          cd ..
+
+      - name: Commit and push embedded frontend
+        run: |
+          if [ -z "$(git status --porcelain -- internal/server/web)" ]; then
+            echo "No changes in internal/server/web"
+            exit 0
+          fi
+          git add internal/server/web
+          git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' \
+            commit -m 'chore: rebuild embedded frontend'
+          git push origin HEAD:${{ github.ref_name }}
   release:
     needs: build
     runs-on: ubuntu-latest
