@@ -778,14 +778,15 @@ type 79–84 交叉验证);`npc_base.world_nature`(15)等于 `PETBASE_CONF.world
 | --- | --- | --- |
 | 唯一 id | `bag_item.gid` | 是**背包物品**的 gid,`egg_gid` 指的就是它;孵出的宠物是另一个 gid(`ZoneCrackEggRsp.hatched_pet_gid`,`0x030c`),两者只有破壳那一刻的响应能对上 |
 | 获得时间 | `bag_item.update_time` | 蛋进包/最后变更的 unix 秒;`egg_data.start_hatch_time` 是放进孵蛋器的时刻 |
-| 种类 | `egg_data.conf_id` | → `PET_EGG_CONF.name`(=孵出的宠物名);`0` 表示随机蛋,另看 `random_egg_conf` |
+| 种类 | `egg_data.conf_id` | → 孵出的宠物名(2026-08 起 `PET_EGG_CONF.name` 已不发布,改由 `pet_id` 重建,见下);`0` 表示随机蛋,另看 `random_egg_conf` |
 | 身高/体重 | `egg_data.height`/100 米、`weight`/1000 千克 | **下蛋时就定死**,区间取 `PET_EGG_CONF.height_low/high`、`weight_low/high`(蛋自己的区间,与 `PETBASE_CONF` 里成体的区间不是一套数);**百分位孵化后原样保留**,见下 |
 | 孵化进度 | `hatched_secs` / 上限 | 上限:`conf_id==0` 用 `egg_data.max_hatched_secs`,否则查 `PET_EGG_CONF.hatch_data`(两者实测一致)。百分比 = `floor(secs/上限*100)`,与客户端 `UMG_PetHatchingItem_C:OnUpdateHatchSecs` 同口径 |
 | 来源 | `egg_data.src`(`EggAcquireWayType`) | `EAWT_HOME=6` 牧场、`EAWT_BLESSING=5` 好友赐福、`EAWT_NONE=0` 其他(如商人处买的随机蛋) |
 | 赐福来源 | `from_player_name`/`from_pet_name`/`from_player_uin`/`from_pet_gid`/`from_pet_base_id`/`from_pet_conf_id` | 是**赐福/赠送**的来源玩家与其宠物(客户端文案「收到了来自{0}的精灵{1}的赐福」),**不是父母本**;牧场自产的蛋这些字段全空 |
 
 **没有的东西**:`PetEggBrief` 里**没有声音(voice)字段**,也没有性格/个体值 ——
-`PET_EGG_CONF.voice_percent` 恒为 `[0,100]`(全范围),嗓音只能等破壳。
+`PET_EGG_CONF.voice_percent` 恒为 `[0,100]`(全范围),嗓音只能等破壳
+(2026-08 小版本起该字段连同 `name`/`form`/`pet_bond_name` 一并不再发布,见下)。
 `mutation_type`(异色)/`glass_info`(炫彩)/`talent_rank`(天分)/`is_precious` 协议上有位置,
 但实测 39 个蛋全为空,大概率也是破壳才填。**父母本信息全程没有**:蛋从牧场产出走的是
 背包增量(`GoodsChange`),没有独立的「下蛋」opcode,双亲不随蛋下发。
@@ -828,8 +829,26 @@ hatched_secs = 250 + 倍率 × (last_hatch_update_sec − start_hatch_time)
 到顶后 `hatched_secs` 基本停在上限(实测有一例 57620/57600,溢出 20 秒,不影响百分比钳到 100%)。
 
 蛋的显示名不在配置里成品供着,要拼:物品 `BAG_ITEM_CONF[bag_item.id]` 的 `known_name`
-是模板 `"{0}的蛋"`,`{0}` 填 `PET_EGG_CONF[egg_data.conf_id].name`;随机蛋(`conf_id=0`)
-没得填,直接用物品 `name`(如 `310049` = 神奇的蛋)。
+是模板 `"{0}的蛋"`,`{0}` 填**种类名**;随机蛋(`conf_id=0`)没得填,直接用物品 `name`
+(如 `310049` = 神奇的蛋)。
+
+#### 物种名怎么来(2026-08 小版本改)
+
+`PET_EGG_CONF` 这版把 `name`/`form`/`voice_percent`/`pet_bond_name` 四个字段从发布数据里
+**删掉了**(schema `.non` 里都没有了,延续 2026-07 起剥离策划专用字段的做法),`egg_conf.n`
+只能用仍发布的字段重建:`pet_id` → `MONSTER_CONF`/`PET_CONF` 的种类名,再按
+`PET_INFO_CONF[pet_info_id].blood_id` 补血脉后缀(取 `PET_BLOOD_CONF.name` 全名,
+如「迪莫（光系血脉）」;`blood_id==1` 普通系人人都有,不加)。
+
+916 行里 758 行与被删的旧 `name` 逐字相同,其余差异都是旧 `name` 自己的策划自由文本毛病,
+重建值更准:①「异色」前缀——该信息由 `precious_egg_type`/`egg_types` 角标单独表达,不再进
+名字;②12 处多写的「的蛋」后缀(拼进模板会出「鸭吉吉的蛋的蛋」);③「碎晶蝎」这种与种类表
+对不上的过时名(实际叫晶尾蝎)。
+
+**`egg_items` 的模板填的是不带血脉后缀的种类名**,与客户端一致——`HandbookModuleData`
+用 `GetPetConf(petId).name` 填 `known_name`,不掺血脉/异色。血脉只留在 `egg_conf.n`
+(即 `EggConf.Name` → API 的 `species`,页面上的「孵出 X」)里。旧版这里填的是
+`PET_EGG_CONF.name`,反倒和客户端对不上。
 
 ### 随机蛋(神奇的蛋)的区间藏在哪
 
