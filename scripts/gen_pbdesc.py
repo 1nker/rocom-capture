@@ -180,7 +180,8 @@ def main():
 
     pruned = prune(fds, keep_m, keep_e, keep_shell)
     raw = pruned.SerializeToString()
-    blob = gzip.compress(raw, 9)
+    # mtime=0:gzip 头默认写当前时间,会让内容没变的重跑也产出不同字节(git 噪音)
+    blob = gzip.compress(raw, 9, mtime=0)
     os.makedirs(OUT, exist_ok=True)
     with open(os.path.join(OUT, "proto.desc.gz"), "wb") as f:
         f.write(blob)
