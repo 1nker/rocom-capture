@@ -9,8 +9,8 @@ export const WILD_LAYERS = [
   { k: 'weight-min', group: 'weight', n: '小不点MIN', kinds: ['weight-min'], color: '#2dd4bf', priority: 80 },
   { k: 'voice-high', group: 'voice', n: '婉转声', kinds: ['voice-high'], color: '#e6d05f', priority: 30 },
   { k: 'voice-low', group: 'voice', n: '粗嗓门', kinds: ['voice-low'], color: '#8b9cff', priority: 30 },
-  { k: 'voice-max', group: 'voice', n: '婉转声MAX', kinds: ['voice-max'], color: '#ff7eb6', priority: 70 },
-  { k: 'voice-min', group: 'voice', n: '粗嗓门MIN', kinds: ['voice-min'], color: '#55d6e8', priority: 70 },
+  { k: 'voice-highest', group: 'voice', n: '婉转声MAX', kinds: ['voice-highest'], color: '#ff7eb6', priority: 70 },
+  { k: 'voice-lowest', group: 'voice', n: '粗嗓门MAX', kinds: ['voice-lowest'], color: '#55d6e8', priority: 70 },
 ]
 
 export function matchesWildPet(pet, standalone, orLayers, andLayers) {

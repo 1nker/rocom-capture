@@ -133,10 +133,10 @@ func wildKinds(a scene.NpcActor, info *gamedata.PetBaseInfo) []string {
 		out = append(out, "voice-low")
 	}
 	if a.Voice == wildVoiceMax {
-		out = append(out, "voice-max")
+		out = append(out, "voice-highest")
 	}
 	if a.Voice == wildVoiceMin {
-		out = append(out, "voice-min")
+		out = append(out, "voice-lowest")
 	}
 	return out
 }

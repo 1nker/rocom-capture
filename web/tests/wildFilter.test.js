@@ -15,11 +15,11 @@ test('AND intersects weight and voice groups', () => {
 })
 
 test('MAX conditions can participate in AND groups', () => {
-  const and = select('weight-max', 'weight-min', 'voice-max', 'voice-min')
+  const and = select('weight-max', 'weight-min', 'voice-highest', 'voice-lowest')
   assert.equal(matchesWildPet(pet('weight-max'), [], [], and), false)
-  assert.equal(matchesWildPet(pet('voice-min'), [], [], and), false)
-  assert.equal(matchesWildPet(pet('weight-max', 'voice-min'), [], [], and), true)
-  assert.equal(matchesWildPet(pet('weight-min', 'voice-max'), [], [], and), true)
+  assert.equal(matchesWildPet(pet('voice-lowest'), [], [], and), false)
+  assert.equal(matchesWildPet(pet('weight-max', 'voice-lowest'), [], [], and), true)
+  assert.equal(matchesWildPet(pet('weight-min', 'voice-highest'), [], [], and), true)
 })
 
 test('mutation and pollution are standalone additions', () => {
@@ -32,10 +32,10 @@ test('mutation and pollution are standalone additions', () => {
 })
 
 test('OR and AND condition sets contribute simultaneously', () => {
-  const or = select('weight-max', 'voice-min')
+  const or = select('weight-max', 'voice-lowest')
   const and = select('weight-big', 'weight-small', 'voice-high', 'voice-low')
   assert.equal(matchesWildPet(pet('weight-max'), [], or, and), true)
-  assert.equal(matchesWildPet(pet('voice-min'), [], or, and), true)
+  assert.equal(matchesWildPet(pet('voice-lowest'), [], or, and), true)
   assert.equal(matchesWildPet(pet('weight-small', 'voice-high'), [], or, and), true)
   assert.equal(matchesWildPet(pet('weight-big'), [], or, and), false)
   assert.equal(matchesWildPet(pet('pollution'), [], or, and), false)
