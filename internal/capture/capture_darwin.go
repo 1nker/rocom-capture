@@ -11,7 +11,10 @@ import (
 
 // RunLive 在指定网卡上用 libpcap 实时抓包。阻塞运行。
 func (e *Engine) RunLive(iface string) error {
-	ignoreSelfIPs(e, iface)
+	if !e.NoSelfIgnore {
+		// 网关旁路去重:忽略网卡自身 IP,避免把 NAT 后的本机副本重复解析。
+		ignoreSelfIPs(e, iface)
+	}
 
 	handle, err := pcap.OpenLive(iface, 65535, true, time.Second)
 	if err != nil {

@@ -78,6 +78,9 @@ type Engine struct {
 	Port int
 	Out  chan Message
 	Keys KeyStore // 可选:会话密钥持久化(见 KeyStore)
+	// NoSelfIgnore 为 true 时,实时抓包不自动忽略网卡自身 IP(用于游戏运行在本机、
+	// 需抓本机流量的场景;网关旁路去重场景保持默认 false)。
+	NoSelfIgnore bool
 
 	mu       sync.Mutex
 	sessions map[string]*session

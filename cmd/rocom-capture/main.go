@@ -18,6 +18,7 @@ import (
 func main() {
 	pcapPath := flag.String("pcap", "", "离线 pcap 文件路径(回放模式;可再跟多个,轮转出来的多份会当成一条流连读)")
 	iface := flag.String("iface", "", "实时抓包网卡名")
+	noSelfIgnore := flag.Bool("no-self-ignore", false, "实时抓包不自动忽略网卡自身 IP(游戏运行在本机时使用)")
 	ignoreIPs := flag.String("ignore-ip", "", "额外忽略的 IP(逗号分隔;两端命中即丢包)。实时抓包已自动忽略网卡自身 IP,此项用于离线回放或多网关等场景")
 	port := flag.Int("port", 8195, "游戏服务器端口")
 	socks5Addr := flag.String("socks5", ":4948", "无认证 SOCKS5 代理监听地址(留空则不启动)")
@@ -38,6 +39,7 @@ func main() {
 	}
 	srv := server.New(st, server.NewHub(), db)
 	eng := capture.NewEngine(*port)
+	eng.NoSelfIgnore = *noSelfIgnore
 	eng.Keys = st // 会话密钥持久化:抓包服务重启后继续解密仍存活的连接
 	for s := range strings.SplitSeq(*ignoreIPs, ",") {
 		if s = strings.TrimSpace(s); s == "" {
