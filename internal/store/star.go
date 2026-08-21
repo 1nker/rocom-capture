@@ -2,7 +2,7 @@ package store
 
 import "time"
 
-// 眠枭之星收集状态(见 docs/data.md 3.4):未确认(无行)/未收集/已收集。
+// 眠枭之星收集状态(见 docs/map.md 4):未确认(无行)/未收集/已收集。
 const (
 	StarUncollected = 1 // 收到过该刷新点的 NPC 实体 ⇒ 还在原地,未收集
 	StarCollected   = 2 // 玩家走近了却没有该实体 ⇒ 已收集(已收集的星星服务器不刷)

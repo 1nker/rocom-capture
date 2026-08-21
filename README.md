@@ -12,12 +12,12 @@
   可开关叠加 POI 图标(魔力之源、炼金釜默认开；守护地、大/小型眠枭庇护所、蓝/黄眠枭之星默认关)，选择本地记住；
   眠枭之星有「收集模式」：隐藏已收集的(区域收满的整片隐藏，其余随角色移动逐点确认)，只留还没拿的；
   另有「野生宠物」图层：把周围刷出的稀有个体(异色/炫彩、污染、最大/最小声音)标在地图上——
-  这些属性捕捉前后一致，丢球之前就能筛(见 docs/data.md 3.5)。
+  这些属性捕捉前后一致，丢球之前就能筛(见 docs/map.md 5)。
   还有「涂地」图层:每见到一只野生宠,就把你和它之间那条带子涂上色——那条线上的宠物确实下发过,
   稀有的若有早就标出来了;一只没刷的方向不涂、首领不算数(它下发得远得多),故涂色跟着实际
   下发情况走而不是固定距离;此外走过的路两侧 15m 一律算扫过(不刷宠的城镇/峭壁否则永远空着,
   15m 这个数取自历史流量统计),照着没涂的地方走即可遍历。
-  可开关、可按场景重置(见 docs/data.md 3.8)。
+  可开关、可按场景重置(见 docs/map.md 7)。
   在**家园**里另有「精灵小窝」标记(始终显示，无需开关)：10 个小窝的位置与入住的宠物(空窝也画出来)，
   悬浮看住户简要信息(`点点 ♀ Lv.1 · W 90% V -50 急躁`)，点头像看宠物详情；
   窝上还没收的蛋会挂个蛋图标。
@@ -50,19 +50,26 @@ afpacket/pcap → TCP 重组 → GCP 分帧 → 0x1002 取密钥 → 0x4013 AES-
 | `internal/gcp` | GCP 分帧、密钥提取、AES 解密 |
 | `internal/capture` | afpacket 实时抓包 / pcap 离线回放 + TCP 重组 |
 | `internal/pb` | 由游戏描述符 all.pb 生成的宠物消息结构(`scripts/gen_proto.py`) |
+| `internal/pbdesc` | 裁剪版游戏描述符 + opcode→消息名(`scripts/gen_pbdesc.py`)，供 `cmd/pcapdump` 精确解码 |
+| `internal/wire` | 无 schema 的 protobuf wire 级扫描辅助，供 `pet`/`scene` 共用 |
 | `internal/pet` | PetData 解析与业务模型 |
-| `internal/scene` | 移动/场景/实体消息解析(实时位置、分层、野生宠物、捕捉结果;详见 docs/data.md 3.1/3.2/3.5) |
+| `internal/scene` | 移动/场景/实体消息解析(实时位置、分层、野生宠物、捕捉结果;详见 docs/map.md 1/2/5) |
 | `internal/gamedata` | id→中文名 查找表 + 场景/大地图投影(`scripts/gen_gamedata.py` 生成，embed) |
 | `internal/store` | SQLite 存储与筛选查询 |
+| `internal/pipeline` | 消费抓包消息流:账号归属、宠物入库/事件、地图与野生宠物、家园与精灵蛋 |
 | `internal/server` | REST API + SSE 推送 + embed 前端 |
 | `web` | React + Vite 前端 |
+| `cmd/pcapdump` | pcap 回放为结构化文本的调试工具(概览/转储/按宠物编号扫描) |
 | `scripts/capture.sh` | tcpdump 全量抓包脚本 |
 
 ## 文档
 
 - [协议说明](docs/protocol.md) — tsf4g/GCP 字节布局、分帧、密钥与解密、opcode
 - [数据来源与解析](docs/data.md) — 解包数据源(all.pb + Bin 配置)、proto 与名称表生成、宠物字段映射
+- [大地图与实时地图页](docs/map.md) — 场景与底图投影、分层地图、POI 与眠枭之星、野生宠物、AOI、涂地
+- [精灵蛋与孵化](docs/eggs.md) — 蛋的协议字段、随机蛋区间、下蛋亲本、品类排序、百分位奖牌
 - [服务架构](docs/architecture.md) — 数据流、模块、HTTP 接口、前端、部署
+- [宠物音频](docs/audio.md) — 叫声 bnk/wem 的解包链路与音调 RTPC(落地站点是 rocom-petvo)
 - [参考资料](docs/reference.md) — 相关工具与开源项目
 
 ## 构建

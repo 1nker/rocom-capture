@@ -1,6 +1,6 @@
 package scene
 
-// 家园(精灵小窝)相关解析,供实时地图的小窝图层与精灵蛋的双亲推断(见 docs/data.md 3.6)。
+// 家园(精灵小窝)相关解析,供实时地图的小窝图层与精灵蛋的双亲推断(见 docs/eggs.md)。
 //
 // 三样东西都在进场景快照 ZoneSceneClientEnterSceneFinishNtyAck(0x014a)里:
 //   - home_info(22):房屋等级 + 家具布局(小窝也是家具)+ **下蛋配对** lay_egg_couple;

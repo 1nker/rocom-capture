@@ -2,7 +2,7 @@ package store
 
 import "time"
 
-// PaintGrid 是一张涂地覆盖位图(见 docs/data.md 3.8):w*h 个格子,每格一位(1=已扫过),
+// PaintGrid 是一张涂地覆盖位图(见 docs/map.md 7):w*h 个格子,每格一位(1=已扫过),
 // 每字节 8 格、低位在前。按账号 + 场景(scene_res)+ 分层各存一张,格子尺寸由 server 定。
 type PaintGrid struct {
 	W, H  int

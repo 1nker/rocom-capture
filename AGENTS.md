@@ -8,7 +8,8 @@
 不读内存、不注入进程，只解析网络流量。Go 后端 + React 前端，构建为单二进制(前端经 embed)。
 
 面向使用者的说明见 [README.md](README.md)；设计细节见 `docs/`：
-[协议](docs/protocol.md)、[数据来源与解析](docs/data.md)、[服务架构](docs/architecture.md)、
+[协议](docs/protocol.md)、[数据来源与解析](docs/data.md)、[大地图](docs/map.md)、
+[精灵蛋](docs/eggs.md)、[服务架构](docs/architecture.md)、[宠物音频](docs/audio.md)、
 [参考资料](docs/reference.md)。
 
 ## 解包数据流程
@@ -39,15 +40,12 @@
   六维/搭档标记、血脉主图标、手挑杂项、手挑大地图 POI、奖牌小图、精灵蛋图与蛋品类角标;图集精灵从解包属性 JSON + 图集 PNG 裁切,
   奖牌与精灵蛋等整张贴图直接转码;webp 保持原始解包文件名,语义键→原名索引写入 names.json;
   详见 docs/data.md)、`uv run python scripts/gen_bigmap.py`(大地图瓦片 → img/bigmap 整图 webp,4x4
-  行主序拼合;另转分层地图切片 LayerMap → img/bigmap/layer;坐标单位/投影见 docs/data.md 3.1/3.2);
+  行主序拼合;另转分层地图切片 LayerMap → img/bigmap/layer;坐标单位/投影见 docs/map.md 1/2);
   抓包脚本 `scripts/capture.sh`(bash)。`.bytes` 配置解码用 `uv run python scripts/bin2json.py`
   (unpack.sh 已自动调):全树 RocoBinData `.bytes` → 紧邻 `.json`(增量,秒级),既供 grep/jq
   查数据、也是 gen_gamedata/gen_icons 的输入(它们直接读这些 JSON,不再自行解 .bytes)。
-- **shader 逆向与 3D 渲染的工具链已迁到 [rocom-pets](https://github.com/whoisnian/rocom-pets)**
-  (`scripts/shaderdump.py` / `dxbcdis.c` / `dxbcsig.py` / `matshader.py` / `uniexpr.py` /
-  `matparams.py` / `glsldump.py`,文档 `docs/shader.md` 与 `docs/android-glsl.md`)。
-  它们只服务于宠物材质还原,与本仓库的抓包/统计/生成流程零耦合;`unpack.sh` 仍在本仓库
-  (三维之外的 Bin 配置、图标、大地图都靠它)。
+- 由本仓库衍生出去的姊妹项目(shader/3D、叫声图鉴)见 [docs/reference.md](docs/reference.md);
+  它们与这里的抓包/统计/生成流程零耦合,`unpack.sh` 仍是三者共用的解包入口。
 - pcap 调试:`go run ./cmd/pcapdump -pcap <文件>` 把回放消息输出为「适合 AI 分析」的结构化文本,
   免去为调试新协议临时写一次性程序。三种模式:无参=opcode 概览(次数/方向/名称);
   `-op 0x1888,FREE`=转储匹配 opcode 的消息(opcode 支持 hex/十进制/名称子串,`-hex` 附原始字节);

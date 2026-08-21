@@ -4,7 +4,7 @@ import { getWildPets, subscribe } from '../../api'
 // —— 野生宠物图层(异色/炫彩 · 污染 · 最大声音 · 最小声音)——
 // 与 POI 图层不同,这几类**不是固定点位**:野生宠会刷新、被别人抓走,只有走进 AOI 才知道它在。
 // 后端从周边实体快照与 AOI 通知里挑出这几类推过来(见 internal/pipeline/wildpets.go),
-// 前端只管开关与摆放。判定依据(捕捉前后一致的属性)见 docs/data.md 3.5。
+// 前端只管开关与摆放。判定依据(捕捉前后一致的属性)见 docs/map.md 5。
 //
 // 存储键带版本号:图层键改过就进一版,沿用旧键会让浏览器里存着旧选择的人一个图层都不开,
 // 与「异色/炫彩默认勾选」相悖。v2:glass/colorful/shiny/nightmare → mutation/pollution/voice;

@@ -12,7 +12,7 @@ import (
 // 参数:
 //
 //	search=          按蛋名/物种名模糊
-//	sort=quality|obtained  order=asc|desc(复刻游戏内背包的两种排序,见 docs/data.md 3.6)
+//	sort=quality|obtained  order=asc|desc(复刻游戏内背包的两种排序,见 docs/eggs.md)
 //
 // 页面不分标签页:一次取回全部,孵蛋器那几颗按 hatching 标志自行分栏
 // (与游戏一致——在孵的蛋不出现在背包格子里)。**排序只作用于背包那部分**:客户端也是先把

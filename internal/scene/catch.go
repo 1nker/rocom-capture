@@ -4,7 +4,7 @@ import (
 	"google.golang.org/protobuf/encoding/protowire"
 )
 
-// 「这只野生实体已经没了」的判定(供实时地图的野生宠物图层当场撤掉标记,见 docs/data.md 3.5)。
+// 「这只野生实体已经没了」的判定(供实时地图的野生宠物图层当场撤掉标记,见 docs/map.md 5)。
 //
 // 两条路各有各的结果通知,都直接带**实体 actor_id**,不必靠位置猜:
 //
@@ -81,7 +81,7 @@ func ParseCaughtByThrow(body []byte) []uint64 {
 // 野生实体 id(被捉走或被打死):settle_info(1) → monster_info(8,重复 BattleMonsterInfo)
 // = {state(2), npc_obj_id(16)}。
 //
-// 被污染的野生宠丢球不会直接捉住而是开战(见 docs/data.md 3.5),故它的标记只能等这里撤:
+// 被污染的野生宠丢球不会直接捉住而是开战(见 docs/map.md 5),故它的标记只能等这里撤:
 // 捉走(TRUE_BATTLE_RESULT_WIN_CATCH)与打死(..._WIN_DEFEAT)对地图标记是一回事——那儿
 // 已经没这只了。结算里同时含我方队伍的宠物(side=0),它们的 npc_obj_id 为 0,自然被过滤掉。
 //

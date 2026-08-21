@@ -10,7 +10,7 @@ import { hatchProgress } from './hatch'
 // 精灵蛋页面:左栏孵蛋器(在孵的那几颗)、右栏背包(其余的,每行六个,同游戏内布局)。
 // 不分标签页——在孵的蛋本来就不出现在背包格子里(客户端 BagModuleData.IsRemoveEggItem),
 // 两栏一摆就把「在孵 / 在包」说清楚了,不必再给个过滤器。
-// 排序复刻游戏内背包的两种(见 docs/data.md 3.6 与 internal/pet.SortEggs)。
+// 排序复刻游戏内背包的两种(见 docs/eggs.md 与 internal/pet.SortEggs)。
 const SORTS = [
   { k: 'quality', label: '品质' },
   { k: 'obtained', label: '获取时间' },
@@ -177,7 +177,7 @@ function Row({ k, v, pct, title, hot }) {
 }
 
 // Parents 双亲快照:母本确定(蛋趴在她的窝上),父本取服务器下发的配对候选,
-// 几个窝挨太近「串窝」时有多个候选、实际父本无从确定(见 docs/data.md 3.6)。
+// 几个窝挨太近「串窝」时有多个候选、实际父本无从确定(见 docs/eggs.md)。
 // 非家园蛋没有双亲可言,留同样高度的占位,保证卡片等高。
 function Parents({ p, onPet }) {
   const rows = []

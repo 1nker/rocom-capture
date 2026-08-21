@@ -136,8 +136,8 @@ func (db *DB) NpcPetBase(npcCfgID uint32) (uint32, bool) {
 }
 
 // IsNpcBoss 报告该 NPC(NPC_CONF.id)是不是野外首领(throwing_interact_type=4:祭礼巨像/
-// 女王蜂/钻石蜗…)。它们的 AOI 下发距离远得多(实测 128-176m,普通野生宠 80m,见 docs/data.md 3.7),
-// 故涂地不能拿它们当「这条线扫过了」的凭据(见 docs/data.md 3.8);地图标记不受影响。
+// 女王蜂/钻石蜗…)。它们的 AOI 下发距离远得多(实测 128-176m,普通野生宠 80m,见 docs/map.md 6),
+// 故涂地不能拿它们当「这条线扫过了」的凭据(见 docs/map.md 7);地图标记不受影响。
 func (db *DB) IsNpcBoss(npcCfgID uint32) bool { return db.npcBosses[npcCfgID] }
 
 // 炫彩类型(GlassInfo.glass_type,dataconfig.GlassType)。
@@ -151,7 +151,7 @@ const (
 // (客户端 PetUtils.GetShineDataValue 即按 20 位拆)。
 const glassParticleShift = 20
 
-// GlassDesc 返回炫彩外观的中文描述(见 docs/data.md 3.5):
+// GlassDesc 返回炫彩外观的中文描述(见 docs/map.md 5):
 // 隐藏炫彩给外观名(暗夜拾光…),普通炫彩给「粒子·配色」(四角星·亮X暗 - 浅紫橙)。
 // 非炫彩或查不到时返回空串(调用方自行兜底)。
 func (db *DB) GlassDesc(glassType, glassValue int32) string {

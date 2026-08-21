@@ -91,14 +91,14 @@ type poiKind struct {
 }
 
 // poiPoint 是一个 POI 标记:底图归一化坐标(与玩家位置同一投影)+ 名称。
-// 眠枭之星另带刷新点 id、候选区域与收集状态(见 docs/data.md 3.4)。
+// 眠枭之星另带刷新点 id、候选区域与收集状态(见 docs/map.md 4)。
 type poiPoint struct {
 	K    string  `json:"k"`
 	U    float64 `json:"u"`
 	V    float64 `json:"v"`
 	N    string  `json:"n"`
 	R    int32   `json:"r,omitempty"`    // 刷新点 id(星星:前端据此接收状态增量)
-	Zone []int32 `json:"zone,omitempty"` // 候选区域营地 id 列表;全部收满才可隐藏(重叠带语义见 docs/data.md 3.4)
+	Zone []int32 `json:"zone,omitempty"` // 候选区域营地 id 列表;全部收满才可隐藏(重叠带语义见 docs/map.md 4)
 	St   int     `json:"st,omitempty"`   // 收集状态:0 未确认 / 1 未收集 / 2 已收集
 }
 
@@ -112,7 +112,7 @@ type zoneProgress struct {
 
 // handlePois 返回某场景(?res=scene_res_cfg_id)的大地图 POI:图层清单 + 已投影到底图归一化坐标
 // 的标记点。投影复用 db.Project(与玩家位置同一套),故前端不需要知道 ox/oy/side。
-// 无底图的场景没有 POI(投影无从谈起),返回空列表。数据来源见 docs/data.md 3.3。
+// 无底图的场景没有 POI(投影无从谈起),返回空列表。数据来源见 docs/map.md 3。
 func (s *Server) handlePois(w http.ResponseWriter, r *http.Request) {
 	res64, err := strconv.ParseUint(r.URL.Query().Get("res"), 10, 32)
 	if err != nil {

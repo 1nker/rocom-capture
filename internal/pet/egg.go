@@ -1,7 +1,7 @@
 package pet
 
 // 精灵蛋(背包物品)的解析。蛋不是 PetData 而是 BagItem(type==8)上挂的 PetEggBrief,
-// 字段语义与坑见 docs/data.md 3.6。
+// 字段语义与坑见 docs/eggs.md。
 //
 // 蛋会经多条消息露面,但载体只有两种:
 //   - 背包全量分页 0x1344:bag_info(4).item_list(3).items(2)
@@ -103,7 +103,7 @@ func ParseChangedEggs(body []byte) []Egg {
 }
 
 // ParseFlowReason 取奖励通知(0x0243)的 flow_reason(3)。223 = FLOW_REASON_PET_HOME_LAY,
-// 即「家园宠物下蛋」——从小窝上收下来的蛋走的就是这个理由(见 docs/data.md 3.6)。
+// 即「家园宠物下蛋」——从小窝上收下来的蛋走的就是这个理由(见 docs/eggs.md)。
 func ParseFlowReason(body []byte) int32 {
 	if v, ok := wire.Varint(body, 3); ok {
 		return int32(v)
@@ -161,7 +161,7 @@ func parseBagItemEgg(b []byte) (Egg, bool) {
 	return e, true
 }
 
-// parseEggBrief 解 PetEggBrief(字段表见 docs/data.md 3.6)。
+// parseEggBrief 解 PetEggBrief(字段表见 docs/eggs.md)。
 func parseEggBrief(b []byte, e *Egg) {
 	wire.ScanFields(b, func(num protowire.Number, typ protowire.Type, _ []byte, v uint64) {
 		if typ != protowire.VarintType {
@@ -195,7 +195,7 @@ func parseEggBrief(b []byte, e *Egg) {
 // ---- 展示模型(精灵蛋页面)----
 
 // EggParent 是一只推测的亲本在**收蛋那一刻**的快照。存快照而非引用 gid,是因为宠物可能
-// 被放生/赠送(pets 行随之删除),而蛋上的双亲信息应当留存(见 docs/data.md 3.6)。
+// 被放生/赠送(pets 行随之删除),而蛋上的双亲信息应当留存(见 docs/eggs.md)。
 type EggParent struct {
 	Gid       uint32   `json:"gid"`
 	Name      string   `json:"name"`
@@ -246,7 +246,7 @@ type EggView struct {
 	WeightMax float64  `json:"weightMax,omitempty"`
 	HeightPct *float64 `json:"heightPct,omitempty"`
 	WeightPct *float64 `json:"weightPct,omitempty"`
-	// 按同一百分位换算的成体尺寸(普通蛋实测原样保留,随机蛋不适用故为 0,见 docs/data.md 3.6)。
+	// 按同一百分位换算的成体尺寸(普通蛋实测原样保留,随机蛋不适用故为 0,见 docs/eggs.md)。
 	AdultHeightM  float64 `json:"adultHeightM,omitempty"`
 	AdultWeightKg float64 `json:"adultWeightKg,omitempty"`
 
@@ -261,7 +261,7 @@ type EggView struct {
 	Shiny    bool `json:"shiny,omitempty"`    // 异色蛋(品类 2/3):用全站统一的异色标记显示
 	Colorful bool `json:"colorful,omitempty"` // 炫彩蛋(品类 3/6/7)
 
-	// Voice 是从双亲推出的嗓音(双亲均值向下取整,见 docs/data.md 3.6);蛋上没有嗓音字段,
+	// Voice 是从双亲推出的嗓音(双亲均值向下取整,见 docs/eggs.md);蛋上没有嗓音字段,
 	// 非家园蛋(没有双亲快照)推不出来,为 nil。串窝时父本不唯一,VoiceMax 给出区间上界。
 	Voice    *int32 `json:"voice,omitempty"`
 	VoiceMax *int32 `json:"voiceMax,omitempty"`
@@ -412,7 +412,7 @@ func FillEggDerived(v *EggView, db *gamedata.DB) {
 	v.Medals = eggMedals(db, weight, voice)
 }
 
-// parentVoice 按「双亲嗓音均值向下取整」推这颗蛋的嗓音(实测规律,见 docs/data.md 3.6)。
+// parentVoice 按「双亲嗓音均值向下取整」推这颗蛋的嗓音(实测规律,见 docs/eggs.md)。
 // 串窝时父本不唯一,逐个候选算一遍取上下界;没有双亲快照则 ok=false。
 func parentVoice(p *EggParents) (lo, hi int32, ok bool) {
 	if p == nil || p.Mother == nil || len(p.Fathers) == 0 {
@@ -437,7 +437,7 @@ type pctRange struct {
 }
 
 // eggMedals 判这颗蛋**确定**能拿到哪几枚百分位奖牌(体重最多一枚、嗓音最多一枚)。
-// 体重百分位孵化后原样保留、嗓音可由双亲推出(见 docs/data.md 3.6),两者都能提前判;
+// 体重百分位孵化后原样保留、嗓音可由双亲推出(见 docs/eggs.md),两者都能提前判;
 // 值还不知道(随机蛋没区间 / 没有双亲)、或区间跨在窗口边上(串窝)时说不准,就不给。
 func eggMedals(db *gamedata.DB, weight, voice pctRange) []EggMedal {
 	var out []EggMedal
@@ -491,7 +491,7 @@ func RefreshEggView(v *EggView, db *gamedata.DB) *EggView {
 	return out
 }
 
-// SortEggs 按游戏内背包的排序方式重排(见 docs/data.md 3.6,复刻客户端 BagModuleData):
+// SortEggs 按游戏内背包的排序方式重排(见 docs/eggs.md,复刻客户端 BagModuleData):
 //
 //	quality(品质排序 SortEggQualityDown): 品类排序号升 → 品质降 → 物品排序号升 → 获得时间降
 //	obtained(获取时间 SortTimeDown):     获得时间降

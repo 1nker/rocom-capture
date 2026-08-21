@@ -136,7 +136,7 @@ func (p *Pipeline) onMove(m capture.Message, acc string) {
 	cs.pos = mr.Pos // 之后画到每只野生宠的走廊都从这儿起(实体通知里没有玩家坐标)
 	pos := p.buildPos(acc, res, cs.room, mr, m.Time)
 	// 分层地图:玩家当前所在区域(服务器区域进/出事件维护)命中某层的 area_func_id 即在该层,
-	// 经 layerDebounce 去抖(滤掉走动中擦出/擦进触发体接缝的百毫秒级抖动)。见 docs/data.md 3.2。
+	// 经 layerDebounce 去抖(滤掉走动中擦出/擦进触发体接缝的百毫秒级抖动)。见 docs/map.md 2。
 	if l, ok := p.layerOf(m.Session, res, m.Time, true); ok {
 		if lp := p.layerPayload(res, l); lp != nil {
 			pos["sceneName"] = l.Name
@@ -147,11 +147,11 @@ func (p *Pipeline) onMove(m capture.Message, acc string) {
 	// 玩家走到哪,就把周围的星星判一遍(走近了却没实体 ⇒ 已收集;z 供洞穴层守卫)。
 	p.sweepStars(m.Session, acc, res, mr.Pos.X, mr.Pos.Y, mr.Pos.Z, m.Time)
 	// 涂地:贴身安全带沿这一段路涂,再把「玩家 ↔ 此刻视野里每只野生宠」的走廊涂上
-	// (见 docs/data.md 3.8)。人一动,同样几只宠的走廊也会扫过新的一片,故每包都涂一次。
+	// (见 docs/map.md 7)。人一动,同样几只宠的走廊也会扫过新的一片,故每包都涂一次。
 	p.paintSeen(m.Session, acc, res, p.movePath(prev, mr))
 }
 
-// paintSeen 涂一次地(见 docs/data.md 3.8):path 是玩家刚走过的一段(空则只用当前位置),
+// paintSeen 涂一次地(见 docs/map.md 7):path 是玩家刚走过的一段(空则只用当前位置),
 // 沿它涂贴身安全带;再把「玩家 ↔ 当前 AOI 里每只野生宠」的走廊涂上。
 // 玩家一动、或收到新的实体通知都要涂——前者让同几只宠的走廊扫过新的一片,后者是新看到的方向。
 func (p *Pipeline) paintSeen(conn, acc string, res int32, path [][2]int32) {
@@ -186,7 +186,7 @@ func (p *Pipeline) movePath(prev scene.Position, mr scene.MoveReq) [][2]int32 {
 }
 
 // curLayerID 返回该连接当前所在的分层地图 id(0=地表)。涂地按层各存一张:洞穴与地表
-// 是两个空间,AOI 不相通(见 docs/data.md 3.4 的洞穴层守卫)。
+// 是两个空间,AOI 不相通(见 docs/map.md 4 的洞穴层守卫)。
 func (p *Pipeline) curLayerID(conn string) int32 {
 	cs := p.conns[conn]
 	if cs == nil || cs.layer == nil || !cs.layer.curOK {
@@ -222,7 +222,7 @@ func (p *Pipeline) buildPos(acc string, res, room int32, mr scene.MoveReq, t tim
 		"z":          mr.Pos.Z,
 		"heading":    float64(mr.Yaw) / 10, // 朝向角(度),UE Yaw:0=世界+X(地图东/右),顺时针增
 		"stop":       mr.StopMove,
-		"paintable":  p.srv.Paintable(res), // 该场景能否涂地(见 docs/data.md 3.8),前端据此显示图层开关
+		"paintable":  p.srv.Paintable(res), // 该场景能否涂地(见 docs/map.md 7),前端据此显示图层开关
 		"ts":         t.Unix(),
 		"tsMs":       t.UnixMilli(), // 前端判断缓存位置是否过期(过期则不外推)
 	}
@@ -351,7 +351,7 @@ func (p *Pipeline) layerPayload(res int32, l gamedata.LayerInfo) map[string]any 
 		return nil
 	}
 	return map[string]any{
-		"id":  l.ID, // 涂地按层各存一张,前端据此取对应的覆盖位图(见 docs/data.md 3.8)
+		"id":  l.ID, // 涂地按层各存一张,前端据此取对应的覆盖位图(见 docs/map.md 7)
 		"img": "layer/" + l.Img,
 		"u0":  float64(l.OX-mi.OX) / float64(mi.Side),
 		"v0":  float64(l.OY-mi.OY) / float64(mi.Side),

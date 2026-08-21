@@ -10,7 +10,7 @@ import (
 	"github.com/whoisnian/rocom-capture/internal/scene"
 )
 
-// ---- 实时地图的野生宠物图层(见 docs/data.md 3.5)----
+// ---- 实时地图的野生宠物图层(见 docs/map.md 5)----
 //
 // 大世界的野生宠物是普通 NPC 实体(ActorInfo),个体属性就挂在 npc_base 上:身高、体重、嗓音、
 // 变异(mutation_type)、炫彩(glass_info)——**捕捉后这些原样进 PetData**(2026-08-02 用捕捉
@@ -19,7 +19,7 @@ import (
 //
 // **下发范围**:普通野生宠是水平 80m 的圆(高度不计,走到 88-90m 才收到 actor_leave),首领 150/200m;
 // 跨进边界到实体真正下发另有滞后(中位 6.3s、最大 47s),故「附近没标记」不等于「附近没有」。
-// 见 docs/data.md 3.7。
+// 见 docs/map.md 6。
 //
 // 只跟踪**值得跑一趟**的几类(其余野生宠满地都是,全画出来只会糊住地图):
 //   - 炫彩(glass_info.glass_type != GT_NULL,等价于 mutation_type 的 MDT_GLASS 位);
@@ -141,7 +141,7 @@ func (p *Pipeline) observeWilds(conn, acc string, body []byte, now time.Time, sn
 	for _, a := range actors {
 		// 涂地跟的是**全部**野生宠实体(见 paintSeen):任何一只下发,都证明玩家到它之间
 		// 这条线上的东西已经到手了,与它稀不稀有无关。下面的 wildMatch 才是地图标记那一套。
-		// **首领除外**:它的下发距离是 150/200m 那两档(普通野生宠 80m,见 docs/data.md 3.7),
+		// **首领除外**:它的下发距离是 150/200m 那两档(普通野生宠 80m,见 docs/map.md 6),
 		// 拿它当凭据会把中间那段其实没下发过普通野生宠的地方也涂上。
 		// 同理只认**可丢球捕捉**的(同 wildMatch 的第二道闸):家园宠、剧情/活动 NPC 也带身高体重,
 		// 但它们不是野外刷出来的,下发规则未知,不该拿来当「这条线扫过了」的凭据。
@@ -197,7 +197,7 @@ func (p *Pipeline) observeWilds(conn, acc string, body []byte, now time.Time, sn
 }
 
 // onBattleFinish 处理战斗结算(0x132c):被污染的野生宠丢球只是开战,结果要等这里
-// (见 docs/data.md 3.5)。捉走与打死对标记是一回事——那儿已经没这只了,当场撤掉;
+// (见 docs/map.md 5)。捉走与打死对标记是一回事——那儿已经没这只了,当场撤掉;
 // 战斗期间它早已离开 AOI 被置灰,这一步把灰点也抹掉。打输/它逃跑则不在此列,灰点照旧。
 func (p *Pipeline) onBattleFinish(conn, acc string, body []byte, now time.Time) {
 	cs := p.conns[conn]

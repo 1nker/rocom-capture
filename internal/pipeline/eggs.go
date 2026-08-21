@@ -9,7 +9,7 @@ import (
 	"github.com/whoisnian/rocom-capture/internal/store"
 )
 
-// ---- 精灵蛋(见 docs/data.md 3.6)----
+// ---- 精灵蛋(见 docs/eggs.md)----
 //
 // 蛋从四处露面,处理方式各异:
 //   - 0x1344 背包分页全量:入库 + 末页对账(不在背包的删掉,与宠物列表同一套路)

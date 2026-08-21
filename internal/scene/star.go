@@ -6,7 +6,7 @@ import (
 	"github.com/whoisnian/rocom-capture/internal/wire"
 )
 
-// 眠枭之星的收集状态判定(见 docs/data.md 3.4)。
+// 眠枭之星的收集状态判定(见 docs/map.md 4)。
 //
 // 核心事实(已用 pcap 实测):星/光点**已收集的服务器根本不刷**——只有未收集的才会作为 NPC 实体
 // (ActorInfo)下发,且实体带 `npc_content_cfg_id` = 刷新点 id(NPC_REFRESH_CONTENT_CONF.id),
@@ -30,15 +30,15 @@ const (
 // 可收集物的 NPC_CONF id。眠枭之星:A1=蓝、A2=黄、A2-2=紫(2026-07 版新区);「之星」「光点」
 // 「石像」三种形态都算一颗星(光点交互后出一颗星;石像被星星魔法命中后浮现一颗星,触碰收集)。
 // 不咕钟零件(55901)是 2026-07 更新的收集品,实体行为与星/光点同套(未收集才刷)。
-// 与 gen_gamedata.py 的 NPC_WHITELIST 同一批;蓝 147/黄 228/紫 104 的构成见 docs/data.md 3.3。
+// 与 gen_gamedata.py 的 NPC_WHITELIST 同一批;蓝 147/黄 228/紫 104 的构成见 docs/map.md 3。
 var starNpc = map[int32]bool{
 	55162: true, 55163: true, 55601: true, // 独立星
 	55500: true, 55510: true, 55602: true, // 光点
 	58308: true, 58318: true, 55632: true, // 石像
-	55901: true, // 不咕钟零件(51 点,无分区计数,见 docs/data.md 3.3)
+	55901: true, // 不咕钟零件(51 点,无分区计数,见 docs/map.md 3)
 }
 
-// 石像与星/光点的**实体行为不同**(见 docs/data.md 3.4):石像本体收集后不消失、实体一直下发,
+// 石像与星/光点的**实体行为不同**(见 docs/map.md 4):石像本体收集后不消失、实体一直下发,
 // 「出现/消失」不携带任何收集信息;它的星是实体上的**挂件**(pendant),状态在 ActorInfo 里
 // (见 NpcActor.Pendant),收集动作是 c2s 挂件交互(OpNpcPendantInteractReq)。
 var statueNpc = map[int32]bool{58308: true, 58318: true, 55632: true}
@@ -66,7 +66,7 @@ type NpcActor struct {
 	Pendant   int32  // 挂件状态(仅石像有:PendantUncollected/PendantCollected;其余为 0)
 	Pos       Position
 	// 以下为**野生宠物**独有的个体属性(静态 NPC 的 npc_base 里根本没有这些字段)。
-	// 捕捉后原样进 PetData,故丢球前就能筛;判据与坑见 docs/data.md 3.5。
+	// 捕捉后原样进 PetData,故丢球前就能筛;判据与坑见 docs/map.md 5。
 	Lv         int32 // base.lv
 	Height     int32 // npc_base.height(÷100=米)
 	Weight     int32 // npc_base.weight(÷1000=千克)
@@ -74,7 +74,7 @@ type NpcActor struct {
 	Mutation   int32 // npc_base.mutation_type,位标志,见下 Mutation* 常量(与 PetData 同一套)
 	GlassType  int32 // npc_base.glass_info.glass_type(0=GT_NULL 非炫彩 / 1=普通炫彩 / 2=隐藏炫彩)
 	GlassValue int32 // npc_base.glass_info.glass_value(是哪一种炫彩,见 gamedata.DB.GlassDesc)
-	// 以下为**家园**实体独有(见 home.go 与 docs/data.md 3.6):
+	// 以下为**家园**实体独有(见 home.go 与 docs/eggs.md):
 	AttachItem uint64   // attach_item_info.attach_item_id;窝上的蛋即所属小窝的 furniture_guid
 	HomePet    *HomePet // 入住小窝的宠物(home_pet_info);非家园宠物实体为 nil
 }
@@ -98,7 +98,7 @@ const (
 func (a NpcActor) IsShiny() bool { return a.Mutation&MutationShiny != 0 }
 
 // IsPolluted 报告该实体是不是被污染的个体(MDT_CHAOS 家族)。野外实测全是 MDT_CHAOS_TWO(4)。
-// 污染个体**不能直接丢球捉**:丢球即进战斗,打空血量才解除污染,见 docs/data.md 3.5。
+// 污染个体**不能直接丢球捉**:丢球即进战斗,打空血量才解除污染,见 docs/map.md 5。
 func (a NpcActor) IsPolluted() bool { return a.Mutation&mutationPolluted != 0 }
 
 // IsStar 报告该实体是不是收集判定关心的可收集物(眠枭之星含光点/石像形态,及不咕钟零件)。
@@ -292,7 +292,7 @@ type ZoneProgress struct {
 	Camp  int32 // 区域键 = 该区域营地(魔力之源)的刷新点 id;names.json 的 zones 给中文名
 	NpcID int32 // 星星 NPC id(独立星/光点/石像各自一条,id 清单见 starNpc)
 	Got   int32 // 已收集
-	Total int32 // 总数(服务器口径,少数点不计区域,见 docs/data.md 3.4)
+	Total int32 // 总数(服务器口径,少数点不计区域,见 docs/map.md 4)
 }
 
 // ParseZoneProgress 从 s2c ZoneEnterSceneRsp(0x0152)取按区域的收集进度:

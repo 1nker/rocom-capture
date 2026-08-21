@@ -85,7 +85,7 @@ export const getPois = (res) => getJSON('/api/pois?res=' + res, { kinds: [], poi
 // 之后由 SSE wildpets 增量覆盖;从未收到过任何 AOI 通知时返回 null。
 export const getWildPets = () => getJSON('/api/wildpets?' + buildQuery(), null)
 
-// getPaint 返回某场景某层的涂地覆盖位图(玩家走过的地方,见 docs/data.md 3.8):
+// getPaint 返回某场景某层的涂地覆盖位图(玩家走过的地方,见 docs/map.md 7):
 //   {res, layer, w, h, cell, corridor, safe, cells}——cells 是 w*h 位的位图 base64(每字节 8 格、低位在前);
 // 无底图的场景 w=0。之后的新格子由 SSE paint 增量推来。
 export const getPaint = (res, layer) => getJSON('/api/paint?' + buildQuery({ res, layer }), { w: 0, h: 0 })

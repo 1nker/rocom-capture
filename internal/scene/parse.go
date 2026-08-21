@@ -1,7 +1,7 @@
 // Package scene 解析场景移动与场景切换消息,供实时地图页跟踪登录账号自己的位置。
 // 只解析「自己」:移动包是 c2s(0x0133),当前场景 res 从 s2c 的进入/传送通知跟踪。
 // 不解析其他玩家/AOI。字段语义经当前版客户端 Scene luac 坐实,并已用真实 pcap 验证
-// (卡洛西亚大陆→魔法学院,24/24 移动包解析成功,投影落点正确;见 docs/data.md 3.1、protocol.md)。
+// (卡洛西亚大陆→魔法学院,24/24 移动包解析成功,投影落点正确;见 docs/map.md 1、protocol.md)。
 package scene
 
 import (
@@ -309,7 +309,7 @@ type AreaAct struct {
 // **这是「玩家当前在哪一层」的权威依据**:服务器只在玩家真正进入区域触发体(3D 体积)时才下发,
 // 客户端也正是据此选层(AreaAndZoneModule 维护 zone 集合 → BigMapModuleData:GetCurMapLayerId
 // 取其中命中分层表的 area_func_id)。用位置点对区域多边形做 2D 判定则会在洞穴正上方的地表误命中
-// ——多边形只有 x/y,分不清人在洞里还是在洞顶。见 docs/data.md 3.2。
+// ——多边形只有 x/y,分不清人在洞里还是在洞顶。见 docs/map.md 2。
 func ParseAreaActs(body []byte) []AreaAct {
 	var acts []AreaAct
 	scanFields(body, func(num protowire.Number, typ protowire.Type, val []byte, _ uint64) {

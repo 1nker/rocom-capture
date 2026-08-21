@@ -162,7 +162,7 @@ CREATE TABLE IF NOT EXISTS sessions (
 
 -- 精灵蛋(背包物品 gid 为键)。表里只有背包现状,破壳/送人的行直接删。
 -- parents 是收蛋那一刻的双亲快照 JSON:亲本可能被放生/赠送,蛋上的双亲信息不应随之消失,
--- 故存快照而非引用 pets(见 docs/data.md 3.6)。seq 是背包里的原始次序(服务器下发顺序)。
+-- 故存快照而非引用 pets(见 docs/eggs.md)。seq 是背包里的原始次序(服务器下发顺序)。
 CREATE TABLE IF NOT EXISTS eggs (
   account TEXT NOT NULL, gid INTEGER,
   item_id INTEGER, conf_id INTEGER, name TEXT, species TEXT,
@@ -173,7 +173,7 @@ CREATE TABLE IF NOT EXISTS eggs (
 );
 
 -- 眠枭之星的收集状态(按账号、按刷新点)。1=未收集(收到过该点的 NPC 实体),2=已收集(走近了却
--- 没有实体——已收集的星星服务器不刷,见 docs/data.md 3.4)。没有行 = 尚未确认(前端照常显示)。
+-- 没有实体——已收集的星星服务器不刷,见 docs/map.md 4)。没有行 = 尚未确认(前端照常显示)。
 CREATE TABLE IF NOT EXISTS star_state (
   account TEXT NOT NULL, refresh_id INTEGER,
   state INTEGER, updated_at INTEGER,
@@ -186,7 +186,7 @@ CREATE TABLE IF NOT EXISTS star_zone (
   PRIMARY KEY(account, camp, npc_id)
 );
 
--- 涂地(实时地图页的覆盖图层,见 docs/data.md 3.8):「玩家 ↔ 已下发的野生宠」之间那条走廊
+-- 涂地(实时地图页的覆盖图层,见 docs/map.md 7):「玩家 ↔ 已下发的野生宠」之间那条走廊
 -- 扫过的格子各记一位,cells 是 w*h 的位图(每字节 8 格,低位在前),按账号 + 场景 + 分层各存一张。
 CREATE TABLE IF NOT EXISTS paint (
   account TEXT NOT NULL, res INTEGER, layer INTEGER,

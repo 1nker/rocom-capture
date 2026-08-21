@@ -18,6 +18,13 @@
 | [h3110w0r1d-y/rocom-helper](https://github.com/h3110w0r1d-y/rocom-helper) | 闭源洛克王国世界助手,本项目受其启发 |
 | [yuzeis/Roco-Kingdom-Protocol-Parser](https://github.com/yuzeis/Roco-Kingdom-Protocol-Parser) | 开源洛克王国协议解析器,简称 RKPP |
 
+## 姊妹项目(同一套解包数据衍生,与本仓库零耦合)
+
+| 项目 | 说明 |
+| --- | --- |
+| [rocom-pets](https://github.com/whoisnian/rocom-pets) | 桌宠:宠物模型/动画/材质还原(Rust 运行时 + C# 导出器)。shader 逆向与 3D 渲染的全部工具与文档在那边 |
+| [rocom-petvo](https://github.com/whoisnian/rocom-petvo) | 宠物叫声图鉴。解包侧的 bnk/wem 关联链路记在本仓库 [audio.md](audio.md) |
+
 ## 已弃用(仅留作历史对照)
 
 | 项目 | 说明 |

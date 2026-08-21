@@ -60,7 +60,7 @@ func npcActorInfo(actorID uint64, lv int32, p Position, nb []byte) []byte {
 }
 
 // TestParseSceneActorsWildPet 用 2026-08-02 pcap 里那只被捕捉的珀尔鼬的真实数值,
-// 核对野生宠物个体属性(捕捉后原样进 PetData,见 docs/data.md 3.5)。
+// 核对野生宠物个体属性(捕捉后原样进 PetData,见 docs/map.md 5)。
 func TestParseSceneActorsWildPet(t *testing.T) {
 	var body []byte
 	body = protowire.AppendTag(body, 7, protowire.BytesType) // other_actors
@@ -97,7 +97,7 @@ func TestParseSceneActorsWildPet(t *testing.T) {
 }
 
 // TestParseActorEnterGlass:AOI 补发的「异色 + 隐藏炫彩」个体。
-// mutation=9 = MDT_SHINING|MDT_GLASS,与 glass_info 非空一致(实测口径,见 docs/data.md 3.5)。
+// mutation=9 = MDT_SHINING|MDT_GLASS,与 glass_info 非空一致(实测口径,见 docs/map.md 5)。
 func TestParseActorEnterGlass(t *testing.T) {
 	actor := npcActorInfo(123456, 13, Position{X: 1, Y: 2, Z: 3},
 		wildNpcBase(10254, 32, 3360, 100, 9, 2, 3)) // 隐藏炫彩「铅字幻梦」
@@ -154,7 +154,7 @@ func TestIsWildPetStatic(t *testing.T) {
 }
 
 // TestParseSceneActorsPolluted 用 2026-08-02 那只污染爬爬的真实数值:
-// 污染实测就是 mutation_type=MDT_CHAOS_TWO(4),既不是异色也不是炫彩(见 docs/data.md 3.5)。
+// 污染实测就是 mutation_type=MDT_CHAOS_TWO(4),既不是异色也不是炫彩(见 docs/map.md 5)。
 func TestParseSceneActorsPolluted(t *testing.T) {
 	var body []byte
 	body = protowire.AppendTag(body, 7, protowire.BytesType)

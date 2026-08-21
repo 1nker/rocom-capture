@@ -2,7 +2,7 @@ package gamedata
 
 import "strconv"
 
-// 场景与大地图(实时地图页)的查找表,见 docs/data.md 3.1、3.2。
+// 场景与大地图(实时地图页)的查找表,见 docs/map.md 1、3.2。
 
 // sceneRes 是一个场景资源(scene_res_cfg_id)的名称与所属场景(scene_cfg_id)。
 type sceneRes struct {
@@ -21,7 +21,7 @@ type MapInfo struct {
 	Rooms int    `json:"rooms"` // >0 表示按房屋等级分层(家园室内 30001,底图 30001_<lv>)
 }
 
-// LayerInfo 是一个分层地图(洞穴/地下层/家园楼层)的切片图与投影(见 docs/data.md 3.2)。
+// LayerInfo 是一个分层地图(洞穴/地下层/家园楼层)的切片图与投影(见 docs/map.md 2)。
 // 与所属场景同坐标系,进入该层时把切片叠加到底图对应位置。切片 webp 路径为 bigmap/layer/<Img>.webp。
 //
 // 「当前在哪一层」由服务器的区域进/出事件决定(scene.ParseAreaActs):玩家所在区域的
@@ -49,7 +49,7 @@ type POIKind struct {
 }
 
 // POI 是一个大地图标记点(世界坐标,厘米)。名称取自 WORLD_MAP_CONF.element_text_name
-// (如「月牙湖岸的魔力之源」),无名时退到图层名。坐标来源与提取见 docs/data.md 3.3。
+// (如「月牙湖岸的魔力之源」),无名时退到图层名。坐标来源与提取见 docs/map.md 3。
 type POI struct {
 	K    string  `json:"k"`    // 所属图层键
 	R    int32   `json:"r"`    // 刷新点 id(NPC_REFRESH_CONTENT_CONF.id);服务器下发的 NPC 实体带同一个 id
@@ -57,7 +57,7 @@ type POI struct {
 	Y    int32   `json:"y"`    // 世界坐标 Y
 	Z    int32   `json:"z"`    // 世界坐标 Z(高度):收集判定据此挡住「站在洞穴层星点正上方的地表」的平面误判
 	N    string  `json:"n"`    // 名称(悬停显示)
-	Zone []int32 `json:"zone"` // 候选区域营地 id 列表(仅眠枭之星;管辖区重叠带上的点会有多个,见 docs/data.md 3.4)
+	Zone []int32 `json:"zone"` // 候选区域营地 id 列表(仅眠枭之星;管辖区重叠带上的点会有多个,见 docs/map.md 4)
 }
 
 // SceneName 返回场景名(scene_cfg_id → SCENE_CONF.scene_name)。
@@ -115,7 +115,7 @@ func (db *DB) Project(resID uint32, x, y int32) (u, v float64, ok bool) {
 //
 // 复刻客户端 BigMapModuleData:GetCurMapLayerId(它同样是拿玩家所在 zone 的 area_func_id 查分层表)。
 // 早前用「位置点在区域多边形内」近似,会在洞穴正上方的地表误叠洞穴图——多边形只有 x/y,
-// 而区域触发体是 3D 的,分不清人在洞里还是在洞顶。见 docs/data.md 3.2。
+// 而区域触发体是 3D 的,分不清人在洞里还是在洞顶。见 docs/map.md 2。
 func (db *DB) LayerIn(res int32, activeFuncs map[uint32]bool) (LayerInfo, bool) {
 	if len(activeFuncs) == 0 {
 		return LayerInfo{}, false

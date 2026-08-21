@@ -1,6 +1,6 @@
 package gamedata
 
-// 精灵蛋与家园小窝的查找表(见 docs/data.md 3.6)。
+// 精灵蛋与家园小窝的查找表(见 docs/eggs.md)。
 //
 // 三张表各司其职:
 //   - EggConf(PET_EGG_CONF):按**物种 conf_id** 给出蛋自身的身高体重区间与孵化时长。
@@ -42,7 +42,7 @@ type EggType struct {
 
 // SizeMedal 是按百分位自动授予的奖牌(MEDAL_TASK_CONF 里 get_condition==3 的四枚:
 // 大块头/小不点看体重、婉转声/粗嗓门看嗓音)。蛋的百分位孵化后原样保留,故体重那两枚
-// 破壳前就能算出来;嗓音那两枚要等破壳(见 docs/data.md 3.6)。
+// 破壳前就能算出来;嗓音那两枚要等破壳(见 docs/eggs.md)。
 type SizeMedal struct {
 	ID   uint32 `json:"id"`
 	Name string `json:"n"`

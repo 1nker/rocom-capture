@@ -56,7 +56,7 @@ type DB struct {
 	bloodNames  map[string]string            // 血脉id -> 中文短名(普通/草/火…)
 	medalIcons  map[string]string            // 奖牌id -> 原名(medal/)
 	staticIcons map[string]string            // 语义键 -> 原名(static/:异色/炫彩/污染等)
-	// 场景与大地图(实时地图页):见 docs/data.md 3.1、3.2。
+	// 场景与大地图(实时地图页):见 docs/map.md 1、3.2。
 	scenes      map[string]string   // scene_cfg_id -> 场景名(SCENE_CONF)
 	sceneDefRes map[string]int32    // scene_cfg_id -> 默认 scene_res_id(res 未知时兜底定位)
 	sceneRes    map[string]sceneRes // scene_res_cfg_id -> {名称, 所属 scene_cfg_id}
@@ -65,7 +65,7 @@ type DB struct {
 	poiKinds    []POIKind           // 大地图 POI 图层清单(有序,前端开关)
 	pois        map[uint32][]POI    // scene_res_cfg_id -> 该场景的 POI(世界坐标)
 	zones       map[string]string   // 区域(营地 id) -> 区域名;眠枭之星收集进度按此键统计
-	// 精灵蛋与家园小窝(见 docs/data.md 3.6):
+	// 精灵蛋与家园小窝(见 docs/eggs.md):
 	eggConf    map[uint32]EggConf // 物种 conf_id -> 蛋自身的身高体重区间与孵化时长
 	eggItems   map[uint32]EggItem // 背包蛋物品 id -> 显示名/物种/图标/品质
 	eggNPCs    map[uint32]uint32  // 窝上蛋 NPC 的 NPC_CONF id -> 蛋物品 id

@@ -10,7 +10,7 @@ import (
 	"github.com/whoisnian/rocom-capture/internal/store"
 )
 
-// ---- 实时地图的家园小窝图层(见 docs/data.md 3.6)----
+// ---- 实时地图的家园小窝图层(见 docs/eggs.md)----
 //
 // 进入家园时服务器一次性给全:home_info(家具布局 + 下蛋配对)与 other_actors(住在窝里的宠物、
 // 趴在窝上还没收的蛋)。之后的变化走 AOI 通知(收走一颗蛋 = 那个蛋实体离开)。
