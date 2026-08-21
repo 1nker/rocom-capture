@@ -453,9 +453,9 @@ type 79–84 交叉验证);`npc_base.world_nature`(15)等于 `PETBASE_CONF.world
 | 异色/炫彩 | `shiny` + `colorful` | **开** |
 | 污染 | `pollution` | 关 |
 | 大块头 / 小不点 | `weight-big` / `weight-small` | 关 |
-| 大块头MAX / 小不点MAX | `weight-big-max` / `weight-small-max` | 关 |
+| 大块头MAX / 小不点MIN | `weight-max` / `weight-min` | 关 |
 | 婉转声 / 粗嗓门 | `voice-high` / `voice-low` | 关 |
-| 婉转声MAX / 粗嗓门MAX | `voice-high-max` / `voice-low-max` | 关 |
+| 婉转声MAX / 粗嗓门MIN | `voice-max` / `voice-min` | 关 |
 
 后端体重/嗓音条件:
 
@@ -463,12 +463,12 @@ type 79–84 交叉验证);`npc_base.world_nature`(15)等于 `PETBASE_CONF.world
 | --- | --- |
 | `weight-big` | 体重百分位 `>= 98%`(大块头,含 MAX) |
 | `weight-small` | 体重百分位 `<= 2%`(小不点,含 MAX) |
-| `weight-big-max` | 协议原始 `weight == weight_high`(精确 100%) |
-| `weight-small-max` | 协议原始 `weight == weight_low`(精确 0%) |
+| `weight-max` | 协议原始 `weight == weight_high`(精确 100%) |
+| `weight-min` | 协议原始 `weight == weight_low`(精确 0%) |
 | `voice-high` | 协议原始 `voice >= 96`(婉转声,含 MAX) |
 | `voice-low` | 协议原始 `voice <= -96`(粗嗓门,含 MAX) |
-| `voice-high-max` | 协议原始 `voice == 100` |
-| `voice-low-max` | 协议原始 `voice == -100` |
+| `voice-max` | 协议原始 `voice == 100` |
+| `voice-min` | 协议原始 `voice == -100` |
 
 `OR` / `AND` 是两套**分别记忆、同时生效**的条件页签,按钮高亮只表示当前正在编辑哪套:
 
@@ -478,7 +478,7 @@ type 79–84 交叉验证);`npc_base.world_nature`(15)等于 `PETBASE_CONF.world
 - 「异色/炫彩」「污染」不参与两套条件,使用跨页签共享的独立开关,命中即附加显示。
 
 三套选择以 `.v4` 对象存储;旧 `.v3` 单条件集按原先保存的 OR/AND 模式迁入对应条件集,
-异色/炫彩与污染迁入共享开关;更早 `.v2` 的 `voice`(原本就是精确 +100)迁移为 `voice-high-max`。
+异色/炫彩与污染迁入共享开关;更早 `.v2` 的 `voice`(原本就是精确 +100)迁移为 `voice-max`。
 `map.wildMatchMode.v1` 现在只记忆侧栏最后编辑的页签,不再关闭另一套条件。
 
 标记是圆形头像(异色个体用异色头像)+ 类别描边:每个开关有独立颜色,复合命中时

@@ -120,10 +120,10 @@ func wildKinds(a scene.NpcActor, info *gamedata.PetBaseInfo) []string {
 			}
 		}
 		if weight == high {
-			out = append(out, "weight-big-max")
+			out = append(out, "weight-max")
 		}
 		if weight == low {
-			out = append(out, "weight-small-max")
+			out = append(out, "weight-min")
 		}
 	}
 	if a.Voice >= wildVoiceMedalHigh {
@@ -133,10 +133,10 @@ func wildKinds(a scene.NpcActor, info *gamedata.PetBaseInfo) []string {
 		out = append(out, "voice-low")
 	}
 	if a.Voice == wildVoiceMax {
-		out = append(out, "voice-high-max")
+		out = append(out, "voice-max")
 	}
 	if a.Voice == wildVoiceMin {
-		out = append(out, "voice-low-max")
+		out = append(out, "voice-min")
 	}
 	return out
 }

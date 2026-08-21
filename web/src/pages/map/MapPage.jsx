@@ -21,8 +21,8 @@ function wildWeightText(p) {
   const kinds = p.kinds || []
   // MAX 按协议原始 weight == low/high 判定。非边界值即使两位小数舍入到端点，
   // 也不能显示成假性 0.00%/100.00%。
-  if (pct <= 0 && !kinds.includes('weight-small-max')) pct = 0.01
-  if (pct >= 100 && !kinds.includes('weight-big-max')) pct = 99.99
+  if (pct <= 0 && !kinds.includes('weight-min')) pct = 0.01
+  if (pct >= 100 && !kinds.includes('weight-max')) pct = 99.99
   return `${pct.toFixed(2)}%`
 }
 

@@ -17,14 +17,14 @@ func TestWildKindsWeightAndVoiceBoundaries(t *testing.T) {
 		want   []string
 		absent []string
 	}{
-		{name: "big medal edge", actor: scene.NpcActor{Weight: 198}, want: []string{"weight-big"}, absent: []string{"weight-big-max"}},
-		{name: "big max", actor: scene.NpcActor{Weight: 200}, want: []string{"weight-big", "weight-big-max"}},
-		{name: "small medal edge", actor: scene.NpcActor{Weight: 102}, want: []string{"weight-small"}, absent: []string{"weight-small-max"}},
-		{name: "small max", actor: scene.NpcActor{Weight: 100}, want: []string{"weight-small", "weight-small-max"}},
-		{name: "high voice edge", actor: scene.NpcActor{Weight: 150, Voice: 96}, want: []string{"voice-high"}, absent: []string{"voice-high-max"}},
-		{name: "high voice max", actor: scene.NpcActor{Weight: 150, Voice: 100}, want: []string{"voice-high", "voice-high-max"}},
-		{name: "low voice edge", actor: scene.NpcActor{Weight: 150, Voice: -96}, want: []string{"voice-low"}, absent: []string{"voice-low-max"}},
-		{name: "low voice max", actor: scene.NpcActor{Weight: 150, Voice: -100}, want: []string{"voice-low", "voice-low-max"}},
+		{name: "big medal edge", actor: scene.NpcActor{Weight: 198}, want: []string{"weight-big"}, absent: []string{"weight-max"}},
+		{name: "big max", actor: scene.NpcActor{Weight: 200}, want: []string{"weight-big", "weight-max"}},
+		{name: "small medal edge", actor: scene.NpcActor{Weight: 102}, want: []string{"weight-small"}, absent: []string{"weight-min"}},
+		{name: "small max", actor: scene.NpcActor{Weight: 100}, want: []string{"weight-small", "weight-min"}},
+		{name: "high voice edge", actor: scene.NpcActor{Weight: 150, Voice: 96}, want: []string{"voice-high"}, absent: []string{"voice-max"}},
+		{name: "high voice max", actor: scene.NpcActor{Weight: 150, Voice: 100}, want: []string{"voice-high", "voice-max"}},
+		{name: "low voice edge", actor: scene.NpcActor{Weight: 150, Voice: -96}, want: []string{"voice-low"}, absent: []string{"voice-min"}},
+		{name: "low voice max", actor: scene.NpcActor{Weight: 150, Voice: -100}, want: []string{"voice-low", "voice-min"}},
 	}
 
 	for _, tt := range tests {

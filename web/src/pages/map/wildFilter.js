@@ -5,12 +5,12 @@ export const WILD_LAYERS = [
   { k: 'pollution', group: 'pollution', n: '污染', kinds: ['pollution'], color: '#c792ea', priority: 90, standalone: true },
   { k: 'weight-big', group: 'weight', n: '大块头', kinds: ['weight-big'], color: '#f5b942', priority: 40 },
   { k: 'weight-small', group: 'weight', n: '小不点', kinds: ['weight-small'], color: '#4c8dff', priority: 40 },
-  { k: 'weight-big-max', group: 'weight', n: '大块头MAX', kinds: ['weight-big-max'], color: '#ff6b57', priority: 80 },
-  { k: 'weight-small-max', group: 'weight', n: '小不点MAX', kinds: ['weight-small-max'], color: '#2dd4bf', priority: 80 },
+  { k: 'weight-max', group: 'weight', n: '大块头MAX', kinds: ['weight-max'], color: '#ff6b57', priority: 80 },
+  { k: 'weight-min', group: 'weight', n: '小不点MIN', kinds: ['weight-min'], color: '#2dd4bf', priority: 80 },
   { k: 'voice-high', group: 'voice', n: '婉转声', kinds: ['voice-high'], color: '#e6d05f', priority: 30 },
   { k: 'voice-low', group: 'voice', n: '粗嗓门', kinds: ['voice-low'], color: '#8b9cff', priority: 30 },
-  { k: 'voice-high-max', group: 'voice', n: '婉转声MAX', kinds: ['voice-high-max'], color: '#ff7eb6', priority: 70 },
-  { k: 'voice-low-max', group: 'voice', n: '粗嗓门MAX', kinds: ['voice-low-max'], color: '#55d6e8', priority: 70 },
+  { k: 'voice-max', group: 'voice', n: '婉转声MAX', kinds: ['voice-max'], color: '#ff7eb6', priority: 70 },
+  { k: 'voice-min', group: 'voice', n: '粗嗓门MIN', kinds: ['voice-min'], color: '#55d6e8', priority: 70 },
 ]
 
 export function matchesWildPet(pet, standalone, orLayers, andLayers) {

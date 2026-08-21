@@ -10,7 +10,7 @@ export { WILD_LAYERS } from './wildFilter'
 // 前端只管开关与摆放。判定依据(捕捉前后一致的属性)见 docs/map.md 5。
 //
 // v4 分开记忆共享独立项、OR 条件与 AND 条件。迁移 v3 时按当时保存的模式放入对应条件集;
-// 更早的 v2 voice(精确 +100)先迁移为 voice-high-max。
+// 更早的 v2 voice(精确 +100)先迁移为 voice-max。
 const LS_KEY = 'map.wildLayers.v4'
 const LEGACY_LS_KEY = 'map.wildLayers.v3'
 const OLD_LS_KEY = 'map.wildLayers.v2'
@@ -26,13 +26,13 @@ export function wildTags(kinds = []) {
   else if (has('shiny')) out.push('异色')
   else if (has('colorful')) out.push('炫彩')
   if (has('pollution')) out.push('污染')
-  if (has('weight-big-max')) out.push('大块头MAX')
+  if (has('weight-max')) out.push('大块头MAX')
   else if (has('weight-big')) out.push('大块头')
-  if (has('weight-small-max')) out.push('小不点MAX')
+  if (has('weight-min')) out.push('小不点MIN')
   else if (has('weight-small')) out.push('小不点')
-  if (has('voice-high-max')) out.push('婉转声MAX')
+  if (has('voice-max')) out.push('婉转声MAX')
   else if (has('voice-high')) out.push('婉转声')
-  if (has('voice-low-max')) out.push('粗嗓门MAX')
+  if (has('voice-min')) out.push('粗嗓门MIN')
   else if (has('voice-low')) out.push('粗嗓门')
   return out
 }
@@ -49,10 +49,10 @@ export function wildRing(kinds = [], enabled = null) {
   // MAX 是对应普通奖牌条件的子集;标签和描边只显示更精确的 MAX,
   // 但筛选仍保留两个 kind,供普通/MAX 按钮分别匹配和计数。
   const hidden = new Set()
-  if (kinds.includes('weight-big-max') && (!enabled || enabled.has('weight-big-max'))) hidden.add('weight-big')
-  if (kinds.includes('weight-small-max') && (!enabled || enabled.has('weight-small-max'))) hidden.add('weight-small')
-  if (kinds.includes('voice-high-max') && (!enabled || enabled.has('voice-high-max'))) hidden.add('voice-high')
-  if (kinds.includes('voice-low-max') && (!enabled || enabled.has('voice-low-max'))) hidden.add('voice-low')
+  if (kinds.includes('weight-max') && (!enabled || enabled.has('weight-max'))) hidden.add('weight-big')
+  if (kinds.includes('weight-min') && (!enabled || enabled.has('weight-min'))) hidden.add('weight-small')
+  if (kinds.includes('voice-max') && (!enabled || enabled.has('voice-max'))) hidden.add('voice-high')
+  if (kinds.includes('voice-min') && (!enabled || enabled.has('voice-min'))) hidden.add('voice-low')
   const hit = WILD_LAYERS
     .filter((l) => (!enabled || enabled.has(l.k)) && !hidden.has(l.k) && l.kinds.some((k) => kinds.includes(k)))
     .sort((a, b) => b.priority - a.priority)
@@ -78,7 +78,7 @@ const loadFilters = () => {
     let old = JSON.parse(localStorage.getItem(LEGACY_LS_KEY))
     if (!Array.isArray(old)) {
       old = JSON.parse(localStorage.getItem(OLD_LS_KEY))
-      if (Array.isArray(old)) old = old.map((k) => k === 'voice' ? 'voice-high-max' : k)
+      if (Array.isArray(old)) old = old.map((k) => k === 'voice' ? 'voice-max' : k)
     }
     if (Array.isArray(old)) {
       const standalone = new Set(WILD_LAYERS.filter((l) => l.standalone && old.includes(l.k)).map((l) => l.k))
