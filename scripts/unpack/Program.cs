@@ -21,7 +21,6 @@ using CUE4Parse.UE4.Assets.Exports.Texture;
 using CUE4Parse.UE4.Objects.Core.Misc;
 using CUE4Parse.UE4.Versions;
 using CUE4Parse.UE4.VirtualFileSystem;
-using CUE4Parse_Conversion.Options;
 using CUE4Parse_Conversion.Textures;
 using Newtonsoft.Json;
 using Serilog;
