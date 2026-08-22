@@ -35,7 +35,7 @@ import (
 
 func main() {
 	log.SetOutput(io.Discard) // 静音 capture 包的连接日志,保持结构化输出干净
-	pcapPath := flag.String("pcap", "", "pcap 文件路径(必填)")
+	pcapPath := flag.String("pcap", "", "pcap 文件路径(必填;可再跟多个,轮转出来的多份会当成一条流连读)")
 	opFilter := flag.String("op", "", "只转储这些 opcode(逗号分隔;支持 0x1888 / 6280 / 名称子串 FREE)")
 	gidScan := flag.String("gid", "", "扫描这些宠物 gid 出现在哪些 opcode(逗号分隔)")
 	showHex := flag.Bool("hex", false, "转储模式下附带 AppBody 十六进制")
@@ -47,6 +47,8 @@ func main() {
 	port := flag.Int("port", 8195, "游戏服务器端口")
 	flag.Parse()
 
+	// 通配展开的其余文件走位置参数,多份当成一条流连读(见 replay)。
+	paths := append([]string{*pcapPath}, flag.Args()...)
 	if *pcapPath == "" {
 		flag.Usage()
 		os.Exit(2)
@@ -71,11 +73,11 @@ func main() {
 
 	switch {
 	case *gidScan != "":
-		runGidScan(*pcapPath, *port, parseGids(*gidScan), nameOf)
+		runGidScan(paths, *port, parseGids(*gidScan), nameOf)
 	case *opFilter != "":
-		runDump(*pcapPath, *port, parseOpFilter(*opFilter, names), nameOf, opts)
+		runDump(paths, *port, parseOpFilter(*opFilter, names), nameOf, opts)
 	default:
-		runSummary(*pcapPath, *port, nameOf)
+		runSummary(paths, *port, nameOf)
 	}
 }
 
@@ -108,10 +110,10 @@ type opStat struct {
 	maxLen   int
 }
 
-func runSummary(path string, port int, nameOf func(uint16) string) {
+func runSummary(paths []string, port int, nameOf func(uint16) string) {
 	stats := map[uint16]*opStat{}
 	total := 0
-	for m := range replay(path, port) {
+	for m := range replay(paths, port) {
 		total++
 		s := stats[m.Opcode]
 		if s == nil {
@@ -141,7 +143,7 @@ func runSummary(path string, port int, nameOf func(uint16) string) {
 		}
 		return list[i].op < list[j].op
 	})
-	fmt.Printf("# 概览 %s — 共 %d 条消息, %d 种 opcode\n\n", path, total, len(list))
+	fmt.Printf("# 概览 %s — 共 %d 条消息, %d 种 opcode\n\n", strings.Join(paths, " "), total, len(list))
 	fmt.Printf("%-8s %6s  %-5s %-5s %-13s  %s\n", "opcode", "count", "c2s", "s2c", "len(min..max)", "name")
 	for _, s := range list {
 		fmt.Printf("0x%04x   %6d  %-5d %-5d %-13s  %s\n",
@@ -158,18 +160,18 @@ type dumpOpts struct {
 	typeOf  func(uint16) protoreflect.MessageDescriptor
 }
 
-func runDump(path string, port int, ops map[uint16]bool, nameOf func(uint16) string, o dumpOpts) {
+func runDump(paths []string, port int, ops map[uint16]bool, nameOf func(uint16) string, o dumpOpts) {
 	if len(ops) == 0 {
 		fmt.Fprintln(os.Stderr, "未匹配到任何 opcode")
 		os.Exit(1)
 	}
-	fmt.Printf("# 转储 %s — opcode:", path)
+	fmt.Printf("# 转储 %s — opcode:", strings.Join(paths, " "))
 	for op := range ops {
 		fmt.Printf(" 0x%04x", op)
 	}
 	fmt.Println()
 	seen := map[uint16]int{}
-	for m := range replay(path, port) {
+	for m := range replay(paths, port) {
 		if !ops[m.Opcode] {
 			continue
 		}
@@ -230,13 +232,13 @@ func runDump(path string, port int, ops map[uint16]bool, nameOf func(uint16) str
 	}
 }
 
-func runGidScan(path string, port int, gids []uint64, nameOf func(uint16) string) {
+func runGidScan(paths []string, port int, gids []uint64, nameOf func(uint16) string) {
 	// gid -> opcode -> 计数; 另记方向
 	hit := map[uint64]map[uint16]int{}
 	for _, g := range gids {
 		hit[g] = map[uint16]int{}
 	}
-	for m := range replay(path, port) {
+	for m := range replay(paths, port) {
 		for _, g := range gids {
 			pat := uvarint(g)
 			if len(pat) >= 2 && contains(m.AppBody, pat) {
@@ -244,7 +246,7 @@ func runGidScan(path string, port int, gids []uint64, nameOf func(uint16) string
 			}
 		}
 	}
-	fmt.Printf("# gid 扫描 %s\n", path)
+	fmt.Printf("# gid 扫描 %s\n", strings.Join(paths, " "))
 	for _, g := range gids {
 		fmt.Printf("\n## gid %d (varint %s)\n", g, hex.EncodeToString(uvarint(g)))
 		ops := hit[g]
@@ -397,10 +399,12 @@ func renderFields(fields []wireField, depth int, sb *strings.Builder) {
 
 // ---- 工具 ----
 
-func replay(path string, port int) <-chan capture.Message {
+// replay 回放一份或多份 pcap。多份当成一条连续的流:会话密钥只在第一份的 0x1002 ACK 里,
+// 单独喂后面任何一份都解不出东西(轮转抓包必须这么读)。
+func replay(paths []string, port int) <-chan capture.Message {
 	eng := capture.NewEngine(port)
 	go func() {
-		if err := eng.RunOffline(path); err != nil {
+		if err := eng.RunOfflineFiles(paths...); err != nil {
 			fmt.Fprintln(os.Stderr, "回放失败:", err)
 		}
 	}()

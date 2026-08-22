@@ -16,7 +16,7 @@ import (
 )
 
 func main() {
-	pcapPath := flag.String("pcap", "", "离线 pcap 文件路径(回放模式)")
+	pcapPath := flag.String("pcap", "", "离线 pcap 文件路径(回放模式;可再跟多个,轮转出来的多份会当成一条流连读)")
 	iface := flag.String("iface", "", "实时抓包网卡名")
 	ignoreIPs := flag.String("ignore-ip", "", "额外忽略的 IP(逗号分隔;两端命中即丢包)。实时抓包已自动忽略网卡自身 IP,此项用于离线回放或多网关等场景")
 	port := flag.Int("port", 8195, "游戏服务器端口")
@@ -55,8 +55,12 @@ func main() {
 
 	switch {
 	case *pcapPath != "":
-		log.Printf("离线回放: %s", *pcapPath)
-		if err := eng.RunOffline(*pcapPath); err != nil {
+		// 通配展开的其余文件走位置参数:-pcap 'pcap/rocom-2026*.pcap00' 把第一份给 -pcap、
+		// 其余留在 flag.Args()。轮转出来的多份必须当成一条流连读 —— 会话密钥只在第一份的
+		// 0x1002 ACK 里明文下发一次,单独喂后面任何一份都一条消息都解不出来。
+		paths := append([]string{*pcapPath}, flag.Args()...)
+		log.Printf("离线回放: %s", strings.Join(paths, " "))
+		if err := eng.RunOfflineFiles(paths...); err != nil {
 			log.Fatalf("回放失败: %v", err)
 		}
 		// 涂地是攒批落盘的(见 server/paint.go),而回放几秒就跑完一整份 pcap、一次都攒不到,

@@ -3,6 +3,7 @@
 package capture
 
 import (
+	"fmt"
 	"log"
 	"net/netip"
 	"os"
@@ -147,6 +148,38 @@ func (e *Engine) RunOffline(pcapPath string) error {
 	return nil
 }
 
+// RunOfflineFiles 按给定顺序回放多份 pcap,**当成一条连续的流**处理。
+//
+// 轮转出来的抓包必须这样读:会话密钥只在第一份的 0x1002 ACK 里,而要看的高位包序号在最后
+// 几份 —— 单独喂任何一份都拿不到完整信息。汇编器与会话表跨文件保留,只在最后 FlushAll。
+// 文件边界上会丢掉跨界的那点 TCP 分段,gcp.Deframe 靠 magic 重新同步,代价是漏掉一两条消息。
+func (e *Engine) RunOfflineFiles(paths ...string) error {
+	asm := reassembly.NewAssembler(reassembly.NewStreamPool(&streamFactory{e: e}))
+	var st loopState
+	for _, path := range paths {
+		if err := func() error {
+			f, err := os.Open(path)
+			if err != nil {
+				return err
+			}
+			defer f.Close()
+			r, err := pcapgo.NewReader(f)
+			if err != nil {
+				return fmt.Errorf("%s: %w", path, err)
+			}
+			e.packetLoop(asm, gopacket.NewPacketSource(r, r.LinkType()), &st)
+			return nil
+		}(); err != nil {
+			asm.FlushAll()
+			close(e.Out)
+			return err
+		}
+	}
+	asm.FlushAll()
+	close(e.Out)
+	return nil
+}
+
 // flush 参数:阈值一律用抓包时钟(最新包时间戳)而非墙钟——实时流里墙钟永远追不上
 // "活跃连接"的数据时间,会导致中段接入时被缓冲等待缺失分段的起始数据一直不下推。
 const (
@@ -157,11 +190,20 @@ const (
 
 // process 是抓包/离线共用的处理循环。
 func (e *Engine) process(src *gopacket.PacketSource) {
-	factory := &streamFactory{e: e}
-	pool := reassembly.NewStreamPool(factory)
-	asm := reassembly.NewAssembler(pool)
-	var lastTS time.Time
-	count := 0
+	asm := reassembly.NewAssembler(reassembly.NewStreamPool(&streamFactory{e: e}))
+	var st loopState
+	e.packetLoop(asm, src, &st)
+	asm.FlushAll()
+}
+
+// loopState 是跨包源保留的处理状态(多份轮转抓包要当成一条流,见 RunOfflineFiles)。
+type loopState struct {
+	lastTS time.Time
+	count  int
+}
+
+// packetLoop 把一个包源喂给汇编器。多份抓包共用一个汇编器时按顺序调用,中间不 FlushAll。
+func (e *Engine) packetLoop(asm *reassembly.Assembler, src *gopacket.PacketSource, st *loopState) {
 	for pkt := range src.Packets() {
 		netLayer := pkt.NetworkLayer()
 		tcpLayer := pkt.Layer(layers.LayerTypeTCP)
@@ -182,21 +224,20 @@ func (e *Engine) process(src *gopacket.PacketSource) {
 			}
 		}
 		ci := pkt.Metadata().CaptureInfo
-		if ci.Timestamp.After(lastTS) {
-			lastTS = ci.Timestamp
+		if ci.Timestamp.After(st.lastTS) {
+			st.lastTS = ci.Timestamp
 		}
 		asm.AssembleWithContext(netLayer.NetworkFlow(), tcp, &assyContext{ci: ci})
-		count++
-		if count%flushEvery == 0 {
+		st.count++
+		if st.count%flushEvery == 0 {
 			// T: 下推 seen 时间早于 lastTS-flushLag 的滞留数据(含中段接入的起始 backlog);
 			// TC: 仅关闭 lastTS-closeIdle 前无活动的连接,活跃连接保持存活。
 			asm.FlushWithOptions(reassembly.FlushOptions{
-				T:  lastTS.Add(-flushLag),
-				TC: lastTS.Add(-closeIdle),
+				T:  st.lastTS.Add(-flushLag),
+				TC: st.lastTS.Add(-closeIdle),
 			})
 		}
 	}
-	asm.FlushAll()
 }
 
 // assyContext 为 reassembly 提供包的捕获信息(时间戳)。

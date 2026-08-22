@@ -46,7 +46,7 @@
   查数据、也是 gen_gamedata/gen_icons 的输入(它们直接读这些 JSON,不再自行解 .bytes)。
 - 由本仓库衍生出去的姊妹项目(shader/3D、叫声图鉴)见 [docs/reference.md](docs/reference.md);
   它们与这里的抓包/统计/生成流程零耦合,`unpack.sh` 仍是三者共用的解包入口。
-- pcap 调试:`go run ./cmd/pcapdump -pcap <文件>` 把回放消息输出为「适合 AI 分析」的结构化文本,
+- pcap 调试:`go run ./cmd/pcapdump -pcap <文件…>` 把回放消息输出为「适合 AI 分析」的结构化文本,
   免去为调试新协议临时写一次性程序。三种模式:无参=opcode 概览(次数/方向/名称);
   `-op 0x1888,FREE`=转储匹配 opcode 的消息(opcode 支持 hex/十进制/名称子串,`-hex` 附原始字节);
   `-gid 20508,15895`=扫描某宠物编号出现在哪些 opcode。

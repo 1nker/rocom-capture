@@ -154,6 +154,8 @@ sudo ./rocom-capture -iface <网卡> -port 8195 -addr :4939
 
 # 离线回放已抓的 pcap
 ./rocom-capture -pcap ./pcap/xxx.pcap -addr :4939
+# 轮转出来的多份要一起给(会话密钥只在第一份里),按时间顺序连读成一条流:
+./rocom-capture -pcap ./pcap/rocom-20260822-15*.pcap00 -addr :4939
 
 # 启用 HTTPS(自签证书;手机经局域网访问时用)
 sudo ./rocom-capture -iface <网卡> -tls

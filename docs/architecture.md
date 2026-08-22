@@ -196,6 +196,7 @@
 
 单二进制 `rocom-capture`：
 - 实时：`sudo ./rocom-capture -iface <网卡> -addr :4939`(需 root，网卡须为客户端设备流量必经)
-- 离线：`./rocom-capture -pcap <文件> -addr :4939`
+- 离线：`./rocom-capture -pcap <文件…> -addr :4939`(可给多份:轮转抓包的会话密钥只在第一份的
+  `0x1002 ACK` 里,多份会当成一条连续的流回放,单独喂后面任何一份都解不出消息)
 
 数据库默认 `rocom.db`(SQLite 文件)。详见 [README](../README.md)。
