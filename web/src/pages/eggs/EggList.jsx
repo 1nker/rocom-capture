@@ -4,7 +4,7 @@ import { AccountContext } from '../../context'
 import { imgURL } from '../../components/icons'
 import { PetDetailModal } from '../../components/PetDetailModal'
 import { fmtTime, pctHot, voiceHot } from '../../utils/format'
-import { Marks } from '../../components/badges'
+import { Marks, Gender } from '../../components/badges'
 import { hatchProgress } from './hatch'
 
 // 精灵蛋页面:左栏孵蛋器(在孵的那几颗)、右栏背包(其余的,每行六个,同游戏内布局)。
@@ -192,7 +192,7 @@ function Parents({ p, onPet }) {
             (p.ambiguous && role === '♂' ? ' · 串窝:父本不唯一' : '')}>
           {x.img ? <img src={imgURL(x.img)} alt="" draggable={false} /> : <span className="egg-parent-noimg">🐾</span>}
           <span className="egg-parent-txt">
-            {role} {x.name}
+            <Gender g={role} /> {x.name}
             {x.weightPct != null && <span className={pctHot(x.weightPct)}> W {Math.round(x.weightPct)}%</span>}
             {x.voice != null && ` V ${x.voice}`}
             {x.nature ? ` ${x.nature}` : ''}

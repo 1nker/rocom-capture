@@ -4,10 +4,21 @@ import { imgURL, useImgFallback, InlineIcon } from './icons'
 
 // 宠物名称行内的各种小徽标(性别/异色炫彩/血脉/形态/蛋组/系别/搭档标记)。
 
-// Gender 渲染性别符号(♂ 蓝、♀ 粉,加大加粗,字体差异下也易辨)。
+// Gender 渲染性别符号(♂ 蓝、♀ 粉)。**自己画,不用 ♂/♀ 字符**:这两个码位在各系统落到
+// 不同的符号字体,有的当数学符号画(居中于数学轴,比正文高出一截)、有的走彩色 emoji,
+// 与相邻的名字/等级对不齐(iOS 上尤其明显)。SVG 的框由 CSS 定死,各浏览器摆在同一处。
 export function Gender({ g }) {
   if (g !== '♂' && g !== '♀') return null
-  return <span className={'gender ' + (g === '♂' ? 'male' : 'female')}>{g}</span>
+  const male = g === '♂'
+  return (
+    <svg className={'gender ' + (male ? 'male' : 'female')} viewBox="0 0 16 16"
+      role="img" aria-label={male ? '雄性' : '雌性'}
+      fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      {male
+        ? <><circle cx="6.5" cy="9.5" r="4" /><path d="M9.4 6.6 14 2" /><path d="M9.5 2H14v4.5" /></>
+        : <><circle cx="8" cy="6" r="4" /><path d="M8 10v5M5.5 12.8h5" /></>}
+    </svg>
+  )
 }
 
 // Form 渲染地区/季节形态徽标(普通宠物为空)。

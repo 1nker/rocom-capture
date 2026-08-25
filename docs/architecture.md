@@ -103,7 +103,7 @@
 
 | 方法 路径 | 说明 |
 | --- | --- |
-| `GET /api/pets` | 宠物列表(筛选/排序/分页)，参数：`account,search,types,nature,gender,talentRank,medal,speciality,partnerMark,shiny,levelMin,levelMax,sort,order,page,pageSize` |
+| `GET /api/pets` | 宠物列表(筛选/排序/分页)，参数：`account,search,types,nature,gender,talentRank,medal,speciality,partnerMark,shiny,colorful,form,eggGroup,box,catchAfter,sort,order,page,pageSize`。`types,natureExclude,eggGroup,box` 是**逗号分隔的多值**:同一参数内多值取「或」,参数之间取「与」;只给一个值时与旧的单值写法等价 |
 | `GET /api/pets/{gid}` | 单只宠物详情(`?account=`) |
 | `GET /api/events` | 事件历史(`account,limit,beforeId`);仅获得宠物事件,减少不入库 |
 | `GET /api/events/count` | 事件总数 `{count}`(`?account=`),即自上次清空以来获得的宠物数 |

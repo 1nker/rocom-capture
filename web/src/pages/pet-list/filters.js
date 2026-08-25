@@ -37,6 +37,10 @@ export function withCatch(f) {
   return ts > 0 ? { ...rest, catchAfter: ts } : rest
 }
 
+// asList 把多选筛选值归一成数组。多选维度(蛋组/宠物盒)在 filter 里存数组,但查询串是逗号
+// 分隔的单个参数,早先的持久化记录里也还是裸字符串,故读的地方一律经它兜一下。
+export const asList = (v) => (Array.isArray(v) ? v : v ? [v] : [])
+
 // 列表状态(筛选/排序/分页)持久化到 sessionStorage 的这个键,从详情返回时还原。
 export const FILTER_KEY = 'petListFilter'
 export const DEFAULT_FILTER = { page: 1, pageSize: 20, sort: 'boxpos', order: 'asc' }

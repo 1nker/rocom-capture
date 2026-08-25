@@ -9,14 +9,15 @@
   padding: 10px 16px; background: var(--bg-1); border-bottom: 1px solid var(--line);
 }
 .brand { font-weight: 700; font-size: 16px; }
-.brand-sub { color: var(--fg-dim); font-weight: 400; font-size: 12px; margin-left: 4px; }
 .topnav { display: flex; gap: 4px; }
 .navlink {
   display: flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 8px; color: var(--fg-dim);
 }
 .navlink.active { background: var(--bg-3); color: var(--fg); }
 .navlink:hover { color: var(--fg); }
-.account-select { margin-left: auto; max-width: 220px; }
+/* 账号切换 + 隐藏/显示开关(靠右) */
+.account-box { margin-left: auto; display: flex; align-items: center; gap: 6px; }
+.account-select { max-width: 220px; }
 
 /* ---- 底部 tab(移动) ---- */
 .bottomnav { display: none; }

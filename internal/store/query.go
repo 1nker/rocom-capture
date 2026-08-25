@@ -20,15 +20,13 @@ type Filter struct {
 	TalentRank    string
 	MedalIDs      []uint32 // 拥有该奖牌(pet_medal 里含任一 id)即命中;由服务层将奖牌名解析为 id
 	Speciality    string
-	EggGroup      string // 蛋组名(精确匹配组名,含该组即命中)
+	EggGroups     []string // 蛋组名(含该组即命中;多选为「或」)
 	PartnerMark   string
-	Shiny         string // "", "1", "0"
-	Colorful      string // "", "1", "0"
-	Form          string // 地区/季节形态名(精确匹配)
-	Box           string // 宠物盒,形如 "13-性格1"(取前导整数为 box_id 过滤)
-	CatchAfter    int64  // 捕捉时间下限(unix 秒;>0 时筛 catch_time>=该值,由前端按所选区间算)
-	LevelMin      int
-	LevelMax      int
+	Shiny         string   // "", "1", "0"
+	Colorful      string   // "", "1", "0"
+	Form          string   // 地区/季节形态名(精确匹配)
+	Boxes         []string // 宠物盒,形如 "13-性格1"(取前导整数为 box_id;多选为「或」)
+	CatchAfter    int64    // 捕捉时间下限(unix 秒;>0 时筛 catch_time>=该值,由前端按所选区间算)
 	Sort          string
 	Order         string
 	Page          int
@@ -88,21 +86,18 @@ func buildWhere(f Filter, account string) (string, []any) {
 		where = append(where, "catch_time>=?")
 		args = append(args, f.CatchAfter)
 	}
-	if f.LevelMin > 0 {
-		where = append(where, "level>=?")
-		args = append(args, f.LevelMin)
-	}
-	if f.LevelMax > 0 {
-		where = append(where, "level<=?")
-		args = append(args, f.LevelMax)
-	}
 	for _, t := range f.Types { // types 存为 JSON 数组，用 LIKE 匹配带引号的元素
 		where = append(where, "types LIKE ?")
 		args = append(args, "%\""+t+"\"%")
 	}
-	if f.EggGroup != "" { // egg_groups 亦为 JSON 组名数组,LIKE 匹配含该组的宠物
-		where = append(where, "egg_groups LIKE ?")
-		args = append(args, "%\""+f.EggGroup+"\"%")
+	if len(f.EggGroups) > 0 { // egg_groups 亦为 JSON 组名数组,LIKE 匹配含该组的宠物
+		// 多选是「或」:妖精+巨灵 = 两组任一都算(找配对候选时正是这个语义)。
+		or := make([]string, len(f.EggGroups))
+		for i, g := range f.EggGroups {
+			or[i] = "egg_groups LIKE ?"
+			args = append(args, "%\""+g+"\"%")
+		}
+		where = append(where, "("+strings.Join(or, " OR ")+")")
 	}
 	if len(f.MedalIDs) > 0 { // 拥有任一目标奖牌即命中(关联 pet_medal,限本账号)
 		ph := make([]string, len(f.MedalIDs))
@@ -112,17 +107,29 @@ func buildWhere(f Filter, account string) (string, []any) {
 		}
 		where = append(where, "gid IN (SELECT gid FROM pet_medal WHERE medal_id IN ("+strings.Join(ph, ",")+") AND account=pets.account)")
 	}
-	if f.Box != "" { // 取前导整数为 box_id,关联 pet_box 表(限本账号)
-		idStr := f.Box
-		if i := strings.IndexByte(idStr, '-'); i >= 0 {
-			idStr = idStr[:i]
-		}
-		if id, err := strconv.Atoi(idStr); err == nil {
-			where = append(where, "gid IN (SELECT gid FROM pet_box WHERE box_id=? AND account=pets.account)")
+	if ids := boxIDs(f.Boxes); len(ids) > 0 { // 关联 pet_box 表(限本账号),多选为「或」
+		ph := make([]string, len(ids))
+		for i, id := range ids {
+			ph[i] = "?"
 			args = append(args, id)
 		}
+		where = append(where, "gid IN (SELECT gid FROM pet_box WHERE box_id IN ("+strings.Join(ph, ",")+") AND account=pets.account)")
 	}
 	return " WHERE " + strings.Join(where, " AND "), args
+}
+
+// boxIDs 从盒子筛选项("13-性格1")里取出前导整数 box_id;解析不出的项忽略。
+func boxIDs(boxes []string) []int {
+	out := make([]int, 0, len(boxes))
+	for _, b := range boxes {
+		if i := strings.IndexByte(b, '-'); i >= 0 {
+			b = b[:i]
+		}
+		if id, err := strconv.Atoi(b); err == nil {
+			out = append(out, id)
+		}
+	}
+	return out
 }
 
 // 位置排序键:大世界队伍在前(team_idx*6+pos),其后按盒子(1000+box_id*100+slot),其余末尾。

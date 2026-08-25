@@ -3,7 +3,8 @@ import { IconsContext } from '../../context'
 import { ALL_TYPES, ALL_EGG_GROUPS, HOT_NATURES, HOT_NATURE_NAMES } from '../../constants'
 import { InlineIcon } from '../../components/icons'
 import { Gender } from '../../components/badges'
-import { CATCH_RANGES } from './filters'
+import { Dropdown, MultiDropdown } from '../../components/dropdown'
+import { CATCH_RANGES, asList } from './filters'
 
 // FilterPanel 筛选侧栏:桌面常驻左列,移动端为侧滑抽屉(collapsed 控制开合)。
 // children 为顶部的位置示意图(BoxMap)插槽;筛选状态由父级持有,经 set 增量更新。
@@ -33,25 +34,15 @@ export default function FilterPanel({ filter, options, total, collapsed, onClose
             ))}
           </div>
         </div>
-        <div className="filter-group">
-          <label>等级</label>
-          <div className="range">
-            <input className="input" type="number" placeholder="最小" value={filter.levelMin || ''} onChange={(e) => set({ levelMin: e.target.value })} />
-            <span className="muted">~</span>
-            <input className="input" type="number" placeholder="最大" value={filter.levelMax || ''} onChange={(e) => set({ levelMax: e.target.value })} />
-          </div>
-        </div>
         <NatureSelect filter={filter} set={set} />
         <Select label="天分" opts={options.talentRank} value={filter.talentRank} onChange={(v) => set({ talentRank: v })} />
         <Select label="特长" opts={options.speciality} value={filter.speciality} onChange={(v) => set({ speciality: v })} />
-        <Select label="蛋组" opts={ALL_EGG_GROUPS} value={filter.eggGroup} onChange={(v) => set({ eggGroup: v })} />
+        <MultiSelect label="蛋组" opts={ALL_EGG_GROUPS} value={filter.eggGroup} onChange={(v) => set({ eggGroup: v })} />
         <Select label="奖牌" opts={options.medal} value={filter.medal} onChange={(v) => set({ medal: v })} />
-        <Select label="宠物盒" opts={options.box} value={filter.box} onChange={(v) => set({ box: v })} />
+        <MultiSelect label="宠物盒" opts={boxOpts(options.box)} value={filter.box} onChange={(v) => set({ box: v })} />
         <div className="filter-group">
           <label>捕捉时间</label>
-          <select className="select" value={filter.catchRange || ''} onChange={(e) => set({ catchRange: e.target.value })}>
-            {CATCH_RANGES.map(([v, lbl]) => <option key={v || 'all'} value={v}>{lbl}</option>)}
-          </select>
+          <Dropdown opts={CATCH_RANGES} value={filter.catchRange} onChange={(v) => set({ catchRange: v })} />
         </div>
         <div className="filter-group">
           <label>性别</label>
@@ -90,33 +81,39 @@ function NatureSelect({ filter, set }) {
   return (
     <div className="filter-group">
       <label>性格</label>
-      <select
-        className="select"
-        value={filter.natureExclude ? '__other__' : filter.nature || ''}
-        onChange={(e) => {
-          const v = e.target.value
+      <Dropdown
+        opts={[['', '全部'], ...HOT_NATURES.map(([n, eff]) => [n, `${n}（${eff}）`]), ['__other__', '其他']]}
+        value={filter.natureExclude ? '__other__' : filter.nature}
+        onChange={(v) => {
           if (v === '__other__') set({ nature: '', natureExclude: HOT_NATURE_NAMES.join(',') })
           else set({ nature: v, natureExclude: '' })
         }}
-      >
-        <option value="">全部</option>
-        {HOT_NATURES.map(([n, eff]) => (
-          <option key={n} value={n}>{n}（{eff}）</option>
-        ))}
-        <option value="__other__">其他</option>
-      </select>
+      />
     </div>
   )
 }
+
+// MultiSelect 多选筛选组:标签 + 多选下拉(控件本体见 components/dropdown.jsx)。
+// 选中的多项之间是**或**,标签上标一下,免得与其它「与」的条件混起来。
+function MultiSelect({ label, opts, value, onChange }) {
+  if (!opts || !opts.length) return null // 该维度本账号没有可选值(如还没抓到宠物盒)
+  const cur = asList(value)
+  return (
+    <div className="filter-group">
+      <label>{label}{cur.length > 1 && <span className="muted">（任一）</span>}</label>
+      <MultiDropdown opts={opts} value={cur} onChange={onChange} />
+    </div>
+  )
+}
+
+// 盒子选项形如 "13-性格1",下拉里只显示盒名(值仍是原串,后端取前导整数当 box_id)。
+const boxOpts = (boxes) => (boxes || []).map((b) => [b, b.replace(/^\d+-/, '')])
 
 function Select({ label, opts, value, onChange }) {
   return (
     <div className="filter-group">
       <label>{label}</label>
-      <select className="select" value={value || ''} onChange={(e) => onChange(e.target.value)}>
-        <option value="">全部</option>
-        {(opts || []).map((o) => <option key={o} value={o}>{o}</option>)}
-      </select>
+      <Dropdown opts={[['', '全部'], ...(opts || [])]} value={value} onChange={onChange} />
     </div>
   )
 }

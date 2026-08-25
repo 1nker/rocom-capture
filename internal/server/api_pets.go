@@ -16,6 +16,14 @@ import (
 func (s *Server) parseFilter(q url.Values) store.Filter {
 	atoi := func(k string) int { n, _ := strconv.Atoi(q.Get(k)); return n }
 	atoi64 := func(k string) int64 { n, _ := strconv.ParseInt(q.Get(k), 10, 64); return n }
+	// 多选维度在查询串里是逗号分隔的一个参数(前端 buildQuery 把数组 join 起来);
+	// 只选一项时与旧的单值写法完全一致,故老的持久化筛选照样能用。
+	list := func(k string) []string {
+		if v := q.Get(k); v != "" {
+			return strings.Split(v, ",")
+		}
+		return nil
+	}
 	f := store.Filter{
 		Search:      q.Get("search"),
 		Nature:      q.Get("nature"),
@@ -23,26 +31,20 @@ func (s *Server) parseFilter(q url.Values) store.Filter {
 		TalentRank:  q.Get("talentRank"),
 		MedalIDs:    s.medalIDs[q.Get("medal")],
 		Speciality:  q.Get("speciality"),
-		EggGroup:    q.Get("eggGroup"),
+		EggGroups:   list("eggGroup"),
 		PartnerMark: q.Get("partnerMark"),
 		Shiny:       q.Get("shiny"),
 		Colorful:    q.Get("colorful"),
 		Form:        q.Get("form"),
-		Box:         q.Get("box"),
+		Boxes:       list("box"),
 		CatchAfter:  atoi64("catchAfter"),
-		LevelMin:    atoi("levelMin"),
-		LevelMax:    atoi("levelMax"),
 		Sort:        q.Get("sort"),
 		Order:       q.Get("order"),
 		Page:        atoi("page"),
 		PageSize:    atoi("pageSize"),
 	}
-	if t := q.Get("types"); t != "" {
-		f.Types = strings.Split(t, ",")
-	}
-	if ne := q.Get("natureExclude"); ne != "" {
-		f.NatureExclude = strings.Split(ne, ",")
-	}
+	f.Types = list("types")
+	f.NatureExclude = list("natureExclude")
 	return f
 }
 

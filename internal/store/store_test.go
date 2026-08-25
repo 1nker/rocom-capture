@@ -207,3 +207,51 @@ func TestPetHeadsBothBranches(t *testing.T) {
 		t.Fatalf("两类用例宠物头像相同(%q),分不出取图是否正确", scan["1"])
 	}
 }
+
+// TestMultiValueFiltersAreOr 校验蛋组/宠物盒多选是「或」而非「与」:选了两个蛋组,同时属于
+// 两组的宠物只该出现一次(是并集不是相加),两个维度之间仍是「与」。
+func TestMultiValueFiltersAreOr(t *testing.T) {
+	st := newTestStore(t)
+	sc := st.For(testAcc)
+	groups := [][]string{{"妖精"}, {"巨灵"}, {"妖精", "巨灵"}, {"植物"}}
+	var entries []pet.BoxEntry
+	for i, gs := range groups {
+		p := mkPet(st.gd, uint32(i+1), 2000672, 3006)
+		p.EggGroups = nil
+		for _, g := range gs {
+			p.EggGroups = append(p.EggGroups, gamedata.EggGroup{Name: g})
+		}
+		if _, err := sc.UpsertPet(p); err != nil {
+			t.Fatalf("写入 gid=%d: %v", p.Gid, err)
+		}
+		// 前两只放 1 号盒,后两只放 2 号盒
+		entries = append(entries, pet.BoxEntry{Gid: p.Gid, BoxID: int32(i/2 + 1), Slot: int32(i)})
+	}
+	if err := sc.ReplacePetBoxes(entries); err != nil {
+		t.Fatalf("写入盒子: %v", err)
+	}
+
+	count := func(f Filter) int {
+		_, total, err := sc.ListPets(f)
+		if err != nil {
+			t.Fatalf("查询 %+v: %v", f, err)
+		}
+		return total
+	}
+	if n := count(Filter{EggGroups: []string{"妖精"}}); n != 2 {
+		t.Errorf("妖精 = %d, 期望 2", n)
+	}
+	if n := count(Filter{EggGroups: []string{"妖精", "巨灵"}}); n != 3 {
+		t.Errorf("妖精+巨灵 = %d, 期望 3(并集,双蛋组那只不重复计)", n)
+	}
+	if n := count(Filter{Boxes: []string{"1-甲", "2-乙"}}); n != 4 {
+		t.Errorf("盒1+盒2 = %d, 期望 4", n)
+	}
+	if n := count(Filter{Boxes: []string{"2"}}); n != 2 { // 无盒名的裸值(旧持久化记录)也认
+		t.Errorf("盒2 = %d, 期望 2", n)
+	}
+	// 维度之间仍是「与」:1 号盒里属于妖精或巨灵的只有 gid 1、2
+	if n := count(Filter{Boxes: []string{"1-甲"}, EggGroups: []string{"妖精", "巨灵"}}); n != 2 {
+		t.Errorf("盒1 ∩ (妖精|巨灵) = %d, 期望 2", n)
+	}
+}

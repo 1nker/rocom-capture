@@ -4,7 +4,8 @@ import { AccountContext } from '../../context'
 import { useStoredFlag, useStoredJSON } from '../../hooks/useStoredState'
 import { useFullscreen } from '../../hooks/useFullscreen'
 import { PetDetailModal } from '../../components/PetDetailModal'
-import { SORTS, withCatch, FILTER_KEY, DEFAULT_FILTER, sanitizeFilter } from './filters'
+import { Dropdown } from '../../components/dropdown'
+import { SORTS, withCatch, FILTER_KEY, DEFAULT_FILTER, sanitizeFilter, asList } from './filters'
 import FilterPanel from './FilterPanel'
 import BoxMap from './BoxMap'
 import PetTable from './PetTable'
@@ -53,9 +54,9 @@ export default function PetList() {
     return list
   }, [teams, boxes])
   const boxIdxById = (id) => containers.findIndex((c) => c.type === 'box' && c.id === id)
-  // 宠物盒筛选变化时,示意图跟随展示该盒
+  // 宠物盒筛选变化时,示意图跟随展示该盒(多选时跟第一个,示意图一次只画得下一个容器)
   useEffect(() => {
-    const id = parseInt((filter.box || '').split('-')[0], 10)
+    const id = parseInt(asList(filter.box)[0], 10)
     if (id) { const i = boxIdxById(id); if (i >= 0) setActiveIdx(i) }
   }, [filter.box, containers])
 
@@ -80,7 +81,7 @@ export default function PetList() {
         const box = m.data.focusBox
         if (box) {
           const cont = containersRef.current.find((c) => c.type === 'box' && c.id === box)
-          base.box = cont ? `${cont.id}-${cont.name}` : `${box}-`
+          base.box = [cont ? `${cont.id}-${cont.name}` : `${box}-`]
         }
         getPetPage(focus, base)
           .then((r) => setFilter({ ...base, page: (r && r.page) || 1 }))
@@ -118,7 +119,7 @@ export default function PetList() {
   const openMenu = (p, x, y) => {
     setSelected(p.gid)
     menuAtRef.current = Date.now()
-    setMenu({ gid: p.gid, pet: p, x: Math.min(x, window.innerWidth - 140), y: Math.min(y, window.innerHeight - 180) })
+    setMenu({ gid: p.gid, pet: p, x: Math.min(x, window.innerWidth - 140), y: Math.min(y, window.innerHeight - 230) })
   }
   // 应用一项筛选并关闭菜单(set 会把页码重置为 1)
   const filterSame = (patch) => { set(patch); setMenu(null) }
@@ -156,7 +157,7 @@ export default function PetList() {
     const fallback = () => {
       const cleared = { pageSize: filter.pageSize, sort: filter.sort, order: filter.order }
       const base = container.type === 'box'
-        ? { ...cleared, box: `${container.id}-${container.name}` }
+        ? { ...cleared, box: [`${container.id}-${container.name}`] }
         : { ...cleared }
       getPetPage(gid, base)
         .then((r) => setFilter({ ...base, page: (r && r.page) || 1 }))
@@ -202,9 +203,8 @@ export default function PetList() {
         <div className="toolbar list-toolbar">
           <button className="btn filter-toggle" onClick={() => setCollapsed((c) => !c)}>筛选</button>
           <input className="input" placeholder="搜索昵称 / 种类" value={filter.search || ''} onChange={(e) => set({ search: e.target.value })} />
-          <select className="select sort-select" value={filter.sort} onChange={(e) => set({ sort: e.target.value })}>
-            {SORTS.map((s) => <option key={s.key} value={s.key}>{s.label}</option>)}
-          </select>
+          <Dropdown className="sort-select" opts={SORTS.map((s) => [s.key, s.label])}
+            value={filter.sort} onChange={(v) => set({ sort: v })} />
           <button className="btn" onClick={() => set({ order: filter.order === 'asc' ? 'desc' : 'asc' })}>{filter.order === 'asc' ? '升序' : '降序'}</button>
           <button className={'btn' + (sync ? ' primary' : '')} title="开启后,游戏内捕捉/移动宠物会自动跳转并选中该宠物;关闭可避免打断当前筛选" onClick={() => setSync((v) => !v)}>同步</button>
           {fullscreen.supported && (
@@ -225,9 +225,8 @@ export default function PetList() {
           <span className="muted">{filter.page} / {pages}</span>
           <button className="btn" disabled={filter.page >= pages} onClick={() => set({ page: filter.page + 1 })}>下一页</button>
           <button className="btn" disabled={filter.page >= pages} onClick={() => set({ page: pages })}>尾页</button>
-          <select className="select pager-size" value={filter.pageSize} onChange={(e) => set({ pageSize: +e.target.value })}>
-            {[10, 20, 30, 60, 100].map((n) => <option key={n} value={n}>{n} 条/页</option>)}
-          </select>
+          <Dropdown className="pager-size" opts={[10, 20, 30, 60, 100].map((n) => [n, n + ' 条/页'])}
+            value={filter.pageSize} onChange={(v) => set({ pageSize: v })} />
         </div>
       </section>
 

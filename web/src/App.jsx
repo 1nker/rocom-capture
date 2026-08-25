@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { getAccounts, getCurrentAccount, setCurrentAccount, getIcons } from './api'
 import { AccountContext, IconsContext } from './context'
+import { useStoredFlag } from './hooks/useStoredState'
+import { Dropdown } from './components/dropdown'
 import { dropBoxFilter } from './pages/pet-list/filters'
 
 const NAV = [
@@ -20,11 +22,28 @@ export default function App() {
   const [accounts, setAccounts] = useState([])
   const [account, setAccount] = useState(getCurrentAccount())
   const [icons, setIcons] = useState({ stat: {} })
+  // 账号昵称与 UID **默认不显示**:页面常被截图分享,昵称/UID 属于不该顺手带出去的信息。
+  // 隐藏时下拉仍按顺序列出「账号 1/2/…」,照样能切换,只是认不出是谁。开关记在 localStorage。
+  const [showAcct, setShowAcct] = useStoredFlag(localStorage, 'accountReveal', false)
   const location = useLocation()
+  const headRef = useRef(null)
   // 双击当前激活的导航项:平滑滚动回页面顶部(非激活项照常跳转,不滚动)
   const onNavDoubleClick = (to) => () => {
     if (location.pathname === to) window.scrollTo({ top: 0, behavior: 'smooth' })
   }
+
+  // 把顶栏实际高度发布成 --topbar-h:左侧筛选栏按它吸附(sticky top)。写死一个 64px 的话,
+  // 与它的自然位置(顶栏高度 + 内容区 16px 内边距)对不上,差多少就要先跟着页面漂多少才吸住。
+  useEffect(() => {
+    const el = headRef.current
+    if (!el) return
+    const apply = () => document.documentElement.style.setProperty('--topbar-h', el.offsetHeight + 'px')
+    apply()
+    if (typeof ResizeObserver === 'undefined') return // 老浏览器:退回上面量的这一次
+    const ro = new ResizeObserver(apply)
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [])
 
   // 全局固定图标只随游戏版本变,拉一次即可。
   useEffect(() => { getIcons().then((d) => setIcons(d || { stat: {} })).catch(() => {}) }, [])
@@ -63,19 +82,22 @@ export default function App() {
     <AccountContext.Provider value={account}>
       <IconsContext.Provider value={icons}>
       <div className="app">
-        <header className="topbar">
-          <div className="brand">洛克助手 <span className="brand-sub">宠物统计</span></div>
+        <header className="topbar" ref={headRef}>
+          <div className="brand">洛克助手</div>
           <nav className="topnav">{navLinks('navlink')}</nav>
           {accounts.length > 0 && (
-            <select
-              className="select account-select"
-              value={account} onChange={(e) => switchAccount(e.target.value)}
-              title="切换账号(玩家)"
-            >
-              {accounts.map((a) => (
-                <option key={a.account} value={a.account}>{a.name} (UID:{uidOf(a.account)})</option>
-              ))}
-            </select>
+            <div className="account-box">
+              <Dropdown
+                className="account-select" title="切换账号(玩家)"
+                opts={accounts.map((a, i) => [a.account, showAcct ? `${a.name} (UID:${uidOf(a.account)})` : `账号 ${i + 1}`])}
+                value={account} onChange={switchAccount}
+              />
+              <button
+                className="btn btn-icon" onClick={() => setShowAcct((v) => !v)}
+                title={showAcct ? '隐藏账号昵称与 UID(截图前点一下)' : '显示账号昵称与 UID'}
+                aria-label={showAcct ? '隐藏账号信息' : '显示账号信息'}
+              >{showAcct ? '👁' : '🙈'}</button>
+            </div>
           )}
         </header>
 

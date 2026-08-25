@@ -14,7 +14,9 @@ img.pet-avatar { object-fit: cover; }
 .pet-name { font-weight: 600; display: flex; align-items: center; flex-wrap: wrap; gap: 4px; }
 /* flex 下改由 gap 统一间距,清掉徽标行内布局用的 margin-left,避免间距叠加不均 */
 .pet-name > .mark, .pet-name > .mark-img { margin-left: 0; }
-.gender { font-size: 1.15em; font-weight: 800; line-height: 1; }
+/* 性别是内联 SVG(见 badges.jsx):框由这里定死,不受字体回退影响。
+   vertical-align 让它像个大写字母那样坐在基线上(底边略低于基线,与相邻文字齐平)。 */
+.gender { width: 1em; height: 1em; flex: none; vertical-align: -.15em; }
 .gender.male { color: #4ea3ff; }
 .gender.female { color: #ff6fae; }
 .pet-sub { font-size: 12px; color: var(--fg-dim); }
@@ -24,7 +26,9 @@ img.pet-avatar { object-fit: cover; }
    改为定宽让「生命/物攻/物防」三列在所有行间对齐(84px 可容纳「生命 118 ↑+10」级最宽内容)。 */
 .six { display: grid; grid-template-columns: repeat(3, 84px); gap: 1px 10px; font-size: 12px; }
 .six b { color: var(--gold); }
-.six > div { display: flex; align-items: center; }
+/* 基线对齐,不能用 center:一行里「生命」是匿名 flex 项(走 CJK 字体)、312 是另一个(走拉丁
+   字体),两个盒子高度不同,居中会各自居中、基线错开——Chromium 下数字明显浮在中文上方。 */
+.six > div { display: flex; align-items: baseline; }
 /* 行内小图标(系别外的通用行内图标 / 六维属性小图) */
 .inline-ic { width: 15px; height: 15px; object-fit: contain; margin-right: 3px; vertical-align: -3px; }
 .stat-ic { width: 14px; height: 14px; object-fit: contain; margin-right: 2px; vertical-align: -2px; }

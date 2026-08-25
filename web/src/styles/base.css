@@ -13,6 +13,7 @@
   --green: #3fb950;
   --red: #f85149;
   --shadow: 0 4px 16px rgba(0, 0, 0, .35);
+  --topbar-h: 56px; /* 兜底值;App 挂载后按顶栏实际高度改写(见 App.jsx) */
 }
 
 * { box-sizing: border-box; }
@@ -38,10 +39,29 @@ button, input, select { font: inherit; color: inherit; }
 .input, .select {
   background: var(--bg-2); border: 1px solid var(--line); border-radius: 8px; padding: 7px 10px; width: 100%;
 }
-/* 屏蔽 number 输入的原生上下箭头 */
-input[type=number] { -moz-appearance: textfield; appearance: textfield; }
-input[type=number]::-webkit-outer-spin-button,
-input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+/* 自绘下拉(单选/多选,见 components/dropdown.jsx):收起态就是一个 .select,右侧自绘箭头。
+   全站不用原生 <select>——原生做不了多选,且各浏览器的箭头长得都不一样。
+   展开面板用 fixed 定位:侧栏(桌面 max-height + overflow:auto、移动端抽屉)会把 absolute 的裁掉。
+   line-height 必须写死:留给 normal 的话行盒高度由行内实际用到的字体的 ascent/descent 决定,
+   文案一换(账号那栏在昵称与「账号 1」之间切)字体回退跟着变,Chromium 实测差 1px;
+   而这个按钮正好是顶栏最高的元素,于是整页跳一下。 */
+.dd { display: flex; align-items: center; justify-content: space-between; gap: 6px; text-align: left; line-height: 18px; }
+.dd-text { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dd-caret { width: 10px; height: 6px; flex: none; color: var(--fg-dim); }
+.dd-menu {
+  /* overscroll-behavior: 面板自己滚到头时不把滚动链给下面的侧栏(链过去侧栏一动面板就关了) */
+  position: fixed; z-index: 100; min-width: 140px; overflow: auto; overscroll-behavior: contain;
+  background: var(--bg-1); border: 1px solid var(--line); border-radius: 10px;
+  box-shadow: var(--shadow); padding: 4px;
+}
+.dd-opt {
+  display: flex; align-items: center; gap: 7px;
+  padding: 4px 10px; border-radius: 6px; cursor: pointer; font-size: 13px;
+}
+.dd-opt:hover { background: var(--bg-3); }
+.dd-opt.on { color: var(--accent); }
+.dd-opt input { margin: 0; cursor: pointer; }
+
 .chip {
   display: inline-flex; align-items: center; gap: 4px; padding: 3px 9px; border-radius: 999px;
   background: var(--bg-3); border: 1px solid var(--line); cursor: pointer; font-size: 12px; color: var(--fg-dim);
