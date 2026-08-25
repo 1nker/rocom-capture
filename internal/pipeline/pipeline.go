@@ -58,7 +58,11 @@ type connState struct {
 	wildSeen   map[uint64]scene.Position // 当前 AOI 里**全部**野生宠实体的位置(涂地用,不只稀有那几只)
 	pendantRid int32                     // 最近一次挂件交互(0x0272)的刷新行 id,等回包(0x0273)确认
 	home       *homeState                // 家园小窝图层状态(仅在家园场景内非空,见 home.go)
-	crackEgg   uint32                    // 最近一次破壳请求(0x030b)的 egg_gid,回包确认后把这颗蛋删掉
+	// 参观好友世界时看到的是**好友的**花种(见 flowers.go):visitOwner 是那个世界的主人 uin
+	// (0x039d 给出,0=在自己的世界),visitFlowers 是那套花(只在内存里,离开即弃,绝不入库)。
+	visitOwner   uint32
+	visitFlowers map[uint64]store.FlowerRow
+	crackEgg     uint32 // 最近一次破壳请求(0x030b)的 egg_gid,回包确认后把这颗蛋删掉
 }
 
 // acctState 是单个账号的消费状态。

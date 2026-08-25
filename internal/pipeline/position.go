@@ -10,7 +10,7 @@ import (
 	"github.com/whoisnian/rocom-capture/internal/store"
 )
 
-// handleScene 处理实时地图与星星相关的场景消息;返回是否已消费。
+// handleScene 处理实时地图、星星与花种相关的场景消息;返回是否已消费。
 // s2c 进入/传送更新当前场景 res 与落点、区域进出更新所在层;c2s 移动包投影后推送。
 func (p *Pipeline) handleScene(m capture.Message, acc string) bool {
 	switch {
@@ -35,8 +35,18 @@ func (p *Pipeline) handleScene(m capture.Message, acc string) bool {
 		p.onNpcInteract(m.Session, m.AppBody, m.Time)
 	case m.Direction == gcp.S2C && m.Opcode == scene.OpBattleFinishNotify:
 		p.onBattleFinish(m.Session, acc, m.AppBody, m.Time)
+		// 花种战斗打完(捕捉/击败)那朵花还在原地,但里面的精灵重投了:打回未检测。
+		// 与野生宠撤标记同一份解析。
+		p.onFlowerHarvested(m.Session, acc, scene.ParseBattleGoneNpcs(m.AppBody), m.Time)
 	case m.Direction == gcp.C2S && m.Opcode == scene.OpSceneMoveReq:
 		p.onMove(m, acc)
+	// 稀兽花种图层(见 flowers.go):列表给全集,单朵详情给炫彩
+	case m.Direction == gcp.S2C && m.Opcode == scene.OpQueryBossNpcInfoRsp:
+		p.onFlowerList(m, acc)
+	case m.Direction == gcp.S2C && m.Opcode == scene.OpTeamBattleInfoQueryRsp:
+		p.onFlowerBattleInfo(m, acc)
+	case m.Direction == gcp.S2C && m.Opcode == scene.OpPlayerVisitInfoNotify:
+		p.onVisitInfo(m.Session, acc, m.AppBody, m.Time)
 	default:
 		return false
 	}

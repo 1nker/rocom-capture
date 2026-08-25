@@ -186,6 +186,18 @@ CREATE TABLE IF NOT EXISTS star_zone (
   PRIMARY KEY(account, camp, npc_id)
 );
 
+-- 稀兽花种(实时地图页的花种图层,见 docs/map.md 8)。一行 = 大世界上当前开着的一朵花:
+-- 描述列(cfg_id/star/petbase/content_id/end_ts…)来自花种列表(0x0375),检测列(state/glass)
+-- 来自逐朵查询(0x0338),两边各写各的。obj_id 是花实体的对象 id,**超出 int64 范围**故存 TEXT;
+-- 花刷新后 obj_id 变,旧行在下一次列表里被删掉,新行的 state 归 0(未检测)。
+-- 里面那只精灵的等级不存列:它由 (star, spec_id) 查表算出(gamedata.FlowerLevel),不是下发字段。
+CREATE TABLE IF NOT EXISTS flower_seed (
+  account TEXT NOT NULL, obj_id TEXT,
+  cfg_id INTEGER, star INTEGER, petbase INTEGER, content_id INTEGER, spec_id INTEGER,
+  end_ts INTEGER, state INTEGER, glass TEXT, updated_at INTEGER,
+  PRIMARY KEY(account, obj_id)
+);
+
 -- 涂地(实时地图页的覆盖图层,见 docs/map.md 7):「玩家 ↔ 已下发的野生宠」之间那条走廊
 -- 扫过的格子各记一位,cells 是 w*h 的位图(每字节 8 格,低位在前),按账号 + 场景 + 分层各存一张。
 CREATE TABLE IF NOT EXISTS paint (

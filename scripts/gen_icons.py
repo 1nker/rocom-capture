@@ -15,6 +15,7 @@
   - blood:    PET_BLOOD_CONF.icon(24 血脉主图标精灵)                 → img/blood/
   - static:   下方 STATIC 清单(人工挑选的杂项精灵)                   → img/static/
   - worldmap: 下方 WORLDMAP 清单(人工挑选的大地图 POI 精灵)          → img/worldmap/
+  - flower:   稀兽/命定花种的大地图属性花图(WORLD_MAP_CONF 指到花种 NPC 的行) → img/flower/
   - medal:    MEDAL_CONF.icon(BagItem 奖牌小图,整张贴图)            → img/medal/
   - egg:      BAG_ITEM_CONF 里 type==8 的精灵蛋 icon(整张贴图)      → img/egg/
 
@@ -66,6 +67,37 @@ WORLDMAP = {
     "owl_worldmap_fruit_A2_png":            "黄色精灵果实",
     "owl_worldmap_fruit_A3_png":            "紫色精灵果实",
 }
+
+# flower 组:稀兽花种/命定花种的大地图图标(18 种**血脉**各一张花图,稀兽与命定共用同一批;
+# 花里孕育的是混血精灵,图标画的是它的血脉而非种族属性,见 gen_gamedata.py 的花种段)。
+# 它们在 **BigMapStatic** 图集(与 worldmap 组的 WorldMapNpc 不同),且文件名(img_cao_png、
+# img_huo_png…)与 WorldMapNpc/CommonStatic 里的同名精灵**撞名不同图**,故:
+#   ①不把 BigMapStatic 加进 ATLAS_DIRS(basename 回退会选错图集),只走 WORLD_MAP_CONF 里的
+#     完整资产路径 world_map_NPCicon_des;
+#   ②单独出一组 img/flower/,免得与 img/worldmap/ 的同名 webp 互相覆盖。
+# 花种 NPC 按 NPC_CONF.name 认(与 gen_gamedata.py 的 FLOWER_KINDS 同一判据)。
+FLOWER_KINDS = ("稀兽花种", "命定花种")
+
+
+# 图层图例用的通用花种图标(不属于任何属性),与属性花图同图集。
+FLOWER_GENERIC = "/Game/NewRoco/Modules/System/BigMap/Raw/Atlas/BigMapStatic/Frames/img_icon_huazhong_png"
+
+
+def flower_icon_refs():
+    """花种大地图图标的完整资产引用(/Game/…/BigMapStatic/Frames/img_<属性>_png)+ 通用图例图。
+
+    图标引用取 world_map_NPCicon_des(完整路径)而非 npcicon_unlock(裸文件名):后者有三行
+    (石/格斗/飞行系)写着解包树里根本不存在的资产名,前者才是现行的 img_yan/img_wu/img_yi。
+    """
+    yield FLOWER_GENERIC
+    flowers = {int(k) for k, r in load_rows("NPC_CONF").items() if r.get("name") in FLOWER_KINDS}
+    for r in load_rows("WORLD_MAP_CONF").values():
+        if r.get("npc_conf_id") not in flowers:
+            continue
+        m = re.search(r"/Game/[^']+", str(r.get("world_map_NPCicon_des") or ""))
+        if m:
+            yield m.group(0)
+
 
 # worldmap 组的整张贴图补充:游戏大地图钉直接复用背包图标的收集品(MEGAMAP_CONF.icon 即
 # BagItem 编号),不在 WorldMapNpc 图集里,走 copy_texture(basename 回退命中 BagItem 目录)。
@@ -238,6 +270,7 @@ def main():
     total += gen_group("static", list(STATIC), crop_sprite)
     total += gen_group("worldmap", list(WORLDMAP), crop_sprite)
     total += gen_group("worldmap", list(WORLDMAP_TEX), copy_texture)
+    total += gen_group("flower", flower_icon_refs(), crop_sprite)
     total += gen_group("medal", icon_refs("MEDAL_CONF", "icon"), copy_texture)
     total += gen_group("egg", egg_icon_refs(), copy_texture)
     total += gen_group("egg", eggtype_icon_refs(), crop_sprite)

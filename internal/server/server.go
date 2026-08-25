@@ -29,10 +29,13 @@ type Server struct {
 	medalIDs    map[string][]uint32 // 奖牌名 -> id 列表(同名多枚时全含),用于把筛选名解析为 id
 	icons       iconMeta
 
-	posMu    sync.Mutex                // 保护 lastPos / lastWild
+	posMu    sync.Mutex                // 保护 lastPos / lastWild / lastHome / visitFlowers
 	lastPos  map[string]map[string]any // 账号 -> 最近一次位置(实时地图页加载时即时回显,不必等下一次移动)
 	lastWild map[string]any            // 账号 -> 最近一次野生宠物标记(同上,免得进页面要等下一条 AOI 通知)
 	lastHome map[string]any            // 账号 -> 最近一次家园小窝图层(同上;不在家园时为空列表)
+	// 账号 -> 正在参观的那个世界的花种(见 api_flowers.go)。只在内存里:参观是临时状态,
+	// 离开即弃,绝不能混进自己那套(库里的 flower_seed)。
+	visitFlowers map[string]visitFlowerSet
 
 	paint paintState // 涂地覆盖位图(自带锁,见 paint.go)
 }
@@ -55,6 +58,7 @@ func New(st *store.Store, hub *Hub, db *gamedata.DB) *Server {
 	s.lastPos = map[string]map[string]any{}
 	s.lastWild = map[string]any{}
 	s.lastHome = map[string]any{}
+	s.visitFlowers = map[string]visitFlowerSet{}
 	s.medalIDs = map[string][]uint32{}
 	for _, m := range s.medals {
 		s.medalIDs[m.Name] = append(s.medalIDs[m.Name], m.ID)
@@ -113,6 +117,7 @@ func (s *Server) routes() {
 	s.mux.HandleFunc("GET /api/position", s.handlePosition)
 	s.mux.HandleFunc("GET /api/pois", s.handlePois)
 	s.mux.HandleFunc("GET /api/wildpets", s.handleWildPets)
+	s.mux.HandleFunc("GET /api/flowers", s.handleFlowers)
 	s.mux.HandleFunc("GET /api/paint", s.handlePaint)
 	s.mux.HandleFunc("DELETE /api/paint", s.handlePaintReset)
 	s.mux.HandleFunc("GET /api/home", s.handleHome)

@@ -65,6 +65,11 @@ type DB struct {
 	poiKinds    []POIKind           // 大地图 POI 图层清单(有序,前端开关)
 	pois        map[uint32][]POI    // scene_res_cfg_id -> 该场景的 POI(世界坐标)
 	zones       map[string]string   // 区域(营地 id) -> 区域名;眠枭之星收集进度按此键统计
+	// 稀兽花种(见 flower.go 与 docs/map.md 8):花种不是固定点位,列表由流量给,这里只存索引。
+	flowerNpcs   map[string]FlowerNpc  // 花种 NPC_CONF id -> 类别与血脉花图
+	flowerSpots  map[uint32]FlowerSpot // 刷新行 id(content_cfg_id) -> 候选点世界坐标
+	flowerStarLv map[string]int32      // 普通花种:星级 -> 里面那只精灵的等级
+	flowerSpecLv map[string][]int32    // 命定花种:spec_flower_seed_id -> 按星级的等级表
 	// 精灵蛋与家园小窝(见 docs/eggs.md):
 	eggConf    map[uint32]EggConf // 物种 conf_id -> 蛋自身的身高体重区间与孵化时长
 	eggItems   map[uint32]EggItem // 背包蛋物品 id -> 显示名/物种/图标/品质
@@ -141,12 +146,18 @@ func Load() (*DB, error) {
 			Q   int32  `json:"q"`
 			S   int32  `json:"s"`
 		} `json:"egg_items"`
-		EggTypes      map[string]EggType `json:"egg_types"`
-		SizeMedals    []SizeMedal        `json:"size_medals"`
-		NestFurniture map[string]string  `json:"nest_furniture"`
-		POIKinds      []POIKind          `json:"poi_kinds"`
-		POIs          map[string][]POI   `json:"pois"`  // scene_res_id -> 该场景 POI(世界坐标)
-		Zones         map[string]string  `json:"zones"` // 营地 id -> 区域名
+		EggTypes      map[string]EggType   `json:"egg_types"`
+		SizeMedals    []SizeMedal          `json:"size_medals"`
+		NestFurniture map[string]string    `json:"nest_furniture"`
+		FlowerNpcs    map[string]FlowerNpc `json:"flower_npcs"`
+		Flowers       map[string][3]int32  `json:"flowers"` // 刷新行 id -> [res, x, y]
+		FlowerLevels  struct {
+			Star map[string]int32   `json:"star"` // 普通花种:星级 -> 等级
+			Spec map[string][]int32 `json:"spec"` // 命定花种:限定花种 id -> 按星级的等级表
+		} `json:"flower_levels"`
+		POIKinds []POIKind         `json:"poi_kinds"`
+		POIs     map[string][]POI  `json:"pois"`  // scene_res_id -> 该场景 POI(世界坐标)
+		Zones    map[string]string `json:"zones"` // 营地 id -> 区域名
 	}
 	if err := json.Unmarshal(namesJSON, &raw); err != nil {
 		return nil, err
@@ -247,6 +258,12 @@ func Load() (*DB, error) {
 			nestFurn[uint32(id)] = v
 		}
 	}
+	flowerSpots := make(map[uint32]FlowerSpot, len(raw.Flowers))
+	for k, v := range raw.Flowers {
+		if id, err := strconv.ParseUint(k, 10, 32); err == nil {
+			flowerSpots[uint32(id)] = FlowerSpot{Res: v[0], X: v[1], Y: v[2]}
+		}
+	}
 	pois := make(map[uint32][]POI, len(raw.POIs))
 	for k, v := range raw.POIs {
 		if res, err := strconv.ParseUint(k, 10, 32); err == nil {
@@ -262,6 +279,10 @@ func Load() (*DB, error) {
 		poiKinds:       raw.POIKinds,
 		pois:           pois,
 		zones:          raw.Zones,
+		flowerNpcs:     raw.FlowerNpcs,
+		flowerSpots:    flowerSpots,
+		flowerStarLv:   raw.FlowerLevels.Star,
+		flowerSpecLv:   raw.FlowerLevels.Spec,
 		species:        raw.Species,
 		nature:         raw.Nature,
 		skillDamType:   raw.SkillDamType,

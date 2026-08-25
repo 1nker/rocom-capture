@@ -6,6 +6,7 @@ import { ZOOM_FALLBACK, defaultZoom, SMOOTH_TAU, snap, posAt, makeAnchor } from 
 import { usePanZoom } from './usePanZoom'
 import { usePois } from './usePois'
 import { useWildPets, wildTags, wildRing } from './useWildPets'
+import { useFlowers, flowerTitle, FL_GLASSY } from './useFlowers'
 import { useHomeNests, nestTitle } from './useHomeNests'
 import { usePaint } from './usePaint'
 import { PetDetailModal } from '../../components/PetDetailModal'
@@ -27,7 +28,8 @@ function wildTitle(p) {
 
 // 实时地图页:地图软件式交互——方向箭头指示朝向、可缩放平移、默认放大跟随玩家。
 // 位置来自 SSE position(玩家移动时逐包推送)+ 加载时 GET /api/position。仅自己。
-// 另叠两类实时标记:POI 图层(固定点位)与野生宠物图层(附近刷出的稀有个体)。
+// 另叠三类实时标记:POI 图层(固定点位)、野生宠物图层(附近刷出的稀有个体)与稀兽花种图层
+// (每天/每两周重投的花种,炫彩靠逐朵检测攒出来)。
 // 注:组件名不能叫 Map——会遮蔽内置 Map 构造器。
 export default function MapPage() {
   const account = useContext(AccountContext)
@@ -51,6 +53,7 @@ export default function MapPage() {
   const { focusRef, stRef } = view
   const pois = usePois(account, pos && pos.sceneResId)
   const wilds = useWildPets(account)
+  const flowers = useFlowers(account, pos && pos.sceneResId)
   const home = useHomeNests(account)
   // 涂地:把「见到过野生宠物」的方向涂上色(玩家 ↔ 宠物之间那条带子),遍历找稀有个体时
   // 看哪片还没扫。分层地图与地表各涂各的,故要把当前层 id 一并给它。
@@ -156,7 +159,7 @@ export default function MapPage() {
       {/* 无工具栏:地图占满整页(场景名/坐标不再显示,位置看箭头即可);移动端的图层抽屉入口
           作为浮动控件挂在地图左下角。 */}
       <div className="map-layout">
-        <LayerPanel pois={pois} wilds={wilds} paint={paint} collapsed={collapsed} onClose={() => setCollapsed(true)} />
+        <LayerPanel pois={pois} wilds={wilds} flowers={flowers} paint={paint} collapsed={collapsed} onClose={() => setCollapsed(true)} />
 
         {!pos && <div className="empty">等待位置数据…(需后端正在抓包/回放,且玩家已登录并移动过)</div>}
 
@@ -195,6 +198,14 @@ export default function MapPage() {
                 className={'map-poi' + (pois.isSure(p) ? ' sure' : '')}
                 src={imgURL(pois.iconOf[p.k])} title={p.n}
                 style={{ left: p.u * mapPx, top: p.v * mapPx }} />
+            ))}
+            {/* 稀兽花种:按花里那只混血精灵的血脉画大地图图标(与游戏内一致),已检测出炫彩的描一圈金色
+                ——与眠枭之星收集模式里「已确认还在」的点同一个视觉语言。定位方式同 POI。 */}
+            {flowers.marks.map((f) => (
+              <img key={f.id} alt="" draggable={false}
+                className={'map-poi map-flower' + (f.st === FL_GLASSY ? ' sure' : '')}
+                src={imgURL(f.icon)} title={flowerTitle(f)}
+                style={{ left: f.u * mapPx, top: f.v * mapPx }} />
             ))}
             {/* 家园小窝:空窝画个虚线圈,住了宠物画头像;窝上有蛋则右上角挂个蛋图标。
                 悬浮看简要信息(见 nestTitle),点住户看宠物详情。同属 .map-world 一起平移。 */}

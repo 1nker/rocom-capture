@@ -85,6 +85,12 @@ export const getPois = (res) => getJSON('/api/pois?res=' + res, { kinds: [], poi
 // 之后由 SSE wildpets 增量覆盖;从未收到过任何 AOI 通知时返回 null。
 export const getWildPets = () => getJSON('/api/wildpets?' + buildQuery(), null)
 
+// getFlowers 返回当前有效的稀兽花种(实时地图页的花种图层,见 docs/map.md 8):
+//   {flowers:[{id,res,u,v,n,icon,lv,st,glass}], visit}——st 是 0 未检测 / 1 普通 / 2 炫彩;
+//   visit=true 表示这一套是**正在参观的好友世界**里的花,不是自己的。
+// 之后由 SSE flowers 覆盖;还没抓到花种列表时 flowers 为空。
+export const getFlowers = () => getJSON('/api/flowers?' + buildQuery(), { flowers: [] })
+
 // getPaint 返回某场景某层的涂地覆盖位图(玩家走过的地方,见 docs/map.md 7):
 //   {res, layer, w, h, cell, corridor, safe, cells}——cells 是 w*h 位的位图 base64(每字节 8 格、低位在前);
 // 无底图的场景 w=0。之后的新格子由 SSE paint 增量推来。

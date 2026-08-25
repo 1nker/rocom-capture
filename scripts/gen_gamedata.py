@@ -623,6 +623,79 @@ for kind in POI_KINDS:
                 e["zone"] = zz
         pois.setdefault(str(res), []).append(e)
 
+# ---- 稀兽花种(实时地图页的花种图层,见 docs/map.md 8)----
+# 大世界同时开着二十来朵花种,每朵里关着一只混血精灵(打赢可捕捉)。花种**不是固定点位**:
+# 普通花种每天凌晨 4 点、命定花种每两周周五凌晨 4 点在候选点里重投一遍(捕捉也会让它重投),
+# 故点位不能像 POI 那样静态入库——哪些点当前有花只能从流量里的花种列表(0x0375)得知。
+# 这里落的是**候选点索引**:刷新行 id -> 世界坐标,供后端把列表里的 content_cfg_id 换成坐标。
+#
+# 花种 NPC 按 NPC_CONF.name 认(稀兽花种 20128-20145/90001-90018、命定花种 700001-700018),
+# **同族内第 k 个 = 血脉 k**(花种列表里的 blood 字段,普通/草/火/水/…/幻,与 PET_BLOOD_CONF 的
+# 1-18 一一对应,三份 pcap 逐行核对无例外),大地图图标即该血脉的花图
+# (WORLD_MAP_CONF.npc_conf_id 指到花种 NPC 的行,icon 在 BigMapStatic 图集,见 gen_icons.py)。
+# 注意是**血脉**不是种族属性:花里孕育的是混血精灵,如 npc 20130(火血脉)里装着虫系的铠甲虫
+# (rocom-20260825-233622 实测),图标画火、精灵是虫——这正是稀兽花种的看点。
+#
+# 坐标取 AREA_CONF.pos[0].position_xyz 而**不是** center_xyz:花种的刷新区域行里
+# center_xyz 与真实刷出点对不上(命定花种三行全部偏出几十到上百米),而 pos[0] 与流量里
+# 0x0152 下发的 npc_pos 逐点吻合(23/23 朵,22 朵完全相等、1 朵差 1 厘米取整)。
+FLOWER_KINDS = {"稀兽花种": "wild", "命定花种": "destiny"}
+
+_npc_conf = rows("NPC_CONF.json")
+# flower_npcs: NPC_CONF.id -> {"n":花种类别中文, "icon":大地图图标原名(flower/<原名>.webp)}
+flower_npcs = {}
+_flower_ids = {int(k): v["name"] for k, v in _npc_conf.items() if v.get("name") in FLOWER_KINDS}
+_flower_icon = {}   # npc id -> 图标原名(取自 WORLD_MAP_CONF 里指向该 NPC 的行)
+for w in world_map_all.values():   # 用未过滤的原表:花种行不参与「是否显示」筛选,只借它拿图标
+    nid = w.get("npc_conf_id")
+    # 图标引用在本表有两种写法:完整资产路径(world_map_NPCicon_des)与裸文件名
+    # (npcicon_unlock,形如 img_cao_png.img_cao_png),texkey 只认前者,故裸名再兜一次。
+    ref = w.get("world_map_NPCicon_des") or w.get("npcicon_unlock") or ""
+    if nid in _flower_ids and ref:
+        _flower_icon[nid] = texkey(ref) or ref.split(".")[0]
+# 少数族内行没写 npc_conf_id(WORLD_MAP 900002/900003…),按「族内序号相同即同属性」补齐:
+# 三族的起始 id 分别是 20128 / 90001 / 700001,同序号共用一张属性花图。
+_flower_bases = (20128, 90001, 700001)
+for nid, kname in sorted(_flower_ids.items()):
+    icon = _flower_icon.get(nid)
+    if not icon:
+        base = max(b for b in _flower_bases if b <= nid)
+        idx = nid - base
+        icon = next((_flower_icon[o + idx] for o in _flower_bases if o + idx in _flower_icon), "")
+    if icon:
+        flower_npcs[str(nid)] = {"n": kname, "icon": icon}
+
+# 花里那只精灵的**等级**不在任何下发字段里,是客户端按 (star, spec_flower_seed_id) 查表算的
+# (MagicManualUtils.GetFlowerLevel:命定花种查 ACTIVITY_SPEC_FLOWER_SEED_CONF 的
+# activity_team_battle_star_level[star],普通花种查 PET_GLOBAL_CONFIG 的
+# team_battle_star_level_glass_<star> 的 numList[2])。两者都在花种列表里,故**列表一到就能显示等级**,
+# 不必等玩家点开某朵花。实测吻合:5 星普通 → 55、7 星命定(20037/20038/20039)→ 60。
+# flower_levels: {"star": {星级: 等级}, "spec": {spec_flower_seed_id: [按星级 1..N 的等级]}}
+_glob = rows("PET_GLOBAL_CONFIG.json")
+_star_lv = {}
+for r in _glob.values():
+    m = re.fullmatch(r"team_battle_star_level_glass_(\d+)", str(r.get("key") or ""))
+    nums = r.get("numList") or []
+    if m and len(nums) >= 2:
+        _star_lv[m.group(1)] = int(nums[1])   # Lua 的 numList[2]
+flower_levels = {
+    "star": _star_lv,
+    "spec": {str(int(r["id"])): [int(v) for v in r["activity_team_battle_star_level"]]
+             for r in rows("ACTIVITY_SPEC_FLOWER_SEED_CONF.json").values()
+             if r.get("activity_team_battle_star_level")},
+}
+
+# flowers: 刷新行 id(= 花种列表里的 content_cfg_id)-> [scene_res_id, x, y](世界坐标,厘米)
+flowers = {}
+for r in npc_refresh.values():
+    if int(r.get("npc_id") or 0) not in _flower_ids or r.get("refresh_type") != 1:
+        continue
+    a = area_conf.get(str(int(r.get("refresh_param") or 0)))
+    pos = (a.get("pos") or [{}])[0].get("position_xyz") if a else None
+    if not pos or not a.get("scene_res_id") or str(a["scene_res_id"]) not in maps:
+        continue
+    flowers[str(int(r["id"]))] = [int(a["scene_res_id"]), int(pos[0]), int(pos[1])]
+
 # ---- 精灵蛋与家园小窝(精灵蛋页面 + 实时地图家园图层,见 docs/eggs.md)----
 
 EGG_ITEM_TYPE = 8        # BAG_ITEM_CONF.type:精灵蛋(与 gen_icons.py 同一常量)
@@ -795,6 +868,12 @@ data = {
     # 见上与 docs/map.md 5。
     "npc_pets": npc_pets,
     "npc_bosses": npc_bosses,
+    # 稀兽花种(实时地图页的花种图层,见上与 docs/map.md 8):
+    #   flower_npcs: 花种 NPC_CONF.id -> {n:类别(稀兽花种/命定花种), icon:图标原名(flower/<原名>.webp)}
+    #   flowers:     刷新行 id(花种列表里的 content_cfg_id)-> [scene_res_id, x, y] 候选点世界坐标
+    "flower_npcs": flower_npcs,
+    "flowers": flowers,
+    "flower_levels": flower_levels,
     # 炫彩外观描述:隐藏炫彩名(HIDDEN_GLASS_CONF)+ 普通炫彩的粒子/配色名(见上)。
     "glass_names": glass_names,
     "glass_colors": glass_colors,
