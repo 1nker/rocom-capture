@@ -17,6 +17,12 @@ const NAV = [
 // uidOf 从账号键 "UID:<user_id>" 取出 user_id(用于展示 nickname(user_id))。
 const uidOf = (acc) => (acc || '').replace(/^UID:/, '')
 
+// acctLabel 账号在下拉里的显示。昵称与 UID 分成两个 span:窄屏只留昵称(UID 那截由
+// .acct-uid 隐藏,见 shell.css)——顶栏就那么宽,昵称一长两截都塞进去只能省略号收场。
+const acctLabel = (a, i, showAcct) => (showAcct
+  ? <><span className="acct-name">{a.name}</span><span className="acct-uid"> (UID:{uidOf(a.account)})</span></>
+  : `账号 ${i + 1}`)
+
 // App 全局壳:顶栏导航 + 账号切换 + 底部 tab(移动),并分发账号/图标两个全局 Context。
 export default function App() {
   const [accounts, setAccounts] = useState([])
@@ -89,7 +95,7 @@ export default function App() {
             <div className="account-box">
               <Dropdown
                 className="account-select" title="切换账号(玩家)"
-                opts={accounts.map((a, i) => [a.account, showAcct ? `${a.name} (UID:${uidOf(a.account)})` : `账号 ${i + 1}`])}
+                opts={accounts.map((a, i) => [a.account, acctLabel(a, i, showAcct)])}
                 value={account} onChange={switchAccount}
               />
               <button

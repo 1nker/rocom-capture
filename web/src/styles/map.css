@@ -89,10 +89,10 @@
 }
 /* 收集模式下「已确认还在」的可收集点(星星/零件):描一圈金色,与尚未走到过的候选点区分开。 */
 .map-poi.sure { filter: drop-shadow(0 0 3px #ffd54a) drop-shadow(0 0 6px #ffd54a); }
-/* 稀兽花种标记:与 POI 同一套定位/尺寸(.map-poi),只是稍大些——血脉花图本身细节多,
-   26px 下几种血脉的配色分不开。已检测出炫彩的复用 .map-poi.sure 的金圈。
+/* 稀兽花种标记:与 POI 同一套定位/尺寸(.map-poi,26px),不再单独放大——花图挨着别的
+   图标时大一圈显得突兀,血脉配色靠悬浮说明认更准。已检测出炫彩的复用 .map-poi.sure 的金圈。
    标记不可点,只有悬浮说明(未检测/普通/炫彩),用 help 光标提示「这儿有信息」。 */
-.map-flower { height: 30px; cursor: help; }
+.map-flower { cursor: help; }
 
 /* 野生宠物标记:圆形头像 + 类别描边。描边色由 JS 按命中图层算(见 useWildPets 的 wildRing):
    主描边 = 最稀有的那层,次一层再加一圈 box-shadow 外环——组合数太多,不走 CSS 类。 */

@@ -8,7 +8,7 @@
   display: flex; align-items: center; gap: 16px;
   padding: 10px 16px; background: var(--bg-1); border-bottom: 1px solid var(--line);
 }
-.brand { font-weight: 700; font-size: 16px; }
+.brand { font-weight: 700; font-size: 16px; white-space: nowrap; }
 .topnav { display: flex; gap: 4px; }
 .navlink {
   display: flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 8px; color: var(--fg-dim);
@@ -16,8 +16,12 @@
 .navlink.active { background: var(--bg-3); color: var(--fg); }
 .navlink:hover { color: var(--fg); }
 /* 账号切换 + 隐藏/显示开关(靠右) */
-.account-box { margin-left: auto; display: flex; align-items: center; gap: 6px; }
-.account-select { max-width: 220px; }
+.account-box { margin-left: auto; min-width: 0; display: flex; align-items: center; gap: 6px; }
+/* 按内容自适应而不是钉死一个宽度:昵称 + UID 一共多宽事先不知道,钉死了就吃省略号。
+   仍留一个随视口走的上限,免得超长昵称把导航挤没;窄屏另有 .acct-uid 那条兜着。
+   min-width:0(连同 .account-box 那条)让它在真的挤不下时先缩自己 —— 否则挤的是旁边,
+   顶栏被撑成两行(超长昵称实测:标题「洛克助手」被折行)。 */
+.account-select { width: auto; min-width: 0; max-width: min(420px, 42vw); }
 
 /* ---- 底部 tab(移动) ---- */
 .bottomnav { display: none; }
@@ -26,6 +30,10 @@
 
 @media (max-width: 760px) {
   .topnav { display: none; }
+  /* 窄屏只显示昵称:UID 那截占的宽度比昵称还多,留着就只能省略号(账号仍能认出是谁) */
+  .acct-uid { display: none; }
+  /* 没有导航要让位,上限交给剩余空间(超长昵称就缩到剩多少显示多少) */
+  .account-select { max-width: none; }
   .bottomnav {
     display: flex; position: sticky; bottom: 0; z-index: 30; background: var(--bg-1);
     border-top: 1px solid var(--line);
