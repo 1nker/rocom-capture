@@ -175,3 +175,81 @@ func TestSortEggsTie(t *testing.T) {
 		}
 	}
 }
+
+// TestHatchingNeedsProgress:取出孵蛋器的蛋 start_hatch_time 不清零,只清进度
+// (2026-08-26 pcap:背包 5 颗带 start_hatch_time,登录数据的 egg_gid 只有 3 颗)。
+func TestHatchingNeedsProgress(t *testing.T) {
+	cases := []struct {
+		name string
+		e    Egg
+		want bool
+	}{
+		{"在孵", Egg{StartHatch: 1787739077, HatchedSec: 16456, HatchUpdate: 1787755508}, true},
+		{"刚满 0 秒但服务器已在计", Egg{StartHatch: 1787739077, HatchUpdate: 1787739077}, true},
+		{"取出后(进度清零、入孵时刻残留)", Egg{StartHatch: 1787739086}, false},
+		{"从没进过孵蛋器", Egg{}, false},
+	}
+	for _, c := range cases {
+		if got := c.e.Hatching(); got != c.want {
+			t.Errorf("%s: Hatching() = %v, want %v", c.name, got, c.want)
+		}
+	}
+}
+
+func TestHatchSlots(t *testing.T) {
+	// ret_info(1){result(1)=0} + egg_gid(2) 逐个下发
+	ret := protowire.AppendVarint(protowire.AppendTag(nil, 1, protowire.VarintType), 0)
+	body := protowire.AppendBytes(protowire.AppendTag(nil, 1, protowire.BytesType), ret)
+	for _, g := range []uint64{3259, 3262, 3264} {
+		body = protowire.AppendVarint(protowire.AppendTag(body, 2, protowire.VarintType), g)
+	}
+	body = protowire.AppendVarint(protowire.AppendTag(body, 3, protowire.VarintType), 16456)
+	gids, ok := HatchSlots(body)
+	if !ok || len(gids) != 3 || gids[0] != 3259 || gids[2] != 3264 {
+		t.Fatalf("egg_gid = %v (ok=%v)", gids, ok)
+	}
+
+	// packed 形式同样认;孵蛋器空着(只有 ret_info)也是一份有效快照
+	packed := protowire.AppendBytes(protowire.AppendTag(nil, 1, protowire.BytesType), ret)
+	packed = protowire.AppendBytes(protowire.AppendTag(packed, 2, protowire.BytesType),
+		protowire.AppendVarint(protowire.AppendVarint(nil, 3259), 3262))
+	if gids, ok := HatchSlots(packed); !ok || len(gids) != 2 || gids[1] != 3262 {
+		t.Errorf("packed egg_gid = %v (ok=%v)", gids, ok)
+	}
+	empty := protowire.AppendBytes(protowire.AppendTag(nil, 1, protowire.BytesType), ret)
+	if gids, ok := HatchSlots(empty); !ok || len(gids) != 0 {
+		t.Errorf("空孵蛋器 = %v (ok=%v), want 空快照且 ok", gids, ok)
+	}
+
+	// 失败回包(result!=0)不能拿来订正
+	bad := protowire.AppendBytes(protowire.AppendTag(nil, 1, protowire.BytesType),
+		protowire.AppendVarint(protowire.AppendTag(nil, 1, protowire.VarintType), 1))
+	if _, ok := HatchSlots(bad); ok {
+		t.Error("result!=0 不该判为有效快照")
+	}
+}
+
+func TestBackpackHatchSlots(t *testing.T) {
+	// 登录数据里的 PetBackpackInfo:egg_gid(1) + boxes(3){box_id(1), pet_gid(3)}
+	box := protowire.AppendVarint(protowire.AppendTag(nil, 1, protowire.VarintType), 1)
+	for _, g := range []uint64{6476, 12335, 11291, 18471, 266, 1503} {
+		box = protowire.AppendVarint(protowire.AppendTag(box, 3, protowire.VarintType), g)
+	}
+	bp := protowire.AppendVarint(protowire.AppendTag(nil, 1, protowire.VarintType), 3259)
+	bp = protowire.AppendVarint(protowire.AppendTag(bp, 1, protowire.VarintType), 3262)
+	bp = protowire.AppendVarint(protowire.AppendTag(bp, 1, protowire.VarintType), 3264)
+	bp = protowire.AppendBytes(protowire.AppendTag(bp, 3, protowire.BytesType), box)
+	// 实际藏在 player_info(2).pet_info(4).backpack_info(9) 里,故套两层再解
+	pi := protowire.AppendBytes(protowire.AppendTag(nil, 9, protowire.BytesType), bp)
+	body := protowire.AppendBytes(protowire.AppendTag(nil, 2, protowire.BytesType),
+		protowire.AppendBytes(protowire.AppendTag(nil, 4, protowire.BytesType), pi))
+
+	gids, ok := BackpackHatchSlots(body)
+	if !ok || len(gids) != 3 || gids[0] != 3259 || gids[2] != 3264 {
+		t.Fatalf("egg_gid = %v (ok=%v)", gids, ok)
+	}
+	// 没有背包的消息给不出快照(不能当成空孵蛋器去清标记)
+	if _, ok := BackpackHatchSlots(protowire.AppendVarint(protowire.AppendTag(nil, 1, protowire.VarintType), 7)); ok {
+		t.Error("无 PetBackpackInfo 不该判为有效快照")
+	}
+}

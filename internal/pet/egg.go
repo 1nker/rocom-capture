@@ -25,6 +25,7 @@ const (
 	OpGetAllHatchStatusRsp    = 0x0312 // ZONE_GET_ALL_HATCH_STATUS_RSP(786), 孵蛋器里各蛋的进度
 	OpCrackEggReq             = 0x030b // ZONE_CRACK_EGG_REQ(779), c2s 破壳(egg_gid + 选用的球)
 	OpShopBuyItemRsp          = 0x0262 // ZONE_SHOP_BUY_ITEM_RSP(610), 商店购买(远行商人的神奇的蛋走这条,不发奖励通知)
+	OpStopHatchRsp            = 0x0300 // ZONE_STOP_HATCH_RSP(768), 把蛋从孵蛋器里取出(ret_info 带清零后的 bag_item)
 )
 
 // EggItemType 是精灵蛋在 BAG_ITEM_CONF/BagItem 里的 type 值。
@@ -50,7 +51,13 @@ type Egg struct {
 }
 
 // Hatching 报告这颗蛋是否正在孵蛋器里。
-func (e Egg) Hatching() bool { return e.StartHatch > 0 }
+//
+// **不能只看 start_hatch_time**:蛋从孵蛋器里取出后服务器不清这个字段,只把进度清零
+// (`hatched_secs` 与 `last_hatch_update_sec` 一起归 0,与「取出后孵化进度不保留」的提示一致),
+// 只看它就会把所有**曾经**放进去过的蛋一直算在孵蛋器里(2026-08-26 pcap:背包里 5 颗带
+// start_hatch_time,登录数据的 egg_gid 只有 3 颗,页面因此显示「孵蛋器 5/5」)。
+// 权威口径是 PetBackpackInfo.egg_gid(见 HatchSlots),这里是它到货前的兜底判据。
+func (e Egg) Hatching() bool { return e.StartHatch > 0 && (e.HatchUpdate > 0 || e.HatchedSec > 0) }
 
 // ParseBagEggs 从背包分页回包(0x1344)取本页的全部精灵蛋,并返回本页页号与总页数
 // (供调用方判断一轮全量是否已收齐,与宠物列表的分页对账同一套路)。
@@ -113,6 +120,42 @@ func ParseFlowReason(body []byte) int32 {
 
 // FlowReasonHomeLay 是家园小窝下蛋的 flow_reason(ProtoEnum.FlowReason)。
 const FlowReasonHomeLay = 223
+
+// HatchSlots 从孵化状态回包(0x0312)取孵蛋器当前占用的蛋 gid —— 谁在孵蛋器里的**权威口径**
+// (`egg_gid[]` 与 `hatched_secs[]` 按下标配对,见 docs/eggs.md 1)。
+// 孵蛋器空着时该字段整个不下发,故不能靠「解出几个」判断有效性:回包本身就是一份全量快照,
+// 只要 ret_info.result==0 就照单全收(ok=true 表示这份快照可用来订正全部在孵标记)。
+func HatchSlots(body []byte) ([]uint32, bool) {
+	if retResult(body) != 0 {
+		return nil, false
+	}
+	var out []uint32
+	wire.ScanFields(body, func(num protowire.Number, typ protowire.Type, val []byte, v uint64) {
+		if num != 2 { // egg_gid(repeated uint32):packed 与逐个下发都认
+			return
+		}
+		switch typ {
+		case protowire.VarintType:
+			out = append(out, uint32(v))
+		case protowire.BytesType:
+			for _, g := range wire.PackedVarints(val) {
+				out = append(out, uint32(g))
+			}
+		}
+	})
+	return out, true
+}
+
+// BackpackHatchSlots 从登录数据(0x0102)里的 PetBackpackInfo 取同一份孵蛋器占用列表。
+// 客户端自己也是拿它填孵蛋器面板(PlayerDataModel:GetPlayerBackpackEggInfo),
+// 有它就不必等玩家打开孵蛋器(0x0312)才知道哪几颗真在孵。
+func BackpackHatchSlots(body []byte) ([]uint32, bool) {
+	bp := bestBackpack(body)
+	if bp == nil {
+		return nil, false
+	}
+	return bp.GetEggGid(), true
+}
 
 // ParseCrackEggReq 取 c2s 破壳请求(0x030b)里的 egg_gid;c2s 有 6 字节子头,故先定位。
 func ParseCrackEggReq(appBody []byte) uint32 {
@@ -487,6 +530,7 @@ func eggFromView(v *EggView) Egg {
 func RefreshEggView(v *EggView, db *gamedata.DB) *EggView {
 	out := ToEggView(eggFromView(v), db)
 	out.Parents = v.Parents
+	out.Hatching = v.Hatching // 在孵与否以库里那列为准(权威列表订正过,别按 start_hatch_time 重推)
 	FillEggDerived(out, db)
 	return out
 }

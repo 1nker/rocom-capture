@@ -52,6 +52,35 @@ ON CONFLICT(account, gid) DO UPDATE SET
   updated_at=excluded.updated_at, data=excluded.data`, rows)
 }
 
+// SetHatchingEggs 按权威口径(孵蛋器占用列表 PetBackpackInfo.egg_gid / 0x0312 的 egg_gid[])
+// 整体订正在孵标记:列表里的置 1,其余一律清 0。
+//
+// 蛋自己的 egg_data 说不准这件事——取出后 start_hatch_time 不清零(见 pet.Egg.Hatching),
+// 故一有权威快照就整体对齐一次,把历史行里判错的标记一并抹平。
+func (sc *Scoped) SetHatchingEggs(gids []uint32) error {
+	args := []any{sc.account}
+	holes := ""
+	for _, gid := range gids {
+		if holes != "" {
+			holes += ","
+		}
+		holes += "?"
+		args = append(args, gid)
+	}
+	in := "" // 空孵蛋器:没有一颗蛋在孵,全部清 0
+	if holes != "" {
+		in = " AND gid NOT IN (" + holes + ")"
+	}
+	if _, err := sc.db.Exec(`UPDATE eggs SET hatching=0 WHERE account=? AND hatching<>0`+in, args...); err != nil {
+		return err
+	}
+	if holes == "" {
+		return nil
+	}
+	_, err := sc.db.Exec(`UPDATE eggs SET hatching=1 WHERE account=? AND gid IN (`+holes+`)`, args...)
+	return err
+}
+
 // SetEggParents 记下某颗蛋的双亲快照(收蛋那一刻推断出来的);已有记录不覆盖,
 // 免得后来的背包全量或再次进家园把当时的快照冲掉。
 func (sc *Scoped) SetEggParents(gid uint32, p *pet.EggParents) error {
@@ -120,8 +149,10 @@ func (sc *Scoped) ListEggs(f EggFilter) ([]*pet.EggView, error) {
 	}
 	// 基准顺序 = 背包里的原始次序(见 SetEggOrder);还没对过账的新蛋没有 seq,排在最后。
 	// pet.SortEggs 用的是稳定排序,故所有键都相等的蛋会保持这个次序,与游戏内一致。
+	// hatching 单独取列:它由权威的孵蛋器占用列表订正(见 SetHatchingEggs),
+	// 可能比写 data 那一刻的判断更新,故不用 data 里那份。
 	rows, err := sc.rdb.Query(
-		`SELECT data, parents FROM eggs WHERE `+where+
+		`SELECT data, parents, hatching FROM eggs WHERE `+where+
 			` ORDER BY seq IS NULL, seq, gid`, args...)
 	if err != nil {
 		return nil, err
@@ -131,13 +162,15 @@ func (sc *Scoped) ListEggs(f EggFilter) ([]*pet.EggView, error) {
 	for rows.Next() {
 		var data string
 		var parents sql.NullString
-		if err := rows.Scan(&data, &parents); err != nil {
+		var hatching sql.NullInt64
+		if err := rows.Scan(&data, &parents, &hatching); err != nil {
 			continue
 		}
 		var e pet.EggView
 		if json.Unmarshal([]byte(data), &e) != nil {
 			continue
 		}
+		e.Hatching = hatching.Valid && hatching.Int64 != 0
 		if parents.Valid && parents.String != "" {
 			var p pet.EggParents
 			if json.Unmarshal([]byte(parents.String), &p) == nil {

@@ -15,8 +15,12 @@ import (
 //   - 0x1344 背包分页全量:入库 + 末页对账(不在背包的删掉,与宠物列表同一套路)
 //   - 0x0243 奖励通知:新得的蛋;flow_reason=223 即家园小窝下的蛋,顺手记双亲
 //   - 0x0262 商店购买:远行商人的「神奇的蛋」等,新蛋只在这条回包里下发(不另发奖励通知)
-//   - 0x0164 用道具 / 0x0312 孵化状态:同一颗蛋的进度更新(入孵时刻、已孵秒数)
+//   - 0x0164 用道具 / 0x0300 取出 / 0x0312 孵化状态:同一颗蛋的进度更新(入孵时刻、已孵秒数)
 //   - 0x030b/0x030c 破壳:请求带 egg_gid,回包一到就把这颗蛋从库里删掉(它已不在背包里)
+//
+// 「哪几颗在孵蛋器里」另有权威口径:0x0102 登录数据的 PetBackpackInfo.egg_gid 与 0x0312 的
+// egg_gid[](客户端也是照这份填孵蛋器面板)。蛋自己的 start_hatch_time 取出后不清零,单看它
+// 会把取出过的蛋一直算在孵蛋器里,故这两条一到就整体订正一次(见 store.SetHatchingEggs)。
 //
 // 库里存的就是**背包现状**:页面只看背包,破壳/送人的蛋没人回看,故不留历史行。
 // 双亲只在**收蛋那一刻**能确定:蛋 NPC 趴在母本的窝上,配对由服务器下发(见 home.go)。
@@ -41,6 +45,12 @@ func (p *Pipeline) handleEgg(m capture.Message, acc string) {
 			p.conn(m.Session).crackEgg = gid // 等回包确认破壳成功再删
 		}
 
+	case m.Direction == gcp.S2C && m.Opcode == pet.OpLoginRsp:
+		// 登录数据里就带着孵蛋器占用列表:不等玩家开孵蛋器也能把在孵标记对齐。
+		if gids, ok := pet.BackpackHatchSlots(m.AppBody); ok {
+			p.applyHatchSlots(sc, acc, gids)
+		}
+
 	case m.Direction == gcp.S2C && m.Opcode == pet.OpGetBagItemInfoByPageRsp:
 		p.applyEggPage(m, sc, acc)
 
@@ -54,15 +64,26 @@ func (p *Pipeline) handleEgg(m capture.Message, acc string) {
 
 	case m.Direction == gcp.S2C && (m.Opcode == pet.OpGoodsRewardNotify ||
 		m.Opcode == pet.OpShopBuyItemRsp || m.Opcode == pet.OpUseBagItemRsp ||
-		m.Opcode == pet.OpGetAllHatchStatusRsp):
+		m.Opcode == pet.OpStopHatchRsp || m.Opcode == pet.OpGetAllHatchStatusRsp):
 		eggs := pet.ParseChangedEggs(m.AppBody)
-		if len(eggs) == 0 {
-			return
-		}
 		p.upsertEggs(sc, acc, eggs, m.Time)
-		if m.Opcode == pet.OpGoodsRewardNotify && pet.ParseFlowReason(m.AppBody) == pet.FlowReasonHomeLay {
+		// 孵化状态回包自带权威的槽位列表(刚放进去、进度还是 0 的那颗只有它说得准)。
+		if m.Opcode == pet.OpGetAllHatchStatusRsp {
+			if gids, ok := pet.HatchSlots(m.AppBody); ok {
+				p.applyHatchSlots(sc, acc, gids)
+			}
+		}
+		if m.Opcode == pet.OpGoodsRewardNotify && len(eggs) > 0 &&
+			pet.ParseFlowReason(m.AppBody) == pet.FlowReasonHomeLay {
 			p.recordEggParents(m.Session, sc, eggs, m.Time)
 		}
+	}
+}
+
+// applyHatchSlots 用权威的孵蛋器占用列表订正在孵标记并通知前端。
+func (p *Pipeline) applyHatchSlots(sc *store.Scoped, acc string, gids []uint32) {
+	if err := sc.SetHatchingEggs(gids); err == nil {
+		p.srv.Hub().Broadcast("eggs", acc, map[string]any{"account": acc})
 	}
 }
 

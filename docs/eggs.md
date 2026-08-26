@@ -67,6 +67,35 @@ hatched_secs = 250 + 倍率 × (last_hatch_update_sec − start_hatch_time)
 
 到顶后 `hatched_secs` 基本停在上限(实测有一例 57620/57600,溢出 20 秒,不影响百分比钳到 100%)。
 
+### 谁在孵蛋器里(别只看 `start_hatch_time`)
+
+**蛋从孵蛋器里取出后 `start_hatch_time` 不清零**,服务器只把进度清掉
+(`hatched_secs` 与 `last_hatch_update_sec` 一起归 0,与 `PET_GLOBAL_CONFIG.hatch_interrupt_text`
+「精灵蛋被取出后,孵化进度将不会保留」对得上)。只看这个字段,曾经放进去过的蛋会一直算在
+孵蛋器里 —— 2026-08-26 那份 pcap 就是:背包 63 颗蛋里 5 颗带 `start_hatch_time`,页面显示
+「孵蛋器 5/5」,游戏内只有 3 格。那 5 颗分两拨,一眼可辨:
+
+| gid | start_hatch_time | hatched_secs | last_hatch_update_sec | 实际 |
+| --- | --- | --- | --- | --- |
+| 3259 / 3262 / 3264 | 739077 / 739170 / 739176 | 16456 / 16363 / 16357 | 都是 755508 | 在孵 |
+| 3250 / 3252 | 739086 / 739082 | 0 | 0 | 早先放进去过,又换出来了 |
+
+(时刻均省去前缀 1787;三颗在孵的 `last_hatch_update_sec` 相同 —— 进度是**查询时才算**的。)
+
+权威口径是 **`PetBackpackInfo.egg_gid`**:客户端孵蛋器面板就是拿这串填的
+(`PlayerDataModel:GetPlayerBackpackEggInfo`),它有两个下发点,本项目两个都收
+(`pet.BackpackHatchSlots` / `pet.HatchSlots` → `store.SetHatchingEggs` 整体订正):
+
+- `0x0102 ZoneLoginRsp` → `player_info.pet_info.backpack_info.egg_gid`:**登录就有**,
+  上面那份 pcap 里正是 `3259/3262/3264` 三个,不必等玩家打开孵蛋器;
+- `0x0312` 的 `egg_gid[]`:开孵蛋器时的全量快照(**空孵蛋器该字段整个不下发**,故
+  「解出 0 个」也是有效快照,照样清标记)。
+
+拿不到这两份时(抓包从半途开始)退回蛋自己的字段判断:`start_hatch_time > 0` 且
+**进度非零**(`hatched_secs` 或 `last_hatch_update_sec` 有一个不为 0),即 `pet.Egg.Hatching`。
+唯一含糊的是「刚放进去、进度还是 0」的那一刻 —— 客户端放完蛋会紧跟一次 `0x0311/0x0312`
+刷新面板,权威快照随即到货,故只差这一瞬。
+
 蛋的显示名不在配置里成品供着,要拼:物品 `BAG_ITEM_CONF[bag_item.id]` 的 `known_name`
 是模板 `"{0}的蛋"`,`{0}` 填**种类名**;随机蛋(`conf_id=0`)没得填,直接用物品 `name`
 (如 `310049` = 神奇的蛋)。
@@ -186,6 +215,9 @@ s2c 0x0243 ZoneGoodsRewardNotify{goods_reward.rewards{id=蛋物品, gids=新蛋 
 - **放入孵蛋器**走通用的用道具:`0x0163 ZoneUseBagItemReq{gid, num:1, item_conf_id}`,
   RSP 回来的 `bag_item.egg_data` 就带上了 `start_hatch_time`;下一次 `0x0312` 里
   该 `egg_gid` 才出现(`hatched_secs: 0`)。孵蛋器 3 格,`egg_gid[]` 就是当前占用的格子。
+- **取出**是 `0x02ff ZoneStopHatchReq{egg_gid}` → `0x0300 RSP`(回包只有 `ret_info`,
+  更新后的 `bag_item` 搭 `goods_change_info` 的便车)。取出**不清** `start_hatch_time`,
+  只清进度,故「在孵与否」得另有口径,见 1 的「谁在孵蛋器里」。
 - **孵满**后 `hatched_secs` 停在上限(`28800/28800`;实测有一例 `57620/57600` 溢出 20 秒)。
 - **三个槽位按入孵时刻升序**,与背包次序无关。客户端
   `UMG_PetHatching_C:UpdatePanel` 取 `PlayerDataModel:GetPlayerBackpackEggInfo()`
@@ -242,9 +274,9 @@ s2c 0x0262 ZoneShopBuyItemRsp{ret_info.goods_change_info.changes[].bag_item.egg_
 | 品类角标 | `gen_icons.py` 的 egg 组另收 `EGG_TYPE_CONF.small_icon`(图集精灵,8 张:异色/炫彩/珍贵/唯一…) |
 | 蛋图 | `gen_icons.py` 的 **egg 组**:`BAG_ITEM_CONF` 里 `type==8` 的 `icon`(整张贴图)→ `img/egg/<原名>.webp`,293 个唯一图标转出 276(17 个未上线物种的贴图没随包解出,Go 侧回退 `egg_tongyong`) |
 | 索引 | `gen_gamedata.py` 五张表:`egg_conf`(物种蛋区间 + 孵化秒数 + 蛋品类)、`egg_items`(蛋物品 → 显示名/物种/图标/窝上 NPC id/品质/排序号)、`egg_types`(蛋品类 → 名称/排序号/角标)、`size_medals`(按百分位自动授予的四枚奖牌)、`nest_furniture`(小窝家具,按 `interact_type==3` 取,实测仅 1001071) |
-| 解析 | `internal/pet/egg.go`(BagItem+PetEggBrief、破壳请求/回包、flow_reason)、`internal/scene/home.go`(home_info 的家具与配对、home_pet 实体、蛋 NPC 的 attach_item) |
+| 解析 | `internal/pet/egg.go`(BagItem+PetEggBrief、孵蛋器占用列表、破壳请求/回包、flow_reason)、`internal/scene/home.go`(home_info 的家具与配对、home_pet 实体、蛋 NPC 的 attach_item) |
 | 入库 | `internal/store/egg.go` 的 `eggs` 表 = **背包现状**:蛋一行,`parents` 单列存**收蛋那一刻**的双亲快照(亲本被放生也不受影响);破壳/送人/背包对账不到的直接删行(页面只看背包,不留历史) |
-| 管线 | `internal/pipeline/eggs.go`(背包分页对账 + 收蛋/买蛋入库 + 认领双亲 + 破壳删行)、`internal/pipeline/home.go`(小窝图层的实时状态与推送) |
+| 管线 | `internal/pipeline/eggs.go`(背包分页对账 + 收蛋/买蛋入库 + 孵蛋器占用订正 + 认领双亲 + 破壳删行)、`internal/pipeline/home.go`(小窝图层的实时状态与推送) |
 | 页面 | 精灵蛋页(`web/src/pages/eggs/`)与实时地图的小窝图层(`web/src/pages/map/useHomeNests.js`) |
 
 ### 蛋的品类与「品质排序」(复刻客户端)
@@ -280,6 +312,8 @@ s2c 0x0262 ZoneShopBuyItemRsp{ret_info.goods_change_info.changes[].bag_item.egg_
   故 `handleEggs` 只对非孵化那部分调 `SortEggs`(`can_see` 那道过滤对蛋恒为真,918 件全是 1)。
 **在孵的蛋不出现在背包格子里**:客户端 `IsRemoveEggItem` 把孵蛋器里的蛋从背包列表里摘掉,
 本页照此分两栏(左孵蛋器、右背包),因而不需要「背包中/孵化中」这类过滤。
+分栏依据是 `eggs.hatching` 那一列(权威列表订正过它,见 1 的「谁在孵蛋器里」),
+`ListEggs` 单取该列覆盖 `data` 里写入当时的判断,`RefreshEggView` 也不再照 `start_hatch_time` 重推。
 破壳后的蛋也不留:`0x030b` 记下 egg_gid、`0x030c` 一到就删行(库里只有背包现状)。
 
 ### 破壳前就能算出的奖牌
