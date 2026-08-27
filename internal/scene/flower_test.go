@@ -144,7 +144,7 @@ func teamBattleInfo(cfgID uint32, star int32, petbase, content uint32, obj uint6
 }
 
 func TestParseFlowerBattle(t *testing.T) {
-	// 炫彩魔力猫:glass_type=GT_COMMON(1), glass_value=1048599(四角星·亮X暗 - 浅绿青)
+	// 炫彩魔力猫:glass_type=GT_COMMON(1), glass_value=1048599(亮X暗 - 浅绿青·四角星)
 	body := msg(msg(nil, 1, vint(nil, 1, 0)), 2,
 		teamBattleInfo(700002, 7, 3007, 2606405, 9279722995167894922, true, 1, 1048599))
 	b, ok := ParseFlowerBattle(body)

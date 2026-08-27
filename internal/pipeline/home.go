@@ -259,7 +259,7 @@ func (p *Pipeline) pushHome(conn, acc string) {
 func (p *Pipeline) nestPetOf(sc *store.Scoped, h *homeState, actor uint64, hp *scene.HomePet) *nestPet {
 	np := &nestPet{Gid: hp.PetGid, Name: hp.Name, FeedRound: hp.FeedRound}
 	if pp, err := sc.GetPet(hp.PetGid); err == nil && pp != nil {
-		pet.FillSizePercentile(p.db, pp)
+		pet.FillDerived(p.db, pp)
 		np.Species, np.Img, np.Gender, np.Level = pp.Species, pp.Image.Head, pp.Gender, pp.Level
 		np.HeightM, np.WeightKg = pp.HeightM, pp.WeightKg
 		np.HeightPct, np.WeightPct = pp.HeightPct, pp.WeightPct

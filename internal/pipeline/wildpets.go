@@ -237,7 +237,7 @@ type wildMark struct {
 	// 体重在本形态取值范围内的百分位(0-100),与宠物列表/事件页的「W xx%」同一口径
 	// (pet.SizePercentile);形态范围缺失时为 nil。
 	WeightPct *float64 `json:"weightPct,omitempty"`
-	Glass     string   `json:"glass,omitempty"`    // 炫彩外观描述(暗夜拾光 / 四角星·亮X暗 - 浅紫橙);空=非炫彩
+	Glass     string   `json:"glass,omitempty"`    // 炫彩外观描述(暗夜拾光 / 亮X暗 - 浅紫橙·四角星);空=非炫彩
 	Mutation  int32    `json:"mutation,omitempty"` // 原始 mutation_type 位标志(排查用)
 	Stale     bool     `json:"stale,omitempty"`    // 已离开 AOI:位置是最后所见,前端置灰
 }

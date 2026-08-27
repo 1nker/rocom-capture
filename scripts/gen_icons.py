@@ -18,6 +18,7 @@
   - flower:   稀兽/命定花种的大地图属性花图(WORLD_MAP_CONF 指到花种 NPC 的行) → img/flower/
   - medal:    MEDAL_CONF.icon(BagItem 奖牌小图,整张贴图)            → img/medal/
   - egg:      BAG_ITEM_CONF 里 type==8 的精灵蛋 icon(整张贴图)      → img/egg/
+  - glass:    炫彩色卡的两张遮罩 + 粒子层 + 隐藏炫彩整卡与标记图     → img/glass/
 
 webp 转码确定性(同 libwebp 下同源字节一致),默认跳过已存在;--force 强制重编(见 gen_images.py)。
 前置:scripts/unpack.sh 全量解包(uasset → 属性 .json,纹理 → PNG,同名同目录)。
@@ -99,6 +100,19 @@ def flower_icon_refs():
             yield m.group(0)
 
 
+# glass 组:炫彩色卡(见 docs/data.md 的炫彩段与客户端 UMG_Pet_DazzlingTips_C)。
+# 普通炫彩的卡**不是一张现成图**,而是三层叠出来的,故这里把三层的素材都导出、前端再合成:
+#   ① img_dazzling_Bg_png (280×154 圆角矩形)着 COLOR_RANDOM_CONF.ui_color_2;
+#   ② img_dazzling_Bg2_png(280×108 上半波浪)着 ui_color_1,压在①上;
+#   ③ PARTICLE_RANDOM_CONF.particle_big_icon(粒子层)原色叠最上,不着色。
+# ①②是纯白+alpha 的遮罩(RGB 全白,只有 alpha 有形状),前端用 CSS mask 上色,故原样导出。
+# 隐藏炫彩不拼图:HIDDEN_GLASS_CONF.glass_tips_pic 就是整张烤好的卡(配色已画进图里)。
+GLASS_FRAMES = {
+    "img_dazzling_Bg_png":  "色卡底(圆角矩形遮罩)",
+    "img_dazzling_Bg2_png": "色卡上半波浪遮罩",
+}
+
+
 # worldmap 组的整张贴图补充:游戏大地图钉直接复用背包图标的收集品(MEGAMAP_CONF.icon 即
 # BagItem 编号),不在 WorldMapNpc 图集里,走 copy_texture(basename 回退命中 BagItem 目录)。
 WORLDMAP_TEX = {
@@ -137,6 +151,7 @@ ATLAS_DIRS = [
     "NewRoco/Modules/System/Common/Icon/XueMai",
     "NewRoco/Modules/System/Common/CommonStatic",
     "NewRoco/Modules/System/PetUI/Raw/Atlas/PetUI",
+    "NewRoco/Modules/System/PetUI/PetUIStatic",
     "NewRoco/Modules/System/BigMap/Raw/Atlas/WorldMapNpc",
     "NewRoco/Modules/System/Common/Icon/BagItem",
     # 少数精灵蛋图标只有大图版本(Item190),BagItem 下没有同名小图:放在最后作 basename 兜底,
@@ -238,6 +253,15 @@ def eggtype_icon_refs():
                 yield m.group(0)
 
 
+def glass_icon_refs():
+    """炫彩色卡与标记图:两张遮罩 + 各粒子的色卡粒子层(particle_big_icon)
+    + 各隐藏炫彩的整卡(glass_tips_pic)与标记图(icon / 异色版 yise_icon)。"""
+    yield from GLASS_FRAMES
+    yield from icon_refs("PARTICLE_RANDOM_CONF", "particle_big_icon")
+    for field in ("glass_tips_pic", "icon", "yise_icon"):
+        yield from icon_refs("HIDDEN_GLASS_CONF", field)
+
+
 def gen_group(group: str, refs, writer) -> int:
     """按 basename 去重,逐个 writer(ref, dst) 产出 <group>/<原名>.webp。"""
     out = os.path.join(OUT_ROOT, group)
@@ -274,6 +298,7 @@ def main():
     total += gen_group("medal", icon_refs("MEDAL_CONF", "icon"), copy_texture)
     total += gen_group("egg", egg_icon_refs(), copy_texture)
     total += gen_group("egg", eggtype_icon_refs(), crop_sprite)
+    total += gen_group("glass", glass_icon_refs(), crop_sprite)
     print(f"-> {OUT_ROOT}(--force 可强制重编)")
     if total == 0:
         sys.exit(f"未产出任何 webp:确认 {SRC} 下已有 unpack.sh 的全量解包产物。")

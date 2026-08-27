@@ -24,7 +24,7 @@ func TestReplaceFlowers(t *testing.T) {
 	}
 	// 检测出一朵炫彩
 	det := old[0]
-	det.State, det.Glass = FlowerGlassy, "四角星·亮X暗 - 浅绿青"
+	det.State, det.Glass = FlowerGlassy, "亮X暗 - 浅绿青·四角星"
 	if err := sc.SetFlowerDetected(det); err != nil {
 		t.Fatal(err)
 	}

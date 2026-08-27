@@ -18,12 +18,18 @@
 .detail-hero > img { height: 168px; object-fit: contain; }
 /* 复用头像的 PetMark(橙框+白标记),在 hero 左上角放大内移;开启 hover 提示 */
 .detail-hero .pet-mark { top: 12px; left: 12px; width: 34px; height: 34px; pointer-events: auto; }
-.detail-title { display: flex; align-items: center; gap: 10px; padding: 0 16px; }
+/* 身份区:昵称行 + 天分/系别行两行叠在左,炫彩色卡跨这两行摆在右侧(见 components/glass.jsx)。
+   两行本来分居 .detail-title 与 .detail-body,合到一个容器里才有「右侧」可摆。 */
+.detail-ident { display: flex; align-items: center; gap: 12px; padding: 0 16px; }
+.detail-ident-rows { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+.detail-title { display: flex; align-items: center; gap: 10px; }
 .detail-title h2 { margin: 0; }
 .lv { background: var(--bg-3); padding: 2px 10px; border-radius: 999px; font-size: 13px; }
 .detail-body { padding: 16px; display: flex; flex-direction: column; gap: 14px; }
-/* 天分/系别/血脉标签行 */
-.detail-tags { display: flex; gap: 8px; align-items: center; flex-wrap: nowrap; }
+/* 天分/系别/血脉标签行。右侧让出了色卡的宽度,窄屏(360px 上下)放不下三系+血脉,故允许折行;
+   各标签自身不许被压扁换行(天分那枚会断成「了不起的/天分」两行),shrink 关掉、文字不折。 */
+.detail-tags { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.detail-tags > * { flex: none; white-space: nowrap; }
 .kv { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
 .kv .item { background: var(--bg-2); border-radius: 10px; padding: 8px 12px; min-width: 0; }
 .kv .item .k { font-size: 12px; color: var(--fg-dim); }
@@ -85,9 +91,6 @@ img.evo-avatar { object-fit: cover; }
 .medal-tip:hover { z-index: 51; }
 /* 详情奖牌墙内的奖牌图标适当增大(仅 .medals 容器内,不影响列表/事件的行内奖牌) */
 .medals .medal-ic { width: 40px; height: 40px; }
-/* 技能列表默认折叠(<details>);summary 可点击展开 */
-.skills > summary { cursor: pointer; user-select: none; }
-.skills > .medals { margin-top: 6px; }
 
 /* 身高/体重范围 tooltip:由 StatRange 经 portal 渲染到 body、fixed 定位(避开 .table-wrap
    的 overflow 裁剪与常驻滚动条问题);定位由 JS 计算(默认上方/自动翻转)。 */
@@ -107,3 +110,25 @@ img.evo-avatar { object-fit: cover; }
   }
   .detail-wrap { max-width: 100%; }
 }
+
+/* 炫彩色卡(见 components/glass.jsx):摆在身份区右侧,竖向跨昵称行与标签行。
+   界面上只留卡,外观名/赛季归属挂在左边那枚炫彩标记上,这里的 title 只说点了跳哪儿。
+   卡按原图 280×154 定比例;flex:none 免得被左侧两行挤扁。它通常是个跳 rkpet 的 <a>
+   (display:block 才吃得住宽高与 aspect-ratio,光标也自带 pointer),缺形态编号时
+   退化成不可点、也不带提示的 div。 */
+.glass-card {
+  display: block; position: relative; width: 76px; aspect-ratio: 280 / 154;
+  flex: none; transition: transform .12s;
+}
+a.glass-card:hover { transform: scale(1.05); }
+/* 普通炫彩的着色层:纯白遮罩铺满卡片,mask 只保留形状(比例已由 .glass-card 定死,
+   故 mask-size 直接用 100% 100%,不必 contain) */
+.glass-layer {
+  position: absolute; inset: 0;
+  mask-size: 100% 100%; mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%; -webkit-mask-repeat: no-repeat;
+}
+/* 波浪层原图只有 280×108(上半),顶对齐按原比例给高,才与设计稿的波谷位置一致 */
+.glass-wave { bottom: auto; height: 70.13%; }
+/* 隐藏炫彩=整张卡,普通炫彩=最上面的粒子层,都是同尺寸原色贴图 */
+.glass-card > img { position: absolute; inset: 0; width: 100%; height: 100%; }

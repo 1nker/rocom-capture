@@ -56,7 +56,7 @@ type Pet struct {
 	HeightM  float64 `json:"heightM"`  // 身高(米)
 	WeightKg float64 `json:"weightKg"` // 体重(千克)
 	// 当前形态的身高/体重取值范围(米/千克)与当前值在范围内的百分位(0-100);
-	// 由 FillSizePercentile 按 base_conf_id 在读取时注入(缺该形态数据则为 nil/0,前端据此不显示区间)。
+	// 由 FillDerived 按 base_conf_id 在读取时注入(缺该形态数据则为 nil/0,前端据此不显示区间)。
 	HeightMin float64  `json:"heightMin,omitempty"`
 	HeightMax float64  `json:"heightMax,omitempty"`
 	HeightPct *float64 `json:"heightPct,omitempty"`
@@ -79,6 +79,13 @@ type Pet struct {
 	CatchTime int64 `json:"catchTime"` // 捕捉时间(unix 秒)
 	Shiny     bool  `json:"shiny"`     // 异色(mutation_type bit0)
 	Colorful  bool  `json:"colorful"`  // 炫彩(mutation_type bit3)
+	// 是哪一种炫彩:PetData.glass_info 原样入库。前端拿它 + base_conf_id 换姊妹项目 rkpet
+	// 的 3D 展示链接(见 docs/reference.md);非炫彩为 0。
+	GlassType  int32 `json:"glassType,omitempty"`  // glass_type:1 普通 / 2 隐藏
+	GlassValue int32 `json:"glassValue,omitempty"` // glass_value:隐藏款 id / 打包色号
+	// 色卡(外观名与绘制素材,见 gamedata.GlassCard):由上面两个编号在**读取时**现算
+	// (FillDerived),这样改了图标/名称重跑生成脚本即刻生效,老库不必重抓;非炫彩为 nil。
+	Glass *gamedata.GlassCard `json:"glass,omitempty"`
 
 	Image gamedata.PetImage `json:"image"` // 各尺寸图片相对路径(由前端拼到 /img/ 下)
 
@@ -91,8 +98,6 @@ type Pet struct {
 	SpAttack  Stat `json:"spAttack"`  // 魔攻
 	SpDefense Stat `json:"spDefense"` // 魔防
 	Speed     Stat `json:"speed"`
-
-	SkillIDs []uint32 `json:"skillIds"`
 }
 
 // ToPet 把解码后的 PetData 结合名称库转成业务模型。
@@ -159,8 +164,11 @@ func ToPet(p *pb.PetData, db *gamedata.DB) *Pet {
 
 		CatchTime: int64(p.GetAddTime()),
 		// mutation_type 为位标志: bit0=异色, bit3=炫彩(实测样本验证)。
-		Shiny:    shiny,
-		Colorful: p.GetMutationType()&8 != 0,
+		// 炫彩另有 glass_info 说明是哪一种(隐藏炫彩名 / 普通炫彩的粒子+配色),色卡由它现算。
+		Shiny:      shiny,
+		Colorful:   p.GetMutationType()&8 != 0,
+		GlassType:  int32(p.GetGlassInfo().GetGlassType()),
+		GlassValue: p.GetGlassInfo().GetGlassValue(),
 
 		Image: image,
 	}
@@ -225,21 +233,24 @@ func ToPet(p *pb.PetData, db *gamedata.DB) *Pet {
 		}
 	}
 
-	if sk := p.GetSkill(); sk != nil {
-		for _, s := range sk.GetSkillData() {
-			out.SkillIDs = append(out.SkillIDs, s.GetId())
-		}
-	}
 	return out
 }
 
-// FillSizePercentile 按当前形态(base_conf_id)为宠物注入身高/体重取值范围及当前值百分位。
+// FillDerived 注入**只由 gamedata 决定**的派生字段:身高/体重取值范围与百分位,以及炫彩色卡。
 //
-// 范围属静态参考数据,不随宠物存库,故在读取时注入(与奖牌墙同):这样历史入库的宠物无需
-// 重新抓包也能显示,且游戏版本更新后范围随 gamedata 同步刷新。范围原始整数与 PetData.height/
-// weight 同单位(÷100 米、÷1000 千克),百分位 = (当前值-下限)/(上限-下限),裁剪到 0-100。
-func FillSizePercentile(db *gamedata.DB, pets ...*Pet) {
+// 这些都不随宠物存库,而在读取时现算:历史入库的宠物无需重新抓包也能显示,且游戏版本更新、
+// 重跑生成脚本后随 gamedata 同步刷新(色卡的图标路径与外观名尤其吃这一条)。范围原始整数与
+// PetData.height/weight 同单位(÷100 米、÷1000 千克),百分位 = (当前值-下限)/(上限-下限),
+// 裁剪到 0-100。
+//
+// 色卡只在**查得出**时覆盖:老库里存着旧版本序列化的 Glass 而 glass_info 编号还没入库
+// (GlassType 为 0),那就留着它那份 —— 卡还画得出来,只是点不出 rkpet 链接,
+// 等下次登录全量快照重写这一行就补齐了。
+func FillDerived(db *gamedata.DB, pets ...*Pet) {
 	for _, p := range pets {
+		if g := db.Glass(p.GlassType, p.GlassValue, p.Shiny); g != nil {
+			p.Glass = g
+		}
 		info, ok := db.PetBase(p.BaseConfID)
 		if !ok {
 			continue

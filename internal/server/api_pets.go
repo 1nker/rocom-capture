@@ -58,7 +58,7 @@ func (s *Server) handlePets(w http.ResponseWriter, r *http.Request) {
 	if pets == nil {
 		pets = []*pet.Pet{}
 	}
-	pet.FillSizePercentile(s.db, pets...) // 读取时注入身高/体重范围与百分位(静态参考,不入库)
+	pet.FillDerived(s.db, pets...) // 读取时注入身高/体重范围与百分位、炫彩色卡(都按 gamedata 现算)
 	writeJSON(w, map[string]any{"total": total, "pets": pets})
 }
 
@@ -73,7 +73,7 @@ func (s *Server) handlePet(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "not found", 404)
 		return
 	}
-	pet.FillSizePercentile(s.db, p)
+	pet.FillDerived(s.db, p)
 	writeJSON(w, p)
 }
 
@@ -99,7 +99,7 @@ func (s *Server) handleEvents(w http.ResponseWriter, r *http.Request) {
 	// 补注体重/身高百分位(供事件页体重/声音高亮规则按百分位判定;历史事件也据当前 gamedata 刷新)。
 	for _, ev := range events {
 		if ev.Pet != nil {
-			pet.FillSizePercentile(s.db, ev.Pet)
+			pet.FillDerived(s.db, ev.Pet)
 		}
 	}
 	writeJSON(w, events)

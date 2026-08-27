@@ -406,11 +406,12 @@ type 79–84 交叉验证);`npc_base.world_nature`(15)等于 `PETBASE_CONF.world
   `glass_names`);
 - `glass_type=GT_COMMON(1)` → `glass_value` 是**打包色号** `(粒子id << 20) | 配色id`
   (客户端 `PetUtils.GetShineDataValue` 即按 20 位拆,见 `UMG_Pet_DazzlingTips_C:ShowNormalGlassInfo`),
-  分别查 `PARTICLE_RANDOM_CONF`/`COLOR_RANDOM_CONF`,如 1048609 → 「四角星·亮X暗 - 浅紫橙」。
+  分别查 `PARTICLE_RANDOM_CONF`/`COLOR_RANDOM_CONF`,如 1048609 → 「亮X暗 - 浅紫橙·四角星」。
   **不要拿它去查 `HIDDEN_GLASS_CONF`**——那是两套编号。
 
-组装成中文描述的是 `gamedata.DB.GlassDesc(glassType, glassValue)`。宠物列表里的
-`Pet.Colorful`(`mutation_type & 8`)与这里的炫彩是同一件事,只是那边不解析具体外观。
+组装成中文描述的是 `gamedata.DB.GlassDesc(glassType, glassValue)`;宠物详情页另按同一份数据
+画出游戏内那张**色卡**(`DB.Glass` → `GlassCard`,画法见 [docs/data.md](data.md) 的炫彩色卡段)。
+宠物列表里的 `Pet.Colorful`(`mutation_type & 8`)与这里的炫彩是同一件事。
 
 **污染个体**(`mutation_type` 的 `MDT_CHAOS` 家族;游戏文案叫「污染」,客户端渲染函数叫
 `SetNightmare*`,同一件事)。野外实测 4 只全是 `MDT_CHAOS_TWO(4)`。它与其它稀有个体**流程不同**

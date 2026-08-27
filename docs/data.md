@@ -214,7 +214,7 @@ PET_CONF，特长直接取 PET_TALENT_CONF，opcode 取自 `all.pb` 的 `ZoneSvr
 
 宠物头像/全身图之外的 UI 图标由 `scripts/gen_icons.py` 统一产出到 `internal/gamedata/data/img/<组>/`。
 **webp 一律保持原始解包文件名**并按文件名**去重**(多个枚举值/id 复用同一资产时只存一份,故图标
-数少于语义键数);语义键(enum/id)→ 原名 的映射由 `gen_gamedata.py` 写进 `names.json`。分五组、
+数少于语义键数);语义键(enum/id)→ 原名 的映射由 `gen_gamedata.py` 写进 `names.json`。分组、
 两种资源机制:
 
 | 组 | 数据源 | 内容 | 文件数 |
@@ -224,6 +224,7 @@ PET_CONF，特长直接取 PET_TALENT_CONF，opcode 取自 `all.pb` 的 `ZoneSvr
 | `static` | 脚本内 `STATIC` 清单 | 人工挑选的杂项(异色/炫彩/污染、伙伴标记外框) | 5 |
 | `worldmap` | 脚本内 `WORLDMAP` 清单 | 人工挑选的大地图 POI(炼金釜/魔力之源/守护地、矿石与植物标记、眠枭庇护所、蓝/黄/紫眠枭之星与精灵果实) | 13 |
 | `medal` | `MEDAL_CONF.icon` | 55 枚奖牌小图(BagItem;部分奖牌共用) | 47 |
+| `glass` | `HIDDEN_GLASS_CONF` / `PARTICLE_RANDOM_CONF` + 脚本内 `GLASS_FRAMES` | 炫彩色卡的两张遮罩、4 种粒子的粒子层、4 款隐藏炫彩的整卡与标记图(含异色版) | 18 |
 
 > `filter` 组只收 `filter_icons` 实际输出的三组枚举(`gen_icons.py` 的 `FILTER_ENUMS`,与
 > `gen_gamedata.py` 同一白名单):2026-07 版 `PET_FILTER_CONF` 新增 **PetBloodType**(游戏内
@@ -265,6 +266,60 @@ webp 转码确定性,默认跳过已存在、`--force` 重编。
 (sprite .json 已在全量解包内)。经 `//go:embed all:data/img` 收录、`/img/` 提供。血脉的 `icon_1`/`icon_flower` 等变体、
 奖牌 `big_icon`(Item190 大图)暂不收录。
 
+### 炫彩色卡(`glass` 组)
+
+游戏里点开宠物名旁的炫彩标记会弹出一张小卡,画的就是这只宠物的炫彩长什么样。前端复刻了它
+(`web/src/components/glass.jsx` + `internal/gamedata/glass.go`),画法照抄客户端
+`UMG_Pet_DazzlingTips_C:ShowNormalGlassInfo` / `ShowHiddenGlassInfo`,**两种炫彩两条路**:
+
+- **隐藏炫彩**(`glass_type=GT_HIDDEN`,赛季款暗夜拾光/狂欢怪谈/铅字幻梦 + 常驻款黑白)——
+  `HIDDEN_GLASS_CONF.glass_tips_pic` 就是**整张烤好的卡**(配色已画进图里),原样贴上即可。
+  卡旁的文案也来自该表:`type=1` 是常驻款(本地化 `mutation_explain_tips_5` =「常驻隐藏」),
+  否则按 `active_season` 套 `mutation_explain_tips_3`(「第N赛季限定」);外观名带富文本色标
+  (`<span color="#eebf31">暗夜拾光</>`),文字与颜色拆开存,前端照着上色。
+- **普通炫彩**(`glass_type=GT_COMMON`,`glass_value = (粒子id << 20) | 配色id`)——**没有现成的整图**,
+  是三层叠出来的:
+
+  | 层 | 素材 | 着色 |
+  | --- | --- | --- |
+  | 底 | `img_dazzling_Bg_png`(280×154 圆角矩形) | `COLOR_RANDOM_CONF.ui_color_2` |
+  | 中 | `img_dazzling_Bg2_png`(280×108,上半带波浪的那块) | `ui_color_1` |
+  | 上 | `PARTICLE_RANDOM_CONF.particle_big_icon`(粒子散布) | 原色,不着色 |
+
+  底两层是**纯白 + alpha 的遮罩**(RGB 全白,形状只在 alpha 里),前端用 CSS `mask-image` 上色;
+  中层原图只有上半 108 像素,顶对齐、高度按原比例(70.13%)给,波谷位置才对得上。
+
+标记图也随之细化:隐藏炫彩每款自带 `icon` 与异色炫彩合成版 `yise_icon`(每季一张),取代原先
+统一的 `img_bolitubian_png` / `img_yisexuancai_png`;普通炫彩仍用后两者(`static` 组)。
+
+**详情页里只占右侧一角**:卡摆在「身份区」右侧,竖向跨昵称行与天分/系别行(这两行原本分居
+`.detail-title` 与 `.detail-body`,为此合进一个 `.detail-ident` 容器才有「右侧」可摆);
+界面上只留卡,**它的悬浮提示只说点了跳哪儿**;外观名与赛季归属
+归左边名称行那枚炫彩标记的提示,一处说一遍(`炫彩 · 亮X亮 - 紫橙 四角星` /
+`炫彩 · 暗夜拾光 第1赛季限定`;与后端 `GlassDesc` 同序,只是那边接成「配色·粒子」给地图用)。
+游戏弹窗里配色名旁那两枚色块与粒子小样不复刻:卡上已经画着这两种颜色和这种粒子了。
+标签行因此少了一张卡的宽度,窄屏(360px 上下)三系+血脉排不下,故改为可折行、各标签自身不折。
+
+**点色卡跳 3D**:卡是个链接,点开去姊妹项目 rocom-pets 的站点看同一只、同一形态、同一套
+炫彩的 3D 效果,走它给外部工具开的 `GET /api/link`(送 `base_conf_id` + `mutation_type & 1`
++ `GlassInfo` 原样,换算留在它那边)。详见 [reference.md](reference.md) 的姊妹项目段。
+
+为此 `Pet` 上多两个字段 `glassType`/`glassValue`,就是 `glass_info` 原样,**入库**;
+色卡本身反过来**不入库**,由这两个编号在读取时查 gamedata 现算(`pet.FillDerived`,与身高/
+体重区间同一处)。这样分工的理由是色卡里全是 gamedata 派生物 —— 外观名、赛季文案、几条
+webp 路径 —— 改了图标或重跑生成脚本就该立刻生效,烤进 `data` JSON 会让老行一直顶着旧路径。
+真正该存的只有那两个编号,它们的含义不随版本变。
+(读取时只在**查得出**时覆盖:老库里 `glassType` 为 0 的行留着 `data` 里那份旧卡,
+卡照画、只是点不出链接,等下次登录的全量快照重写那一行就补齐。)
+
+`names.json` 的 `glass` 段是这一切的索引(`{base, wave, hidden{}, colors{}, particles{}}`),
+Go 侧 `DB.Glass(glassType, glassValue, shiny)` 组装成 `GlassCard` 随 `Pet.glass` 下发;
+一行中文描述 `DB.GlassDesc` 也改走同一份数据(隐藏给外观名,普通给「配色·粒子」)。
+配置里查不到这一款(新赛季款)时返回 nil,前端退回通用炫彩图标、不画卡。
+
+> 对照实机截图逐款验过(暗夜拾光/狂欢怪谈/铅字幻梦/普通/黑白/异色黑白共 6 只,
+> `glass_value` 由 pcap 取出):配色、波浪走向、粒子形状与角标全部一致。
+
 ## 4. 宠物列表解析流程(`internal/pet`)
 
 ```
@@ -276,6 +331,11 @@ s2c 0x1346 DATA 明文 body
 
 `ToPet` 完成单位换算(身高/体重)、枚举翻译(系别/性格/天分/奖牌/标记/特长)、
 六维提取。离线回放 `sample.pcap` 实测解出 **543 只**宠物，与游戏内宠物总数一致。
+
+**技能(`PetData.skill`)不解析**:本项目做的是「按宠物自身属性找宠物」的统计,技能是可换的
+配置、不是个体属性,任何一处筛选/排序/展示都用不上它。曾经在详情页折叠出过一排 `技能 #<id>`
+——名字本地化没梳理,只有编号,没人看;它还要往每只宠物的 `data` JSON 里塞十来个编号,
+进库也上线。整条移除,连字段一起。
 
 ### 六维 / 天分 / 性格
 
@@ -399,5 +459,5 @@ s2c 0x1346 DATA 明文 body
   放过对账期间刚捕获入库的新宠。
 
 待校准(多数需含相应事件/宠物的新样本)：
-- **咕噜球/技能名**本地化尚未梳理(蛋组已接入 `PET_LIKE_ELEMENT_CONF`,见上);
+- **咕噜球**本地化尚未梳理(蛋组已接入 `PET_LIKE_ELEMENT_CONF`,见上);
 - **性格** `nature_id` 用 `AUDIO_NATURE_CONF`，个别可能与游戏显示略有偏差。

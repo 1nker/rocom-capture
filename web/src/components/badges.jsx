@@ -37,18 +37,28 @@ function MarkIcon({ src, title, fallback, cls }) {
 }
 
 // Marks 渲染异色/炫彩标记(优先游戏图标;两者兼具用合成的异色炫彩图)。
+// 炫彩优先用「这一种炫彩」自己的标记图(隐藏炫彩每季一张,异色时后端已换成异色炫彩合成版),
+// 故炫彩分支只出一枚图,不再另加异色标;后端查不到这一款(新赛季款)时退回通用图标。
 export function Marks({ p }) {
   const icons = React.useContext(IconsContext)
   if (!p) return null
-  if (p.shiny && p.colorful && icons.shinyColorful) {
-    return <MarkIcon src={icons.shinyColorful} title="异色炫彩" fallback="异彩" cls="mark-colorful" />
+  if (p.colorful) {
+    const src = (p.glass && p.glass.icon) || (p.shiny ? icons.shinyColorful : icons.colorful)
+    const kind = p.shiny ? '异色炫彩' : '炫彩'
+    return <MarkIcon src={src} title={p.glass ? `${kind} · ${glassDesc(p.glass)}` : kind}
+      fallback={p.shiny ? '异彩' : '彩'} cls="mark-colorful" />
   }
-  return (
-    <>
-      {p.shiny && <MarkIcon src={icons.shiny} title="异色" fallback="异" cls="mark-shiny" />}
-      {p.colorful && <MarkIcon src={icons.colorful} title="炫彩" fallback="彩" cls="mark-colorful" />}
-    </>
-  )
+  return p.shiny ? <MarkIcon src={icons.shiny} title="异色" fallback="异" cls="mark-shiny" /> : null
+}
+
+// glassDesc 一行外观描述:主名在前、补一句限定语 ——
+// 普通炫彩「配色 粒子」(亮X亮 - 紫橙 四角星),隐藏炫彩「外观名 赛季归属」(暗夜拾光 第1赛季限定)。
+// 详情页的色卡不再重复这段(它只说点了跳哪儿),故这里是唯一出处。
+// 与后端 GlassDesc(实时地图的野生宠与花种用)同序,只是那边接在一起写「配色·粒子」——
+// 这条整句已经被 ` · ` 断过一次,再用一个点会看不清哪层是哪层。
+export function glassDesc(g) {
+  const tail = g.hidden ? g.season : g.particle
+  return tail ? `${g.name} ${tail}` : g.name
 }
 
 // Blood 渲染血脉(主图标 + 中文短名);iconOnly=仅图标(列表用,名称落到 title)。

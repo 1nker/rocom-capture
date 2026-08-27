@@ -44,12 +44,9 @@ type DB struct {
 	eggGroup     map[uint32]EggGroup    // 蛋组id(1-15) -> 社区名/描述
 	npcPets      map[uint32]uint32      // 野生宠 NPC_CONF id -> petbase_id(取名称/头像,见 3.5)
 	npcBosses    map[uint32]bool        // 野外首领的 NPC_CONF id(throwing_interact_type=4,见 3.8)
-	// 炫彩外观(见 GlassDesc):隐藏炫彩名 / 普通炫彩的粒子名与配色名。
-	glassNames     map[string]string
-	glassColors    map[string]string
-	glassParticles map[string]string
-	evoIndex       map[uint32][]uint32 // 进化链分组 -> 该链各 petbase_id
-	imgFiles       map[string]bool     // 实际 embed 的图片相对路径(异色图缺失时回退普通)
+	glass        glassData              // 炫彩外观与色卡素材(见 Glass / GlassDesc)
+	evoIndex     map[uint32][]uint32    // 进化链分组 -> 该链各 petbase_id
+	imgFiles     map[string]bool        // 实际 embed 的图片相对路径(异色图缺失时回退普通)
 	// UI 图标索引: 语义键 -> 图标原始文件名(webp 保持原名),Go 侧拼 <组>/<原名>.webp。
 	filterIcons map[string]map[string]string // 组名 -> {枚举整数值: 原名}(filter/)
 	bloodIcons  map[string]string            // 血脉id -> 原名(blood/)
@@ -82,29 +79,27 @@ type DB struct {
 // Load 加载 embed 的名称表。
 func Load() (*DB, error) {
 	var raw struct {
-		Species        map[string]string            `json:"species"`
-		Nature         map[string]string            `json:"nature"`
-		SkillDamType   map[string]string            `json:"skill_dam_type"`
-		TalentRate     map[string]string            `json:"talent_rate"`
-		PartnerMark    map[string]string            `json:"partner_mark"`
-		Speciality     map[string]string            `json:"speciality"`
-		Medal          map[string]Medal             `json:"medal"`
-		Opcodes        map[string]string            `json:"opcodes"`
-		NatureEffect   map[string]NatureEffect      `json:"nature_effect"`
-		FilterIcons    map[string]map[string]string `json:"filter_icons"`
-		BloodIcons     map[string]string            `json:"blood_icons"`
-		BloodNames     map[string]string            `json:"blood_names"`
-		MedalIcons     map[string]string            `json:"medal_icons"`
-		StaticIcons    map[string]string            `json:"static_icons"`
-		Images         map[string]imageEntry        `json:"images"`
-		ImageBase      map[string]uint32            `json:"image_base"`
-		EggGroup       map[string]EggGroup          `json:"egg_group"`
-		NpcPets        map[string]uint32            `json:"npc_pets"`
-		NpcBosses      []uint32                     `json:"npc_bosses"`
-		GlassNames     map[string]string            `json:"glass_names"`
-		GlassColors    map[string]string            `json:"glass_colors"`
-		GlassParticles map[string]string            `json:"glass_particles"`
-		Petbase        map[string]struct {
+		Species      map[string]string            `json:"species"`
+		Nature       map[string]string            `json:"nature"`
+		SkillDamType map[string]string            `json:"skill_dam_type"`
+		TalentRate   map[string]string            `json:"talent_rate"`
+		PartnerMark  map[string]string            `json:"partner_mark"`
+		Speciality   map[string]string            `json:"speciality"`
+		Medal        map[string]Medal             `json:"medal"`
+		Opcodes      map[string]string            `json:"opcodes"`
+		NatureEffect map[string]NatureEffect      `json:"nature_effect"`
+		FilterIcons  map[string]map[string]string `json:"filter_icons"`
+		BloodIcons   map[string]string            `json:"blood_icons"`
+		BloodNames   map[string]string            `json:"blood_names"`
+		MedalIcons   map[string]string            `json:"medal_icons"`
+		StaticIcons  map[string]string            `json:"static_icons"`
+		Images       map[string]imageEntry        `json:"images"`
+		ImageBase    map[string]uint32            `json:"image_base"`
+		EggGroup     map[string]EggGroup          `json:"egg_group"`
+		NpcPets      map[string]uint32            `json:"npc_pets"`
+		NpcBosses    []uint32                     `json:"npc_bosses"`
+		Glass        glassData                    `json:"glass"`
+		Petbase      map[string]struct {
 			N  string   `json:"n"`
 			B  uint32   `json:"b"`
 			F  string   `json:"f"`
@@ -271,49 +266,47 @@ func Load() (*DB, error) {
 		}
 	}
 	return &DB{
-		scenes:         raw.Scenes,
-		sceneDefRes:    raw.SceneDefaultRes,
-		sceneRes:       raw.SceneRes,
-		maps:           maps,
-		layers:         layers,
-		poiKinds:       raw.POIKinds,
-		pois:           pois,
-		zones:          raw.Zones,
-		flowerNpcs:     raw.FlowerNpcs,
-		flowerSpots:    flowerSpots,
-		flowerStarLv:   raw.FlowerLevels.Star,
-		flowerSpecLv:   raw.FlowerLevels.Spec,
-		species:        raw.Species,
-		nature:         raw.Nature,
-		skillDamType:   raw.SkillDamType,
-		talentRate:     raw.TalentRate,
-		partnerMark:    raw.PartnerMark,
-		speciality:     raw.Speciality,
-		medal:          raw.Medal,
-		opcodes:        opcodes,
-		natureEffect:   raw.NatureEffect,
-		filterIcons:    raw.FilterIcons,
-		bloodIcons:     raw.BloodIcons,
-		bloodNames:     raw.BloodNames,
-		medalIcons:     raw.MedalIcons,
-		staticIcons:    raw.StaticIcons,
-		images:         raw.Images,
-		imageBase:      imageBase,
-		petbase:        petbase,
-		eggGroup:       eggGroup,
-		npcPets:        npcPets,
-		npcBosses:      npcBosses,
-		glassNames:     raw.GlassNames,
-		glassColors:    raw.GlassColors,
-		glassParticles: raw.GlassParticles,
-		evoIndex:       evoIndex,
-		imgFiles:       imgFiles,
-		eggConf:        eggConf,
-		eggItems:       eggItems,
-		eggNPCs:        eggNPCs,
-		eggTypes:       eggTypes,
-		sizeMedals:     raw.SizeMedals,
-		nestFurn:       nestFurn,
+		scenes:       raw.Scenes,
+		sceneDefRes:  raw.SceneDefaultRes,
+		sceneRes:     raw.SceneRes,
+		maps:         maps,
+		layers:       layers,
+		poiKinds:     raw.POIKinds,
+		pois:         pois,
+		zones:        raw.Zones,
+		flowerNpcs:   raw.FlowerNpcs,
+		flowerSpots:  flowerSpots,
+		flowerStarLv: raw.FlowerLevels.Star,
+		flowerSpecLv: raw.FlowerLevels.Spec,
+		species:      raw.Species,
+		nature:       raw.Nature,
+		skillDamType: raw.SkillDamType,
+		talentRate:   raw.TalentRate,
+		partnerMark:  raw.PartnerMark,
+		speciality:   raw.Speciality,
+		medal:        raw.Medal,
+		opcodes:      opcodes,
+		natureEffect: raw.NatureEffect,
+		filterIcons:  raw.FilterIcons,
+		bloodIcons:   raw.BloodIcons,
+		bloodNames:   raw.BloodNames,
+		medalIcons:   raw.MedalIcons,
+		staticIcons:  raw.StaticIcons,
+		images:       raw.Images,
+		imageBase:    imageBase,
+		petbase:      petbase,
+		eggGroup:     eggGroup,
+		npcPets:      npcPets,
+		npcBosses:    npcBosses,
+		glass:        raw.Glass,
+		evoIndex:     evoIndex,
+		imgFiles:     imgFiles,
+		eggConf:      eggConf,
+		eggItems:     eggItems,
+		eggNPCs:      eggNPCs,
+		eggTypes:     eggTypes,
+		sizeMedals:   raw.SizeMedals,
+		nestFurn:     nestFurn,
 	}, nil
 }
 

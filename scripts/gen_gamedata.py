@@ -271,11 +271,55 @@ npc_bosses = sorted(int(k) for k, v in rows("NPC_CONF.json").items()
 #   glass_type=GT_COMMON(1) → glass_value 是打包的色号 (particle_id << 20) | color_id
 #     (客户端 PetUtils.GetShineDataValue 按 20 位拆,见 UMG_Pet_DazzlingTips_C:ShowNormalGlassInfo),
 #     分别查 PARTICLE_RANDOM_CONF(粒子:四角星…)与 COLOR_RANDOM_CONF(配色:亮X暗 - 浅紫橙…)。
-# 隐藏炫彩名带富文本标记(<span color="#eebf31">暗夜拾光</>),剥掉标签只留文字。
-glass_names = {k: re.sub(r"<[^>]*>", "", v["name"]).strip()
-               for k, v in rows("HIDDEN_GLASS_CONF.json").items() if v.get("name")}
-glass_colors = id_names("COLOR_RANDOM_CONF.json", "id", "name")
-glass_particles = id_names("PARTICLE_RANDOM_CONF.json", "id", "name")
+# 隐藏炫彩名带富文本标记(<span color="#eebf31">暗夜拾光</>):文字与颜色分开存,
+# 颜色就是游戏内那行名字的显示色,前端照用。
+#
+# 除了名字,这里还把**色卡**(游戏内点开炫彩标记弹出的那张小卡,客户端 UMG_Pet_DazzlingTips_C)
+# 的绘制素材一并索引出来,前端据此复刻(图由 gen_icons.py 的 glass 组产出,同为原始文件名):
+#   普通炫彩 = 三层叠:底(glass.base)着 ui_color_2 → 上半波浪(glass.wave)着 ui_color_1
+#              → 粒子层(particles[i].card,原色不着色);
+#   隐藏炫彩 = 一张烤好的整卡(hidden[i].card),配色已画进图里,不叠不着色。
+# icon/yise 是这一种炫彩自己的标记图(每季一张,yise 是异色炫彩合成版),用于取代通用炫彩图标。
+_glass_l10n = rows("LOCALIZATION_CONF.json")
+
+
+def _l10n(key, *args):
+    msg = (_glass_l10n.get(key) or {}).get("msg") or ""
+    return msg.format(*args) if args else msg
+
+
+def _glass_name_color(name):
+    """隐藏炫彩名的富文本显示色(<span color="#eebf31">暗夜拾光</> → #eebf31);没写则空串。"""
+    m = re.search(r'color="(#[0-9a-fA-F]{6})"', name)
+    return m.group(1) if m else ""
+
+
+def _glass_season(r):
+    """隐藏炫彩的归属文案:常驻款一句「常驻隐藏」,赛季款「第N赛季限定」(文案取自游戏本地化表)。"""
+    if r.get("type") == 1:  # Enum.HiddenGlassType.HGT_RESIDENT
+        return _l10n("mutation_explain_tips_5")
+    season = r.get("active_season") or 0
+    return _l10n("mutation_explain_tips_3", season) if season else ""
+
+
+glass = {
+    "base": "img_dazzling_Bg_png",   # 色卡底(圆角矩形遮罩),着 ui_color_2
+    "wave": "img_dazzling_Bg2_png",  # 色卡上半波浪遮罩,着 ui_color_1
+    "hidden": {str(int(r["id"])): {
+        "n": re.sub(r"<[^>]*>", "", r["name"]).strip(),
+        "nc": _glass_name_color(r["name"]),
+        "s": _glass_season(r),
+        "card": texkey(r.get("glass_tips_pic")),
+        "icon": texkey(r.get("icon")),
+        "yise": texkey(r.get("yise_icon")),
+    } for r in rows("HIDDEN_GLASS_CONF.json").values() if r.get("name")},
+    "colors": {str(int(r["id"])): {
+        "n": r.get("name", ""), "c1": r.get("ui_color_1", ""), "c2": r.get("ui_color_2", ""),
+    } for r in rows("COLOR_RANDOM_CONF.json").values() if r.get("id")},
+    "particles": {str(int(r["id"])): {
+        "n": r.get("name", ""), "card": texkey(r.get("particle_big_icon")),
+    } for r in rows("PARTICLE_RANDOM_CONF.json").values() if r.get("id")},
+}
 
 # 性格增减维度(权威表，按性格名匹配；维度编号 1生命 2物攻 3魔攻 4物防 5魔防 6速度)。
 # NATURE_CONF 推导对个别性格(如平和)的 id 错位，故以名为准。
@@ -874,10 +918,8 @@ data = {
     "flower_npcs": flower_npcs,
     "flowers": flowers,
     "flower_levels": flower_levels,
-    # 炫彩外观描述:隐藏炫彩名(HIDDEN_GLASS_CONF)+ 普通炫彩的粒子/配色名(见上)。
-    "glass_names": glass_names,
-    "glass_colors": glass_colors,
-    "glass_particles": glass_particles,
+    # 炫彩:隐藏炫彩(名称/归属/整卡)、普通炫彩的配色与粒子,以及色卡两张遮罩(见上)。
+    "glass": glass,
     # 精灵蛋:物种蛋区间/孵化时长、背包蛋物品(显示名/图标/窝上 NPC)、家园小窝家具。见上与 3.6。
     "egg_conf": egg_conf,
     "egg_items": egg_items,

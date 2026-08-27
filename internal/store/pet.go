@@ -28,10 +28,11 @@ ON CONFLICT(account,gid) DO UPDATE SET
   egg_groups=excluded.egg_groups,weight_pct=excluded.weight_pct,height_pct=excluded.height_pct,
   data=excluded.data,updated_at=excluded.updated_at`
 
-// petArgs 组装 petUpsertSQL 的绑定参数。副作用:按 gamedata 计算身高/体重百分位并落到 p 上
-// (排序键;同时写入 data JSON,读取时会再刷新,无害)。
+// petArgs 组装 petUpsertSQL 的绑定参数。副作用:按 gamedata 补齐派生字段并落到 p 上 ——
+// 身高/体重百分位(排序键)与炫彩色卡;二者同时写入 data JSON,读取时会再刷新一遍,无害。
+// 调用方随后广播的就是这只,靠这个副作用带上色卡,不必各自再 Fill 一次。
 func (sc *Scoped) petArgs(p *pet.Pet, now int64) []any {
-	pet.FillSizePercentile(sc.gd, p)
+	pet.FillDerived(sc.gd, p)
 	data, _ := json.Marshal(p)
 	types, _ := json.Marshal(p.Types)
 	// 蛋组存组名 JSON 数组(与 types 同法),供 egg_groups LIKE '%"名"%' 过滤。

@@ -4,6 +4,7 @@ import { getPet, getMedals, getEvolution, subscribe } from '../api'
 import { InlineIcon, ImgAvatar } from './icons'
 import { Types, Marks, Gender, Form, Blood, EggGroups } from './badges'
 import { Portrait } from './avatar'
+import { GlassCard } from './glass'
 import { StatRadar, StatRange } from './stats'
 import { locTag, fmtTime, voiceHot, pctHot } from '../utils/format'
 
@@ -85,20 +86,25 @@ export function PetDetailModal({ gid, onClose }) {
           <span>{pet.species} <Gender g={pet.gender} /></span>
         </div>
         <Portrait p={pet} />
-        <div className="detail-title">
-          <h2>{pet.name || pet.species}</h2>
-          <span className="lv">Lv.{pet.level}</span>
-          <Marks p={pet} />
-          <Form form={pet.form} />
+        {/* 身份区:昵称行 + 标签行两行叠在左,炫彩色卡跨这两行摆在右侧 */}
+        <div className="detail-ident">
+          <div className="detail-ident-rows">
+            <div className="detail-title">
+              <h2>{pet.name || pet.species}</h2>
+              <span className="lv">Lv.{pet.level}</span>
+              <Marks p={pet} />
+              <Form form={pet.form} />
+            </div>
+            <div className="detail-tags">
+              {pet.talentRank && <span className={'pill' + (pet.talentRank === '了不起的天分' ? ' pill-gold' : '')}>{pet.talentRank}</span>}
+              <Types types={pet.types} icons={pet.typeIcons} plain />
+              <Blood p={pet} />
+            </div>
+          </div>
+          <GlassCard p={pet} />
         </div>
 
         <div className="detail-body">
-          <div className="detail-tags">
-            {pet.talentRank && <span className={'pill' + (pet.talentRank === '了不起的天分' ? ' pill-gold' : '')}>{pet.talentRank}</span>}
-            <Types types={pet.types} icons={pet.typeIcons} plain />
-            <Blood p={pet} />
-          </div>
-
           <StatRadar p={pet} />
 
           <div className="kv">
@@ -125,15 +131,6 @@ export function PetDetailModal({ gid, onClose }) {
                 ))}
               </div>
             </div>
-          )}
-
-          {pet.skillIds?.length > 0 && (
-            <details className="skills">
-              <summary className="muted">技能（{pet.skillIds.length}）</summary>
-              <div className="medals">
-                {pet.skillIds.map((id, i) => <div className="medal" key={i}>技能 #{id}</div>)}
-              </div>
-            </details>
           )}
         </div>
       </div>

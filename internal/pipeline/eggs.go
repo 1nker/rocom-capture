@@ -207,7 +207,7 @@ func (p *Pipeline) parentSnap(sc *store.Scoped, gid uint32, name string) *pet.Eg
 	if err != nil || pp == nil {
 		return s
 	}
-	pet.FillSizePercentile(p.db, pp)
+	pet.FillDerived(p.db, pp)
 	if s.Name == "" {
 		s.Name = pp.Name
 	}
