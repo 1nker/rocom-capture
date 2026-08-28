@@ -4316,6 +4316,7 @@ const (
 	TaskKeyType_TKT_GRASS_TRIAL_PREPARE_HAS_STORYFLAG TaskKeyType = 388
 	TaskKeyType_TKT_BUILDING_NPC_LEVEL                TaskKeyType = 389
 	TaskKeyType_TKT_PET_BOND_PROGRESS                 TaskKeyType = 391
+	TaskKeyType_TKT_WEAR_MEDAL                        TaskKeyType = 393
 	TaskKeyType_TKT_OTHER_MAX                         TaskKeyType = 400
 )
 
@@ -4485,6 +4486,7 @@ var (
 		388: "TKT_GRASS_TRIAL_PREPARE_HAS_STORYFLAG",
 		389: "TKT_BUILDING_NPC_LEVEL",
 		391: "TKT_PET_BOND_PROGRESS",
+		393: "TKT_WEAR_MEDAL",
 		400: "TKT_OTHER_MAX",
 	}
 	TaskKeyType_value = map[string]int32{
@@ -4651,6 +4653,7 @@ var (
 		"TKT_GRASS_TRIAL_PREPARE_HAS_STORYFLAG": 388,
 		"TKT_BUILDING_NPC_LEVEL":                389,
 		"TKT_PET_BOND_PROGRESS":                 391,
+		"TKT_WEAR_MEDAL":                        393,
 		"TKT_OTHER_MAX":                         400,
 	}
 )
@@ -9337,43 +9340,44 @@ func (VisualItem) EnumDescriptor() ([]byte, []int) {
 type GoodsType int32
 
 const (
-	GoodsType_GT_NONE              GoodsType = 0
-	GoodsType_GT_BAGITEM           GoodsType = 1
-	GoodsType_GT_VITEM             GoodsType = 2
-	GoodsType_GT_REWARD            GoodsType = 3
-	GoodsType_GT_PET               GoodsType = 4
-	GoodsType_GT_PET_HP            GoodsType = 5
-	GoodsType_GT_CREATENPC         GoodsType = 6
-	GoodsType_GT_HANDBOOK          GoodsType = 7
-	GoodsType_GT_TEAMINFO          GoodsType = 8
-	GoodsType_GT_BACKPACK          GoodsType = 9
-	GoodsType_GT_FASHION           GoodsType = 10
-	GoodsType_GT_SALON             GoodsType = 11
-	GoodsType_GT_PET_EN            GoodsType = 12
-	GoodsType_GT_CARD_ICON         GoodsType = 13
-	GoodsType_GT_CARD_SKIN         GoodsType = 14
-	GoodsType_GT_CARD_LABEL        GoodsType = 15
-	GoodsType_GT_TASK_TOKEN        GoodsType = 16
-	GoodsType_GT_EMOJI             GoodsType = 17
-	GoodsType_GT_CONTENT_NPC       GoodsType = 18
-	GoodsType_GT_BAG_BACKPACK      GoodsType = 19
-	GoodsType_GT_RP_BEHAVIOR       GoodsType = 20
-	GoodsType_GT_ATTRTYPE          GoodsType = 21
-	GoodsType_GT_PETEXP            GoodsType = 22
-	GoodsType_GT_FASHION_SUITS     GoodsType = 23
-	GoodsType_GT_FASHION_PACKAGE   GoodsType = 24
-	GoodsType_GT_CDKEY             GoodsType = 25
-	GoodsType_GT_BP_GIFT           GoodsType = 26
-	GoodsType_GT_PROP              GoodsType = 27
-	GoodsType_GT_FASHION_BOND      GoodsType = 28
-	GoodsType_GT_GET_PHOTO         GoodsType = 29
-	GoodsType_GT_SHARE_FORM        GoodsType = 30
-	GoodsType_GT_MEDAL             GoodsType = 31
-	GoodsType_GT_PETBOX_BOX_INFO   GoodsType = 32
-	GoodsType_GT_PETBOX_PET_CHANGE GoodsType = 33
-	GoodsType_GT_EMOJI_ALBUM       GoodsType = 34
-	GoodsType_GT_CHAT_BUBBLE       GoodsType = 35
-	GoodsType_GT_PET_BAN_FLAG      GoodsType = 36
+	GoodsType_GT_NONE                   GoodsType = 0
+	GoodsType_GT_BAGITEM                GoodsType = 1
+	GoodsType_GT_VITEM                  GoodsType = 2
+	GoodsType_GT_REWARD                 GoodsType = 3
+	GoodsType_GT_PET                    GoodsType = 4
+	GoodsType_GT_PET_HP                 GoodsType = 5
+	GoodsType_GT_CREATENPC              GoodsType = 6
+	GoodsType_GT_HANDBOOK               GoodsType = 7
+	GoodsType_GT_TEAMINFO               GoodsType = 8
+	GoodsType_GT_BACKPACK               GoodsType = 9
+	GoodsType_GT_FASHION                GoodsType = 10
+	GoodsType_GT_SALON                  GoodsType = 11
+	GoodsType_GT_PET_EN                 GoodsType = 12
+	GoodsType_GT_CARD_ICON              GoodsType = 13
+	GoodsType_GT_CARD_SKIN              GoodsType = 14
+	GoodsType_GT_CARD_LABEL             GoodsType = 15
+	GoodsType_GT_TASK_TOKEN             GoodsType = 16
+	GoodsType_GT_EMOJI                  GoodsType = 17
+	GoodsType_GT_CONTENT_NPC            GoodsType = 18
+	GoodsType_GT_BAG_BACKPACK           GoodsType = 19
+	GoodsType_GT_RP_BEHAVIOR            GoodsType = 20
+	GoodsType_GT_ATTRTYPE               GoodsType = 21
+	GoodsType_GT_PETEXP                 GoodsType = 22
+	GoodsType_GT_FASHION_SUITS          GoodsType = 23
+	GoodsType_GT_FASHION_PACKAGE        GoodsType = 24
+	GoodsType_GT_CDKEY                  GoodsType = 25
+	GoodsType_GT_BP_GIFT                GoodsType = 26
+	GoodsType_GT_PROP                   GoodsType = 27
+	GoodsType_GT_FASHION_BOND           GoodsType = 28
+	GoodsType_GT_GET_PHOTO              GoodsType = 29
+	GoodsType_GT_SHARE_FORM             GoodsType = 30
+	GoodsType_GT_MEDAL                  GoodsType = 31
+	GoodsType_GT_PETBOX_BOX_INFO        GoodsType = 32
+	GoodsType_GT_PETBOX_PET_CHANGE      GoodsType = 33
+	GoodsType_GT_EMOJI_ALBUM            GoodsType = 34
+	GoodsType_GT_CHAT_BUBBLE            GoodsType = 35
+	GoodsType_GT_PET_BAN_FLAG           GoodsType = 36
+	GoodsType_GT_ACTIVITY_VIRTUAL_SCORE GoodsType = 37
 )
 
 // Enum value maps for GoodsType.
@@ -9416,45 +9420,47 @@ var (
 		34: "GT_EMOJI_ALBUM",
 		35: "GT_CHAT_BUBBLE",
 		36: "GT_PET_BAN_FLAG",
+		37: "GT_ACTIVITY_VIRTUAL_SCORE",
 	}
 	GoodsType_value = map[string]int32{
-		"GT_NONE":              0,
-		"GT_BAGITEM":           1,
-		"GT_VITEM":             2,
-		"GT_REWARD":            3,
-		"GT_PET":               4,
-		"GT_PET_HP":            5,
-		"GT_CREATENPC":         6,
-		"GT_HANDBOOK":          7,
-		"GT_TEAMINFO":          8,
-		"GT_BACKPACK":          9,
-		"GT_FASHION":           10,
-		"GT_SALON":             11,
-		"GT_PET_EN":            12,
-		"GT_CARD_ICON":         13,
-		"GT_CARD_SKIN":         14,
-		"GT_CARD_LABEL":        15,
-		"GT_TASK_TOKEN":        16,
-		"GT_EMOJI":             17,
-		"GT_CONTENT_NPC":       18,
-		"GT_BAG_BACKPACK":      19,
-		"GT_RP_BEHAVIOR":       20,
-		"GT_ATTRTYPE":          21,
-		"GT_PETEXP":            22,
-		"GT_FASHION_SUITS":     23,
-		"GT_FASHION_PACKAGE":   24,
-		"GT_CDKEY":             25,
-		"GT_BP_GIFT":           26,
-		"GT_PROP":              27,
-		"GT_FASHION_BOND":      28,
-		"GT_GET_PHOTO":         29,
-		"GT_SHARE_FORM":        30,
-		"GT_MEDAL":             31,
-		"GT_PETBOX_BOX_INFO":   32,
-		"GT_PETBOX_PET_CHANGE": 33,
-		"GT_EMOJI_ALBUM":       34,
-		"GT_CHAT_BUBBLE":       35,
-		"GT_PET_BAN_FLAG":      36,
+		"GT_NONE":                   0,
+		"GT_BAGITEM":                1,
+		"GT_VITEM":                  2,
+		"GT_REWARD":                 3,
+		"GT_PET":                    4,
+		"GT_PET_HP":                 5,
+		"GT_CREATENPC":              6,
+		"GT_HANDBOOK":               7,
+		"GT_TEAMINFO":               8,
+		"GT_BACKPACK":               9,
+		"GT_FASHION":                10,
+		"GT_SALON":                  11,
+		"GT_PET_EN":                 12,
+		"GT_CARD_ICON":              13,
+		"GT_CARD_SKIN":              14,
+		"GT_CARD_LABEL":             15,
+		"GT_TASK_TOKEN":             16,
+		"GT_EMOJI":                  17,
+		"GT_CONTENT_NPC":            18,
+		"GT_BAG_BACKPACK":           19,
+		"GT_RP_BEHAVIOR":            20,
+		"GT_ATTRTYPE":               21,
+		"GT_PETEXP":                 22,
+		"GT_FASHION_SUITS":          23,
+		"GT_FASHION_PACKAGE":        24,
+		"GT_CDKEY":                  25,
+		"GT_BP_GIFT":                26,
+		"GT_PROP":                   27,
+		"GT_FASHION_BOND":           28,
+		"GT_GET_PHOTO":              29,
+		"GT_SHARE_FORM":             30,
+		"GT_MEDAL":                  31,
+		"GT_PETBOX_BOX_INFO":        32,
+		"GT_PETBOX_PET_CHANGE":      33,
+		"GT_EMOJI_ALBUM":            34,
+		"GT_CHAT_BUBBLE":            35,
+		"GT_PET_BAN_FLAG":           36,
+		"GT_ACTIVITY_VIRTUAL_SCORE": 37,
 	}
 )
 
@@ -25559,6 +25565,7 @@ const (
 	SpaceActorLogicStatus_SALS_HOME_PET_HOLD_EGG             SpaceActorLogicStatus = 1705
 	SpaceActorLogicStatus_SALS_THROWCATCH                    SpaceActorLogicStatus = 1801
 	SpaceActorLogicStatus_SALS_FIND_CHEST                    SpaceActorLogicStatus = 1802
+	SpaceActorLogicStatus_SALS_THROW_CATCHED                 SpaceActorLogicStatus = 1803
 )
 
 // Enum value maps for SpaceActorLogicStatus.
@@ -25747,6 +25754,7 @@ var (
 		1705: "SALS_HOME_PET_HOLD_EGG",
 		1801: "SALS_THROWCATCH",
 		1802: "SALS_FIND_CHEST",
+		1803: "SALS_THROW_CATCHED",
 	}
 	SpaceActorLogicStatus_value = map[string]int32{
 		"SALS_NONE":                          0,
@@ -25932,6 +25940,7 @@ var (
 		"SALS_HOME_PET_HOLD_EGG":             1705,
 		"SALS_THROWCATCH":                    1801,
 		"SALS_FIND_CHEST":                    1802,
+		"SALS_THROW_CATCHED":                 1803,
 	}
 )
 
@@ -40065,6 +40074,7 @@ const (
 	ActivityType_ATP_PET_PRODUCT                ActivityType = 60
 	ActivityType_ATP_SEASON_SPRINT              ActivityType = 63
 	ActivityType_ATP_PET_GIFT                   ActivityType = 67
+	ActivityType_ATP_PUBLIC_WELFARE             ActivityType = 72
 )
 
 // Enum value maps for ActivityType.
@@ -40130,6 +40140,7 @@ var (
 		60: "ATP_PET_PRODUCT",
 		63: "ATP_SEASON_SPRINT",
 		67: "ATP_PET_GIFT",
+		72: "ATP_PUBLIC_WELFARE",
 	}
 	ActivityType_value = map[string]int32{
 		"ATP_ACTIVITY_SPECIAL":           1,
@@ -40192,6 +40203,7 @@ var (
 		"ATP_PET_PRODUCT":                60,
 		"ATP_SEASON_SPRINT":              63,
 		"ATP_PET_GIFT":                   67,
+		"ATP_PUBLIC_WELFARE":             72,
 	}
 )
 
@@ -40418,24 +40430,27 @@ func (ActivityIconChangeRequired) EnumDescriptor() ([]byte, []int) {
 type ActiviyMixSlotFunciton int32
 
 const (
-	ActiviyMixSlotFunciton_AMSF_NONE               ActiviyMixSlotFunciton = 0
-	ActiviyMixSlotFunciton_AMSF_CHECK_VITEM        ActiviyMixSlotFunciton = 1
-	ActiviyMixSlotFunciton_AMSF_ACTIVITY           ActiviyMixSlotFunciton = 2
-	ActiviyMixSlotFunciton_AMSF_TASK               ActiviyMixSlotFunciton = 3
-	ActiviyMixSlotFunciton_AMSF_CHECK_BAGITEM      ActiviyMixSlotFunciton = 4
-	ActiviyMixSlotFunciton_AMSF_SHOW_BAGITEM       ActiviyMixSlotFunciton = 5
-	ActiviyMixSlotFunciton_AMSF_PET_INFORMATION    ActiviyMixSlotFunciton = 6
-	ActiviyMixSlotFunciton_AMSF_TASK_REAWAD        ActiviyMixSlotFunciton = 7
-	ActiviyMixSlotFunciton_AMSF_CONDITION_REWARD   ActiviyMixSlotFunciton = 8
-	ActiviyMixSlotFunciton_AMSF_CONDITION_TEXT     ActiviyMixSlotFunciton = 9
-	ActiviyMixSlotFunciton_AMSF_TASK_DONE          ActiviyMixSlotFunciton = 10
-	ActiviyMixSlotFunciton_AMSF_SHOP_CHANGE_DONE   ActiviyMixSlotFunciton = 11
-	ActiviyMixSlotFunciton_AMSF_PET_ATTR           ActiviyMixSlotFunciton = 12
-	ActiviyMixSlotFunciton_AMSF_GET_TASK           ActiviyMixSlotFunciton = 13
-	ActiviyMixSlotFunciton_AMSF_SHOW_REWARD        ActiviyMixSlotFunciton = 19
-	ActiviyMixSlotFunciton_AMSF_CONFIG_MAX         ActiviyMixSlotFunciton = 1000
-	ActiviyMixSlotFunciton_AMSF_PREREQUISITE_TASKS ActiviyMixSlotFunciton = 1001
-	ActiviyMixSlotFunciton_AMSF_MUST_DO_TASKS      ActiviyMixSlotFunciton = 1002
+	ActiviyMixSlotFunciton_AMSF_NONE                    ActiviyMixSlotFunciton = 0
+	ActiviyMixSlotFunciton_AMSF_CHECK_VITEM             ActiviyMixSlotFunciton = 1
+	ActiviyMixSlotFunciton_AMSF_ACTIVITY                ActiviyMixSlotFunciton = 2
+	ActiviyMixSlotFunciton_AMSF_TASK                    ActiviyMixSlotFunciton = 3
+	ActiviyMixSlotFunciton_AMSF_CHECK_BAGITEM           ActiviyMixSlotFunciton = 4
+	ActiviyMixSlotFunciton_AMSF_SHOW_BAGITEM            ActiviyMixSlotFunciton = 5
+	ActiviyMixSlotFunciton_AMSF_PET_INFORMATION         ActiviyMixSlotFunciton = 6
+	ActiviyMixSlotFunciton_AMSF_TASK_REAWAD             ActiviyMixSlotFunciton = 7
+	ActiviyMixSlotFunciton_AMSF_CONDITION_REWARD        ActiviyMixSlotFunciton = 8
+	ActiviyMixSlotFunciton_AMSF_CONDITION_TEXT          ActiviyMixSlotFunciton = 9
+	ActiviyMixSlotFunciton_AMSF_TASK_DONE               ActiviyMixSlotFunciton = 10
+	ActiviyMixSlotFunciton_AMSF_SHOP_CHANGE_DONE        ActiviyMixSlotFunciton = 11
+	ActiviyMixSlotFunciton_AMSF_PET_ATTR                ActiviyMixSlotFunciton = 12
+	ActiviyMixSlotFunciton_AMSF_GET_TASK                ActiviyMixSlotFunciton = 13
+	ActiviyMixSlotFunciton_AMSF_VIRTUAL_PROGRESS        ActiviyMixSlotFunciton = 17
+	ActiviyMixSlotFunciton_AMSF_ACTIVITY_SCORE_RECORD   ActiviyMixSlotFunciton = 18
+	ActiviyMixSlotFunciton_AMSF_SHOW_REWARD             ActiviyMixSlotFunciton = 19
+	ActiviyMixSlotFunciton_AMSF_CONDITION_REWARD_ACTION ActiviyMixSlotFunciton = 22
+	ActiviyMixSlotFunciton_AMSF_CONFIG_MAX              ActiviyMixSlotFunciton = 1000
+	ActiviyMixSlotFunciton_AMSF_PREREQUISITE_TASKS      ActiviyMixSlotFunciton = 1001
+	ActiviyMixSlotFunciton_AMSF_MUST_DO_TASKS           ActiviyMixSlotFunciton = 1002
 )
 
 // Enum value maps for ActiviyMixSlotFunciton.
@@ -40455,30 +40470,36 @@ var (
 		11:   "AMSF_SHOP_CHANGE_DONE",
 		12:   "AMSF_PET_ATTR",
 		13:   "AMSF_GET_TASK",
+		17:   "AMSF_VIRTUAL_PROGRESS",
+		18:   "AMSF_ACTIVITY_SCORE_RECORD",
 		19:   "AMSF_SHOW_REWARD",
+		22:   "AMSF_CONDITION_REWARD_ACTION",
 		1000: "AMSF_CONFIG_MAX",
 		1001: "AMSF_PREREQUISITE_TASKS",
 		1002: "AMSF_MUST_DO_TASKS",
 	}
 	ActiviyMixSlotFunciton_value = map[string]int32{
-		"AMSF_NONE":               0,
-		"AMSF_CHECK_VITEM":        1,
-		"AMSF_ACTIVITY":           2,
-		"AMSF_TASK":               3,
-		"AMSF_CHECK_BAGITEM":      4,
-		"AMSF_SHOW_BAGITEM":       5,
-		"AMSF_PET_INFORMATION":    6,
-		"AMSF_TASK_REAWAD":        7,
-		"AMSF_CONDITION_REWARD":   8,
-		"AMSF_CONDITION_TEXT":     9,
-		"AMSF_TASK_DONE":          10,
-		"AMSF_SHOP_CHANGE_DONE":   11,
-		"AMSF_PET_ATTR":           12,
-		"AMSF_GET_TASK":           13,
-		"AMSF_SHOW_REWARD":        19,
-		"AMSF_CONFIG_MAX":         1000,
-		"AMSF_PREREQUISITE_TASKS": 1001,
-		"AMSF_MUST_DO_TASKS":      1002,
+		"AMSF_NONE":                    0,
+		"AMSF_CHECK_VITEM":             1,
+		"AMSF_ACTIVITY":                2,
+		"AMSF_TASK":                    3,
+		"AMSF_CHECK_BAGITEM":           4,
+		"AMSF_SHOW_BAGITEM":            5,
+		"AMSF_PET_INFORMATION":         6,
+		"AMSF_TASK_REAWAD":             7,
+		"AMSF_CONDITION_REWARD":        8,
+		"AMSF_CONDITION_TEXT":          9,
+		"AMSF_TASK_DONE":               10,
+		"AMSF_SHOP_CHANGE_DONE":        11,
+		"AMSF_PET_ATTR":                12,
+		"AMSF_GET_TASK":                13,
+		"AMSF_VIRTUAL_PROGRESS":        17,
+		"AMSF_ACTIVITY_SCORE_RECORD":   18,
+		"AMSF_SHOW_REWARD":             19,
+		"AMSF_CONDITION_REWARD_ACTION": 22,
+		"AMSF_CONFIG_MAX":              1000,
+		"AMSF_PREREQUISITE_TASKS":      1001,
+		"AMSF_MUST_DO_TASKS":           1002,
 	}
 )
 
@@ -40519,6 +40540,62 @@ func (ActiviyMixSlotFunciton) EnumDescriptor() ([]byte, []int) {
 	return file_xls_enum_proto_rawDescGZIP(), []int{448}
 }
 
+type ActivityComposeExternalActionType int32
+
+const (
+	ActivityComposeExternalActionType_ACEAT_NONE           ActivityComposeExternalActionType = 0
+	ActivityComposeExternalActionType_ACEAT_CHARITY_FLOWER ActivityComposeExternalActionType = 1
+)
+
+// Enum value maps for ActivityComposeExternalActionType.
+var (
+	ActivityComposeExternalActionType_name = map[int32]string{
+		0: "ACEAT_NONE",
+		1: "ACEAT_CHARITY_FLOWER",
+	}
+	ActivityComposeExternalActionType_value = map[string]int32{
+		"ACEAT_NONE":           0,
+		"ACEAT_CHARITY_FLOWER": 1,
+	}
+)
+
+func (x ActivityComposeExternalActionType) Enum() *ActivityComposeExternalActionType {
+	p := new(ActivityComposeExternalActionType)
+	*p = x
+	return p
+}
+
+func (x ActivityComposeExternalActionType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (ActivityComposeExternalActionType) Descriptor() protoreflect.EnumDescriptor {
+	return file_xls_enum_proto_enumTypes[449].Descriptor()
+}
+
+func (ActivityComposeExternalActionType) Type() protoreflect.EnumType {
+	return &file_xls_enum_proto_enumTypes[449]
+}
+
+func (x ActivityComposeExternalActionType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Do not use.
+func (x *ActivityComposeExternalActionType) UnmarshalJSON(b []byte) error {
+	num, err := protoimpl.X.UnmarshalJSONEnum(x.Descriptor(), b)
+	if err != nil {
+		return err
+	}
+	*x = ActivityComposeExternalActionType(num)
+	return nil
+}
+
+// Deprecated: Use ActivityComposeExternalActionType.Descriptor instead.
+func (ActivityComposeExternalActionType) EnumDescriptor() ([]byte, []int) {
+	return file_xls_enum_proto_rawDescGZIP(), []int{449}
+}
+
 type MarqueeTextRefreshType int32
 
 const (
@@ -40549,11 +40626,11 @@ func (x MarqueeTextRefreshType) String() string {
 }
 
 func (MarqueeTextRefreshType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[449].Descriptor()
+	return file_xls_enum_proto_enumTypes[450].Descriptor()
 }
 
 func (MarqueeTextRefreshType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[449]
+	return &file_xls_enum_proto_enumTypes[450]
 }
 
 func (x MarqueeTextRefreshType) Number() protoreflect.EnumNumber {
@@ -40572,7 +40649,7 @@ func (x *MarqueeTextRefreshType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use MarqueeTextRefreshType.Descriptor instead.
 func (MarqueeTextRefreshType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{449}
+	return file_xls_enum_proto_rawDescGZIP(), []int{450}
 }
 
 type PETStoryPageType int32
@@ -40605,11 +40682,11 @@ func (x PETStoryPageType) String() string {
 }
 
 func (PETStoryPageType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[450].Descriptor()
+	return file_xls_enum_proto_enumTypes[451].Descriptor()
 }
 
 func (PETStoryPageType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[450]
+	return &file_xls_enum_proto_enumTypes[451]
 }
 
 func (x PETStoryPageType) Number() protoreflect.EnumNumber {
@@ -40628,7 +40705,7 @@ func (x *PETStoryPageType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use PETStoryPageType.Descriptor instead.
 func (PETStoryPageType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{450}
+	return file_xls_enum_proto_rawDescGZIP(), []int{451}
 }
 
 type PetInformationUnlockType int32
@@ -40661,11 +40738,11 @@ func (x PetInformationUnlockType) String() string {
 }
 
 func (PetInformationUnlockType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[451].Descriptor()
+	return file_xls_enum_proto_enumTypes[452].Descriptor()
 }
 
 func (PetInformationUnlockType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[451]
+	return &file_xls_enum_proto_enumTypes[452]
 }
 
 func (x PetInformationUnlockType) Number() protoreflect.EnumNumber {
@@ -40684,7 +40761,7 @@ func (x *PetInformationUnlockType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use PetInformationUnlockType.Descriptor instead.
 func (PetInformationUnlockType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{451}
+	return file_xls_enum_proto_rawDescGZIP(), []int{452}
 }
 
 type RarityLevelEnumeration int32
@@ -40738,11 +40815,11 @@ func (x RarityLevelEnumeration) String() string {
 }
 
 func (RarityLevelEnumeration) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[452].Descriptor()
+	return file_xls_enum_proto_enumTypes[453].Descriptor()
 }
 
 func (RarityLevelEnumeration) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[452]
+	return &file_xls_enum_proto_enumTypes[453]
 }
 
 func (x RarityLevelEnumeration) Number() protoreflect.EnumNumber {
@@ -40761,7 +40838,7 @@ func (x *RarityLevelEnumeration) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use RarityLevelEnumeration.Descriptor instead.
 func (RarityLevelEnumeration) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{452}
+	return file_xls_enum_proto_rawDescGZIP(), []int{453}
 }
 
 type PetSotryDecorationImage int32
@@ -40794,11 +40871,11 @@ func (x PetSotryDecorationImage) String() string {
 }
 
 func (PetSotryDecorationImage) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[453].Descriptor()
+	return file_xls_enum_proto_enumTypes[454].Descriptor()
 }
 
 func (PetSotryDecorationImage) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[453]
+	return &file_xls_enum_proto_enumTypes[454]
 }
 
 func (x PetSotryDecorationImage) Number() protoreflect.EnumNumber {
@@ -40817,7 +40894,7 @@ func (x *PetSotryDecorationImage) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use PetSotryDecorationImage.Descriptor instead.
 func (PetSotryDecorationImage) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{453}
+	return file_xls_enum_proto_rawDescGZIP(), []int{454}
 }
 
 type PetSotryDecorationImageTxt int32
@@ -40853,11 +40930,11 @@ func (x PetSotryDecorationImageTxt) String() string {
 }
 
 func (PetSotryDecorationImageTxt) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[454].Descriptor()
+	return file_xls_enum_proto_enumTypes[455].Descriptor()
 }
 
 func (PetSotryDecorationImageTxt) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[454]
+	return &file_xls_enum_proto_enumTypes[455]
 }
 
 func (x PetSotryDecorationImageTxt) Number() protoreflect.EnumNumber {
@@ -40876,7 +40953,7 @@ func (x *PetSotryDecorationImageTxt) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use PetSotryDecorationImageTxt.Descriptor instead.
 func (PetSotryDecorationImageTxt) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{454}
+	return file_xls_enum_proto_rawDescGZIP(), []int{455}
 }
 
 type AvailableHpRule int32
@@ -40909,11 +40986,11 @@ func (x AvailableHpRule) String() string {
 }
 
 func (AvailableHpRule) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[455].Descriptor()
+	return file_xls_enum_proto_enumTypes[456].Descriptor()
 }
 
 func (AvailableHpRule) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[455]
+	return &file_xls_enum_proto_enumTypes[456]
 }
 
 func (x AvailableHpRule) Number() protoreflect.EnumNumber {
@@ -40932,7 +41009,7 @@ func (x *AvailableHpRule) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use AvailableHpRule.Descriptor instead.
 func (AvailableHpRule) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{455}
+	return file_xls_enum_proto_rawDescGZIP(), []int{456}
 }
 
 type ReacallUnlockTriggerType int32
@@ -40971,11 +41048,11 @@ func (x ReacallUnlockTriggerType) String() string {
 }
 
 func (ReacallUnlockTriggerType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[456].Descriptor()
+	return file_xls_enum_proto_enumTypes[457].Descriptor()
 }
 
 func (ReacallUnlockTriggerType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[456]
+	return &file_xls_enum_proto_enumTypes[457]
 }
 
 func (x ReacallUnlockTriggerType) Number() protoreflect.EnumNumber {
@@ -40994,7 +41071,7 @@ func (x *ReacallUnlockTriggerType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use ReacallUnlockTriggerType.Descriptor instead.
 func (ReacallUnlockTriggerType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{456}
+	return file_xls_enum_proto_rawDescGZIP(), []int{457}
 }
 
 type TeachUnlockCondition int32
@@ -41105,11 +41182,11 @@ func (x TeachUnlockCondition) String() string {
 }
 
 func (TeachUnlockCondition) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[457].Descriptor()
+	return file_xls_enum_proto_enumTypes[458].Descriptor()
 }
 
 func (TeachUnlockCondition) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[457]
+	return &file_xls_enum_proto_enumTypes[458]
 }
 
 func (x TeachUnlockCondition) Number() protoreflect.EnumNumber {
@@ -41128,7 +41205,7 @@ func (x *TeachUnlockCondition) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use TeachUnlockCondition.Descriptor instead.
 func (TeachUnlockCondition) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{457}
+	return file_xls_enum_proto_rawDescGZIP(), []int{458}
 }
 
 type GuideSettingMode int32
@@ -41158,11 +41235,11 @@ func (x GuideSettingMode) String() string {
 }
 
 func (GuideSettingMode) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[458].Descriptor()
+	return file_xls_enum_proto_enumTypes[459].Descriptor()
 }
 
 func (GuideSettingMode) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[458]
+	return &file_xls_enum_proto_enumTypes[459]
 }
 
 func (x GuideSettingMode) Number() protoreflect.EnumNumber {
@@ -41181,7 +41258,7 @@ func (x *GuideSettingMode) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use GuideSettingMode.Descriptor instead.
 func (GuideSettingMode) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{458}
+	return file_xls_enum_proto_rawDescGZIP(), []int{459}
 }
 
 type GuideActionType int32
@@ -41229,11 +41306,11 @@ func (x GuideActionType) String() string {
 }
 
 func (GuideActionType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[459].Descriptor()
+	return file_xls_enum_proto_enumTypes[460].Descriptor()
 }
 
 func (GuideActionType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[459]
+	return &file_xls_enum_proto_enumTypes[460]
 }
 
 func (x GuideActionType) Number() protoreflect.EnumNumber {
@@ -41252,7 +41329,7 @@ func (x *GuideActionType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use GuideActionType.Descriptor instead.
 func (GuideActionType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{459}
+	return file_xls_enum_proto_rawDescGZIP(), []int{460}
 }
 
 type GuideActionBanType int32
@@ -41282,11 +41359,11 @@ func (x GuideActionBanType) String() string {
 }
 
 func (GuideActionBanType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[460].Descriptor()
+	return file_xls_enum_proto_enumTypes[461].Descriptor()
 }
 
 func (GuideActionBanType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[460]
+	return &file_xls_enum_proto_enumTypes[461]
 }
 
 func (x GuideActionBanType) Number() protoreflect.EnumNumber {
@@ -41305,7 +41382,7 @@ func (x *GuideActionBanType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use GuideActionBanType.Descriptor instead.
 func (GuideActionBanType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{460}
+	return file_xls_enum_proto_rawDescGZIP(), []int{461}
 }
 
 type TeachClientTrigger int32
@@ -41371,11 +41448,11 @@ func (x TeachClientTrigger) String() string {
 }
 
 func (TeachClientTrigger) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[461].Descriptor()
+	return file_xls_enum_proto_enumTypes[462].Descriptor()
 }
 
 func (TeachClientTrigger) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[461]
+	return &file_xls_enum_proto_enumTypes[462]
 }
 
 func (x TeachClientTrigger) Number() protoreflect.EnumNumber {
@@ -41394,7 +41471,7 @@ func (x *TeachClientTrigger) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use TeachClientTrigger.Descriptor instead.
 func (TeachClientTrigger) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{461}
+	return file_xls_enum_proto_rawDescGZIP(), []int{462}
 }
 
 type TriggerPlayerType int32
@@ -41433,11 +41510,11 @@ func (x TriggerPlayerType) String() string {
 }
 
 func (TriggerPlayerType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[462].Descriptor()
+	return file_xls_enum_proto_enumTypes[463].Descriptor()
 }
 
 func (TriggerPlayerType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[462]
+	return &file_xls_enum_proto_enumTypes[463]
 }
 
 func (x TriggerPlayerType) Number() protoreflect.EnumNumber {
@@ -41456,7 +41533,7 @@ func (x *TriggerPlayerType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use TriggerPlayerType.Descriptor instead.
 func (TriggerPlayerType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{462}
+	return file_xls_enum_proto_rawDescGZIP(), []int{463}
 }
 
 type EventResultType int32
@@ -41510,11 +41587,11 @@ func (x EventResultType) String() string {
 }
 
 func (EventResultType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[463].Descriptor()
+	return file_xls_enum_proto_enumTypes[464].Descriptor()
 }
 
 func (EventResultType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[463]
+	return &file_xls_enum_proto_enumTypes[464]
 }
 
 func (x EventResultType) Number() protoreflect.EnumNumber {
@@ -41533,7 +41610,7 @@ func (x *EventResultType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use EventResultType.Descriptor instead.
 func (EventResultType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{463}
+	return file_xls_enum_proto_rawDescGZIP(), []int{464}
 }
 
 type AdventureRecord int32
@@ -41575,11 +41652,11 @@ func (x AdventureRecord) String() string {
 }
 
 func (AdventureRecord) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[464].Descriptor()
+	return file_xls_enum_proto_enumTypes[465].Descriptor()
 }
 
 func (AdventureRecord) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[464]
+	return &file_xls_enum_proto_enumTypes[465]
 }
 
 func (x AdventureRecord) Number() protoreflect.EnumNumber {
@@ -41598,7 +41675,7 @@ func (x *AdventureRecord) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use AdventureRecord.Descriptor instead.
 func (AdventureRecord) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{464}
+	return file_xls_enum_proto_rawDescGZIP(), []int{465}
 }
 
 type FaceToFaceType int32
@@ -41637,11 +41714,11 @@ func (x FaceToFaceType) String() string {
 }
 
 func (FaceToFaceType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[465].Descriptor()
+	return file_xls_enum_proto_enumTypes[466].Descriptor()
 }
 
 func (FaceToFaceType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[465]
+	return &file_xls_enum_proto_enumTypes[466]
 }
 
 func (x FaceToFaceType) Number() protoreflect.EnumNumber {
@@ -41660,7 +41737,7 @@ func (x *FaceToFaceType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use FaceToFaceType.Descriptor instead.
 func (FaceToFaceType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{465}
+	return file_xls_enum_proto_rawDescGZIP(), []int{466}
 }
 
 type MegaMapObjectClass int32
@@ -41720,11 +41797,11 @@ func (x MegaMapObjectClass) String() string {
 }
 
 func (MegaMapObjectClass) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[466].Descriptor()
+	return file_xls_enum_proto_enumTypes[467].Descriptor()
 }
 
 func (MegaMapObjectClass) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[466]
+	return &file_xls_enum_proto_enumTypes[467]
 }
 
 func (x MegaMapObjectClass) Number() protoreflect.EnumNumber {
@@ -41743,7 +41820,7 @@ func (x *MegaMapObjectClass) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use MegaMapObjectClass.Descriptor instead.
 func (MegaMapObjectClass) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{466}
+	return file_xls_enum_proto_rawDescGZIP(), []int{467}
 }
 
 type MegaMapPositionIndexMethod int32
@@ -41791,11 +41868,11 @@ func (x MegaMapPositionIndexMethod) String() string {
 }
 
 func (MegaMapPositionIndexMethod) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[467].Descriptor()
+	return file_xls_enum_proto_enumTypes[468].Descriptor()
 }
 
 func (MegaMapPositionIndexMethod) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[467]
+	return &file_xls_enum_proto_enumTypes[468]
 }
 
 func (x MegaMapPositionIndexMethod) Number() protoreflect.EnumNumber {
@@ -41814,7 +41891,7 @@ func (x *MegaMapPositionIndexMethod) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use MegaMapPositionIndexMethod.Descriptor instead.
 func (MegaMapPositionIndexMethod) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{467}
+	return file_xls_enum_proto_rawDescGZIP(), []int{468}
 }
 
 type MegaMapIdType int32
@@ -41853,11 +41930,11 @@ func (x MegaMapIdType) String() string {
 }
 
 func (MegaMapIdType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[468].Descriptor()
+	return file_xls_enum_proto_enumTypes[469].Descriptor()
 }
 
 func (MegaMapIdType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[468]
+	return &file_xls_enum_proto_enumTypes[469]
 }
 
 func (x MegaMapIdType) Number() protoreflect.EnumNumber {
@@ -41876,7 +41953,7 @@ func (x *MegaMapIdType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use MegaMapIdType.Descriptor instead.
 func (MegaMapIdType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{468}
+	return file_xls_enum_proto_rawDescGZIP(), []int{469}
 }
 
 type PerceptionHudType int32
@@ -41921,11 +41998,11 @@ func (x PerceptionHudType) String() string {
 }
 
 func (PerceptionHudType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[469].Descriptor()
+	return file_xls_enum_proto_enumTypes[470].Descriptor()
 }
 
 func (PerceptionHudType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[469]
+	return &file_xls_enum_proto_enumTypes[470]
 }
 
 func (x PerceptionHudType) Number() protoreflect.EnumNumber {
@@ -41944,7 +42021,7 @@ func (x *PerceptionHudType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use PerceptionHudType.Descriptor instead.
 func (PerceptionHudType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{469}
+	return file_xls_enum_proto_rawDescGZIP(), []int{470}
 }
 
 type MonsterDifficultyType int32
@@ -42073,11 +42150,11 @@ func (x MonsterDifficultyType) String() string {
 }
 
 func (MonsterDifficultyType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[470].Descriptor()
+	return file_xls_enum_proto_enumTypes[471].Descriptor()
 }
 
 func (MonsterDifficultyType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[470]
+	return &file_xls_enum_proto_enumTypes[471]
 }
 
 func (x MonsterDifficultyType) Number() protoreflect.EnumNumber {
@@ -42096,7 +42173,7 @@ func (x *MonsterDifficultyType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use MonsterDifficultyType.Descriptor instead.
 func (MonsterDifficultyType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{470}
+	return file_xls_enum_proto_rawDescGZIP(), []int{471}
 }
 
 type CampPetReportType int32
@@ -42135,11 +42212,11 @@ func (x CampPetReportType) String() string {
 }
 
 func (CampPetReportType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[471].Descriptor()
+	return file_xls_enum_proto_enumTypes[472].Descriptor()
 }
 
 func (CampPetReportType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[471]
+	return &file_xls_enum_proto_enumTypes[472]
 }
 
 func (x CampPetReportType) Number() protoreflect.EnumNumber {
@@ -42158,7 +42235,7 @@ func (x *CampPetReportType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use CampPetReportType.Descriptor instead.
 func (CampPetReportType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{471}
+	return file_xls_enum_proto_rawDescGZIP(), []int{472}
 }
 
 type SvrAIReportType int32
@@ -42200,11 +42277,11 @@ func (x SvrAIReportType) String() string {
 }
 
 func (SvrAIReportType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[472].Descriptor()
+	return file_xls_enum_proto_enumTypes[473].Descriptor()
 }
 
 func (SvrAIReportType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[472]
+	return &file_xls_enum_proto_enumTypes[473]
 }
 
 func (x SvrAIReportType) Number() protoreflect.EnumNumber {
@@ -42223,7 +42300,7 @@ func (x *SvrAIReportType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use SvrAIReportType.Descriptor instead.
 func (SvrAIReportType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{472}
+	return file_xls_enum_proto_rawDescGZIP(), []int{473}
 }
 
 type PlayerPetStorePlace int32
@@ -42262,11 +42339,11 @@ func (x PlayerPetStorePlace) String() string {
 }
 
 func (PlayerPetStorePlace) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[473].Descriptor()
+	return file_xls_enum_proto_enumTypes[474].Descriptor()
 }
 
 func (PlayerPetStorePlace) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[473]
+	return &file_xls_enum_proto_enumTypes[474]
 }
 
 func (x PlayerPetStorePlace) Number() protoreflect.EnumNumber {
@@ -42285,7 +42362,7 @@ func (x *PlayerPetStorePlace) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use PlayerPetStorePlace.Descriptor instead.
 func (PlayerPetStorePlace) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{473}
+	return file_xls_enum_proto_rawDescGZIP(), []int{474}
 }
 
 type BotStatusType int32
@@ -42324,11 +42401,11 @@ func (x BotStatusType) String() string {
 }
 
 func (BotStatusType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[474].Descriptor()
+	return file_xls_enum_proto_enumTypes[475].Descriptor()
 }
 
 func (BotStatusType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[474]
+	return &file_xls_enum_proto_enumTypes[475]
 }
 
 func (x BotStatusType) Number() protoreflect.EnumNumber {
@@ -42347,7 +42424,7 @@ func (x *BotStatusType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use BotStatusType.Descriptor instead.
 func (BotStatusType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{474}
+	return file_xls_enum_proto_rawDescGZIP(), []int{475}
 }
 
 type SetAvatarPosReason int32
@@ -42380,11 +42457,11 @@ func (x SetAvatarPosReason) String() string {
 }
 
 func (SetAvatarPosReason) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[475].Descriptor()
+	return file_xls_enum_proto_enumTypes[476].Descriptor()
 }
 
 func (SetAvatarPosReason) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[475]
+	return &file_xls_enum_proto_enumTypes[476]
 }
 
 func (x SetAvatarPosReason) Number() protoreflect.EnumNumber {
@@ -42403,7 +42480,7 @@ func (x *SetAvatarPosReason) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use SetAvatarPosReason.Descriptor instead.
 func (SetAvatarPosReason) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{475}
+	return file_xls_enum_proto_rawDescGZIP(), []int{476}
 }
 
 type BehaviorOverridePriority int32
@@ -42442,11 +42519,11 @@ func (x BehaviorOverridePriority) String() string {
 }
 
 func (BehaviorOverridePriority) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[476].Descriptor()
+	return file_xls_enum_proto_enumTypes[477].Descriptor()
 }
 
 func (BehaviorOverridePriority) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[476]
+	return &file_xls_enum_proto_enumTypes[477]
 }
 
 func (x BehaviorOverridePriority) Number() protoreflect.EnumNumber {
@@ -42465,7 +42542,7 @@ func (x *BehaviorOverridePriority) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use BehaviorOverridePriority.Descriptor instead.
 func (BehaviorOverridePriority) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{476}
+	return file_xls_enum_proto_rawDescGZIP(), []int{477}
 }
 
 type BehaviorOverrideBackType int32
@@ -42501,11 +42578,11 @@ func (x BehaviorOverrideBackType) String() string {
 }
 
 func (BehaviorOverrideBackType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[477].Descriptor()
+	return file_xls_enum_proto_enumTypes[478].Descriptor()
 }
 
 func (BehaviorOverrideBackType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[477]
+	return &file_xls_enum_proto_enumTypes[478]
 }
 
 func (x BehaviorOverrideBackType) Number() protoreflect.EnumNumber {
@@ -42524,7 +42601,7 @@ func (x *BehaviorOverrideBackType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use BehaviorOverrideBackType.Descriptor instead.
 func (BehaviorOverrideBackType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{477}
+	return file_xls_enum_proto_rawDescGZIP(), []int{478}
 }
 
 type HandbookChangeType int32
@@ -42560,11 +42637,11 @@ func (x HandbookChangeType) String() string {
 }
 
 func (HandbookChangeType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[478].Descriptor()
+	return file_xls_enum_proto_enumTypes[479].Descriptor()
 }
 
 func (HandbookChangeType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[478]
+	return &file_xls_enum_proto_enumTypes[479]
 }
 
 func (x HandbookChangeType) Number() protoreflect.EnumNumber {
@@ -42583,7 +42660,7 @@ func (x *HandbookChangeType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use HandbookChangeType.Descriptor instead.
 func (HandbookChangeType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{478}
+	return file_xls_enum_proto_rawDescGZIP(), []int{479}
 }
 
 type PetFeedType int32
@@ -42616,11 +42693,11 @@ func (x PetFeedType) String() string {
 }
 
 func (PetFeedType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[479].Descriptor()
+	return file_xls_enum_proto_enumTypes[480].Descriptor()
 }
 
 func (PetFeedType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[479]
+	return &file_xls_enum_proto_enumTypes[480]
 }
 
 func (x PetFeedType) Number() protoreflect.EnumNumber {
@@ -42639,7 +42716,7 @@ func (x *PetFeedType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use PetFeedType.Descriptor instead.
 func (PetFeedType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{479}
+	return file_xls_enum_proto_rawDescGZIP(), []int{480}
 }
 
 type PetGrowthType int32
@@ -42678,11 +42755,11 @@ func (x PetGrowthType) String() string {
 }
 
 func (PetGrowthType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[480].Descriptor()
+	return file_xls_enum_proto_enumTypes[481].Descriptor()
 }
 
 func (PetGrowthType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[480]
+	return &file_xls_enum_proto_enumTypes[481]
 }
 
 func (x PetGrowthType) Number() protoreflect.EnumNumber {
@@ -42701,7 +42778,7 @@ func (x *PetGrowthType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use PetGrowthType.Descriptor instead.
 func (PetGrowthType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{480}
+	return file_xls_enum_proto_rawDescGZIP(), []int{481}
 }
 
 type PetSkillChangeType int32
@@ -42743,11 +42820,11 @@ func (x PetSkillChangeType) String() string {
 }
 
 func (PetSkillChangeType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[481].Descriptor()
+	return file_xls_enum_proto_enumTypes[482].Descriptor()
 }
 
 func (PetSkillChangeType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[481]
+	return &file_xls_enum_proto_enumTypes[482]
 }
 
 func (x PetSkillChangeType) Number() protoreflect.EnumNumber {
@@ -42766,7 +42843,7 @@ func (x *PetSkillChangeType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use PetSkillChangeType.Descriptor instead.
 func (PetSkillChangeType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{481}
+	return file_xls_enum_proto_rawDescGZIP(), []int{482}
 }
 
 type LocationInteractionBanType int32
@@ -42820,11 +42897,11 @@ func (x LocationInteractionBanType) String() string {
 }
 
 func (LocationInteractionBanType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[482].Descriptor()
+	return file_xls_enum_proto_enumTypes[483].Descriptor()
 }
 
 func (LocationInteractionBanType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[482]
+	return &file_xls_enum_proto_enumTypes[483]
 }
 
 func (x LocationInteractionBanType) Number() protoreflect.EnumNumber {
@@ -42843,7 +42920,7 @@ func (x *LocationInteractionBanType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use LocationInteractionBanType.Descriptor instead.
 func (LocationInteractionBanType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{482}
+	return file_xls_enum_proto_rawDescGZIP(), []int{483}
 }
 
 type LocationTag int32
@@ -42885,11 +42962,11 @@ func (x LocationTag) String() string {
 }
 
 func (LocationTag) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[483].Descriptor()
+	return file_xls_enum_proto_enumTypes[484].Descriptor()
 }
 
 func (LocationTag) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[483]
+	return &file_xls_enum_proto_enumTypes[484]
 }
 
 func (x LocationTag) Number() protoreflect.EnumNumber {
@@ -42908,7 +42985,7 @@ func (x *LocationTag) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use LocationTag.Descriptor instead.
 func (LocationTag) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{483}
+	return file_xls_enum_proto_rawDescGZIP(), []int{484}
 }
 
 type MageListUnlockType int32
@@ -42941,11 +43018,11 @@ func (x MageListUnlockType) String() string {
 }
 
 func (MageListUnlockType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[484].Descriptor()
+	return file_xls_enum_proto_enumTypes[485].Descriptor()
 }
 
 func (MageListUnlockType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[484]
+	return &file_xls_enum_proto_enumTypes[485]
 }
 
 func (x MageListUnlockType) Number() protoreflect.EnumNumber {
@@ -42964,7 +43041,7 @@ func (x *MageListUnlockType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use MageListUnlockType.Descriptor instead.
 func (MageListUnlockType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{484}
+	return file_xls_enum_proto_rawDescGZIP(), []int{485}
 }
 
 type MageListLockType int32
@@ -42997,11 +43074,11 @@ func (x MageListLockType) String() string {
 }
 
 func (MageListLockType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[485].Descriptor()
+	return file_xls_enum_proto_enumTypes[486].Descriptor()
 }
 
 func (MageListLockType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[485]
+	return &file_xls_enum_proto_enumTypes[486]
 }
 
 func (x MageListLockType) Number() protoreflect.EnumNumber {
@@ -43020,7 +43097,7 @@ func (x *MageListLockType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use MageListLockType.Descriptor instead.
 func (MageListLockType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{485}
+	return file_xls_enum_proto_rawDescGZIP(), []int{486}
 }
 
 type MageInfoUnlockType int32
@@ -43056,11 +43133,11 @@ func (x MageInfoUnlockType) String() string {
 }
 
 func (MageInfoUnlockType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[486].Descriptor()
+	return file_xls_enum_proto_enumTypes[487].Descriptor()
 }
 
 func (MageInfoUnlockType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[486]
+	return &file_xls_enum_proto_enumTypes[487]
 }
 
 func (x MageInfoUnlockType) Number() protoreflect.EnumNumber {
@@ -43079,7 +43156,7 @@ func (x *MageInfoUnlockType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use MageInfoUnlockType.Descriptor instead.
 func (MageInfoUnlockType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{486}
+	return file_xls_enum_proto_rawDescGZIP(), []int{487}
 }
 
 type MageRestUnlock int32
@@ -43118,11 +43195,11 @@ func (x MageRestUnlock) String() string {
 }
 
 func (MageRestUnlock) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[487].Descriptor()
+	return file_xls_enum_proto_enumTypes[488].Descriptor()
 }
 
 func (MageRestUnlock) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[487]
+	return &file_xls_enum_proto_enumTypes[488]
 }
 
 func (x MageRestUnlock) Number() protoreflect.EnumNumber {
@@ -43141,7 +43218,7 @@ func (x *MageRestUnlock) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use MageRestUnlock.Descriptor instead.
 func (MageRestUnlock) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{487}
+	return file_xls_enum_proto_rawDescGZIP(), []int{488}
 }
 
 type SettingButtonType int32
@@ -43180,11 +43257,11 @@ func (x SettingButtonType) String() string {
 }
 
 func (SettingButtonType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[488].Descriptor()
+	return file_xls_enum_proto_enumTypes[489].Descriptor()
 }
 
 func (SettingButtonType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[488]
+	return &file_xls_enum_proto_enumTypes[489]
 }
 
 func (x SettingButtonType) Number() protoreflect.EnumNumber {
@@ -43203,7 +43280,7 @@ func (x *SettingButtonType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use SettingButtonType.Descriptor instead.
 func (SettingButtonType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{488}
+	return file_xls_enum_proto_rawDescGZIP(), []int{489}
 }
 
 type PvpAwardCondition int32
@@ -43242,11 +43319,11 @@ func (x PvpAwardCondition) String() string {
 }
 
 func (PvpAwardCondition) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[489].Descriptor()
+	return file_xls_enum_proto_enumTypes[490].Descriptor()
 }
 
 func (PvpAwardCondition) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[489]
+	return &file_xls_enum_proto_enumTypes[490]
 }
 
 func (x PvpAwardCondition) Number() protoreflect.EnumNumber {
@@ -43265,7 +43342,7 @@ func (x *PvpAwardCondition) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use PvpAwardCondition.Descriptor instead.
 func (PvpAwardCondition) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{489}
+	return file_xls_enum_proto_rawDescGZIP(), []int{490}
 }
 
 type PvpRandomSkill int32
@@ -43301,11 +43378,11 @@ func (x PvpRandomSkill) String() string {
 }
 
 func (PvpRandomSkill) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[490].Descriptor()
+	return file_xls_enum_proto_enumTypes[491].Descriptor()
 }
 
 func (PvpRandomSkill) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[490]
+	return &file_xls_enum_proto_enumTypes[491]
 }
 
 func (x PvpRandomSkill) Number() protoreflect.EnumNumber {
@@ -43324,7 +43401,7 @@ func (x *PvpRandomSkill) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use PvpRandomSkill.Descriptor instead.
 func (PvpRandomSkill) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{490}
+	return file_xls_enum_proto_rawDescGZIP(), []int{491}
 }
 
 type PvpMatchType int32
@@ -43360,11 +43437,11 @@ func (x PvpMatchType) String() string {
 }
 
 func (PvpMatchType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[491].Descriptor()
+	return file_xls_enum_proto_enumTypes[492].Descriptor()
 }
 
 func (PvpMatchType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[491]
+	return &file_xls_enum_proto_enumTypes[492]
 }
 
 func (x PvpMatchType) Number() protoreflect.EnumNumber {
@@ -43383,7 +43460,7 @@ func (x *PvpMatchType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use PvpMatchType.Descriptor instead.
 func (PvpMatchType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{491}
+	return file_xls_enum_proto_rawDescGZIP(), []int{492}
 }
 
 type FurnitureType int32
@@ -43428,11 +43505,11 @@ func (x FurnitureType) String() string {
 }
 
 func (FurnitureType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[492].Descriptor()
+	return file_xls_enum_proto_enumTypes[493].Descriptor()
 }
 
 func (FurnitureType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[492]
+	return &file_xls_enum_proto_enumTypes[493]
 }
 
 func (x FurnitureType) Number() protoreflect.EnumNumber {
@@ -43451,7 +43528,7 @@ func (x *FurnitureType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use FurnitureType.Descriptor instead.
 func (FurnitureType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{492}
+	return file_xls_enum_proto_rawDescGZIP(), []int{493}
 }
 
 type InteriorFinishType int32
@@ -43505,11 +43582,11 @@ func (x InteriorFinishType) String() string {
 }
 
 func (InteriorFinishType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[493].Descriptor()
+	return file_xls_enum_proto_enumTypes[494].Descriptor()
 }
 
 func (InteriorFinishType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[493]
+	return &file_xls_enum_proto_enumTypes[494]
 }
 
 func (x InteriorFinishType) Number() protoreflect.EnumNumber {
@@ -43528,7 +43605,7 @@ func (x *InteriorFinishType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use InteriorFinishType.Descriptor instead.
 func (InteriorFinishType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{493}
+	return file_xls_enum_proto_rawDescGZIP(), []int{494}
 }
 
 type FurnitureTabType int32
@@ -43621,11 +43698,11 @@ func (x FurnitureTabType) String() string {
 }
 
 func (FurnitureTabType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[494].Descriptor()
+	return file_xls_enum_proto_enumTypes[495].Descriptor()
 }
 
 func (FurnitureTabType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[494]
+	return &file_xls_enum_proto_enumTypes[495]
 }
 
 func (x FurnitureTabType) Number() protoreflect.EnumNumber {
@@ -43644,7 +43721,7 @@ func (x *FurnitureTabType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use FurnitureTabType.Descriptor instead.
 func (FurnitureTabType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{494}
+	return file_xls_enum_proto_rawDescGZIP(), []int{495}
 }
 
 type HomeDiyVisualAngle int32
@@ -43680,11 +43757,11 @@ func (x HomeDiyVisualAngle) String() string {
 }
 
 func (HomeDiyVisualAngle) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[495].Descriptor()
+	return file_xls_enum_proto_enumTypes[496].Descriptor()
 }
 
 func (HomeDiyVisualAngle) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[495]
+	return &file_xls_enum_proto_enumTypes[496]
 }
 
 func (x HomeDiyVisualAngle) Number() protoreflect.EnumNumber {
@@ -43703,7 +43780,7 @@ func (x *HomeDiyVisualAngle) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use HomeDiyVisualAngle.Descriptor instead.
 func (HomeDiyVisualAngle) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{495}
+	return file_xls_enum_proto_rawDescGZIP(), []int{496}
 }
 
 type TaskClientTriggerType int32
@@ -43748,11 +43825,11 @@ func (x TaskClientTriggerType) String() string {
 }
 
 func (TaskClientTriggerType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[496].Descriptor()
+	return file_xls_enum_proto_enumTypes[497].Descriptor()
 }
 
 func (TaskClientTriggerType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[496]
+	return &file_xls_enum_proto_enumTypes[497]
 }
 
 func (x TaskClientTriggerType) Number() protoreflect.EnumNumber {
@@ -43771,7 +43848,7 @@ func (x *TaskClientTriggerType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use TaskClientTriggerType.Descriptor instead.
 func (TaskClientTriggerType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{496}
+	return file_xls_enum_proto_rawDescGZIP(), []int{497}
 }
 
 type ReadType int32
@@ -43810,11 +43887,11 @@ func (x ReadType) String() string {
 }
 
 func (ReadType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[497].Descriptor()
+	return file_xls_enum_proto_enumTypes[498].Descriptor()
 }
 
 func (ReadType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[497]
+	return &file_xls_enum_proto_enumTypes[498]
 }
 
 func (x ReadType) Number() protoreflect.EnumNumber {
@@ -43833,7 +43910,7 @@ func (x *ReadType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use ReadType.Descriptor instead.
 func (ReadType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{497}
+	return file_xls_enum_proto_rawDescGZIP(), []int{498}
 }
 
 type FollowConditionType int32
@@ -43893,11 +43970,11 @@ func (x FollowConditionType) String() string {
 }
 
 func (FollowConditionType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[498].Descriptor()
+	return file_xls_enum_proto_enumTypes[499].Descriptor()
 }
 
 func (FollowConditionType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[498]
+	return &file_xls_enum_proto_enumTypes[499]
 }
 
 func (x FollowConditionType) Number() protoreflect.EnumNumber {
@@ -43916,7 +43993,7 @@ func (x *FollowConditionType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use FollowConditionType.Descriptor instead.
 func (FollowConditionType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{498}
+	return file_xls_enum_proto_rawDescGZIP(), []int{499}
 }
 
 type NPCFollowStateType int32
@@ -43955,11 +44032,11 @@ func (x NPCFollowStateType) String() string {
 }
 
 func (NPCFollowStateType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[499].Descriptor()
+	return file_xls_enum_proto_enumTypes[500].Descriptor()
 }
 
 func (NPCFollowStateType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[499]
+	return &file_xls_enum_proto_enumTypes[500]
 }
 
 func (x NPCFollowStateType) Number() protoreflect.EnumNumber {
@@ -43978,7 +44055,7 @@ func (x *NPCFollowStateType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use NPCFollowStateType.Descriptor instead.
 func (NPCFollowStateType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{499}
+	return file_xls_enum_proto_rawDescGZIP(), []int{500}
 }
 
 type StickToSocket int32
@@ -44044,11 +44121,11 @@ func (x StickToSocket) String() string {
 }
 
 func (StickToSocket) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[500].Descriptor()
+	return file_xls_enum_proto_enumTypes[501].Descriptor()
 }
 
 func (StickToSocket) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[500]
+	return &file_xls_enum_proto_enumTypes[501]
 }
 
 func (x StickToSocket) Number() protoreflect.EnumNumber {
@@ -44067,7 +44144,7 @@ func (x *StickToSocket) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use StickToSocket.Descriptor instead.
 func (StickToSocket) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{500}
+	return file_xls_enum_proto_rawDescGZIP(), []int{501}
 }
 
 type NpcFollowState int32
@@ -44109,11 +44186,11 @@ func (x NpcFollowState) String() string {
 }
 
 func (NpcFollowState) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[501].Descriptor()
+	return file_xls_enum_proto_enumTypes[502].Descriptor()
 }
 
 func (NpcFollowState) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[501]
+	return &file_xls_enum_proto_enumTypes[502]
 }
 
 func (x NpcFollowState) Number() protoreflect.EnumNumber {
@@ -44132,7 +44209,7 @@ func (x *NpcFollowState) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use NpcFollowState.Descriptor instead.
 func (NpcFollowState) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{501}
+	return file_xls_enum_proto_rawDescGZIP(), []int{502}
 }
 
 type RequiredType int32
@@ -44210,11 +44287,11 @@ func (x RequiredType) String() string {
 }
 
 func (RequiredType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[502].Descriptor()
+	return file_xls_enum_proto_enumTypes[503].Descriptor()
 }
 
 func (RequiredType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[502]
+	return &file_xls_enum_proto_enumTypes[503]
 }
 
 func (x RequiredType) Number() protoreflect.EnumNumber {
@@ -44233,7 +44310,7 @@ func (x *RequiredType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use RequiredType.Descriptor instead.
 func (RequiredType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{502}
+	return file_xls_enum_proto_rawDescGZIP(), []int{503}
 }
 
 type NpcrefreshOptionType int32
@@ -44269,11 +44346,11 @@ func (x NpcrefreshOptionType) String() string {
 }
 
 func (NpcrefreshOptionType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[503].Descriptor()
+	return file_xls_enum_proto_enumTypes[504].Descriptor()
 }
 
 func (NpcrefreshOptionType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[503]
+	return &file_xls_enum_proto_enumTypes[504]
 }
 
 func (x NpcrefreshOptionType) Number() protoreflect.EnumNumber {
@@ -44292,7 +44369,7 @@ func (x *NpcrefreshOptionType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use NpcrefreshOptionType.Descriptor instead.
 func (NpcrefreshOptionType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{503}
+	return file_xls_enum_proto_rawDescGZIP(), []int{504}
 }
 
 type PetFreeAwardType int32
@@ -44355,11 +44432,11 @@ func (x PetFreeAwardType) String() string {
 }
 
 func (PetFreeAwardType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[504].Descriptor()
+	return file_xls_enum_proto_enumTypes[505].Descriptor()
 }
 
 func (PetFreeAwardType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[504]
+	return &file_xls_enum_proto_enumTypes[505]
 }
 
 func (x PetFreeAwardType) Number() protoreflect.EnumNumber {
@@ -44378,7 +44455,7 @@ func (x *PetFreeAwardType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use PetFreeAwardType.Descriptor instead.
 func (PetFreeAwardType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{504}
+	return file_xls_enum_proto_rawDescGZIP(), []int{505}
 }
 
 type MagicPageUnlockType int32
@@ -44414,11 +44491,11 @@ func (x MagicPageUnlockType) String() string {
 }
 
 func (MagicPageUnlockType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[505].Descriptor()
+	return file_xls_enum_proto_enumTypes[506].Descriptor()
 }
 
 func (MagicPageUnlockType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[505]
+	return &file_xls_enum_proto_enumTypes[506]
 }
 
 func (x MagicPageUnlockType) Number() protoreflect.EnumNumber {
@@ -44437,7 +44514,7 @@ func (x *MagicPageUnlockType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use MagicPageUnlockType.Descriptor instead.
 func (MagicPageUnlockType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{505}
+	return file_xls_enum_proto_rawDescGZIP(), []int{506}
 }
 
 type NotebookType int32
@@ -44470,11 +44547,11 @@ func (x NotebookType) String() string {
 }
 
 func (NotebookType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[506].Descriptor()
+	return file_xls_enum_proto_enumTypes[507].Descriptor()
 }
 
 func (NotebookType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[506]
+	return &file_xls_enum_proto_enumTypes[507]
 }
 
 func (x NotebookType) Number() protoreflect.EnumNumber {
@@ -44493,7 +44570,7 @@ func (x *NotebookType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use NotebookType.Descriptor instead.
 func (NotebookType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{506}
+	return file_xls_enum_proto_rawDescGZIP(), []int{507}
 }
 
 type StorybookType int32
@@ -44535,11 +44612,11 @@ func (x StorybookType) String() string {
 }
 
 func (StorybookType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[507].Descriptor()
+	return file_xls_enum_proto_enumTypes[508].Descriptor()
 }
 
 func (StorybookType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[507]
+	return &file_xls_enum_proto_enumTypes[508]
 }
 
 func (x StorybookType) Number() protoreflect.EnumNumber {
@@ -44558,7 +44635,7 @@ func (x *StorybookType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use StorybookType.Descriptor instead.
 func (StorybookType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{507}
+	return file_xls_enum_proto_rawDescGZIP(), []int{508}
 }
 
 type TaleTaskType int32
@@ -44603,11 +44680,11 @@ func (x TaleTaskType) String() string {
 }
 
 func (TaleTaskType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[508].Descriptor()
+	return file_xls_enum_proto_enumTypes[509].Descriptor()
 }
 
 func (TaleTaskType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[508]
+	return &file_xls_enum_proto_enumTypes[509]
 }
 
 func (x TaleTaskType) Number() protoreflect.EnumNumber {
@@ -44626,7 +44703,7 @@ func (x *TaleTaskType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use TaleTaskType.Descriptor instead.
 func (TaleTaskType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{508}
+	return file_xls_enum_proto_rawDescGZIP(), []int{509}
 }
 
 type RidePetCollect int32
@@ -44659,11 +44736,11 @@ func (x RidePetCollect) String() string {
 }
 
 func (RidePetCollect) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[509].Descriptor()
+	return file_xls_enum_proto_enumTypes[510].Descriptor()
 }
 
 func (RidePetCollect) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[509]
+	return &file_xls_enum_proto_enumTypes[510]
 }
 
 func (x RidePetCollect) Number() protoreflect.EnumNumber {
@@ -44682,7 +44759,7 @@ func (x *RidePetCollect) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use RidePetCollect.Descriptor instead.
 func (RidePetCollect) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{509}
+	return file_xls_enum_proto_rawDescGZIP(), []int{510}
 }
 
 type AreaTrigResultType int32
@@ -44715,11 +44792,11 @@ func (x AreaTrigResultType) String() string {
 }
 
 func (AreaTrigResultType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[510].Descriptor()
+	return file_xls_enum_proto_enumTypes[511].Descriptor()
 }
 
 func (AreaTrigResultType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[510]
+	return &file_xls_enum_proto_enumTypes[511]
 }
 
 func (x AreaTrigResultType) Number() protoreflect.EnumNumber {
@@ -44738,7 +44815,7 @@ func (x *AreaTrigResultType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use AreaTrigResultType.Descriptor instead.
 func (AreaTrigResultType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{510}
+	return file_xls_enum_proto_rawDescGZIP(), []int{511}
 }
 
 type MedalType int32
@@ -44774,11 +44851,11 @@ func (x MedalType) String() string {
 }
 
 func (MedalType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[511].Descriptor()
+	return file_xls_enum_proto_enumTypes[512].Descriptor()
 }
 
 func (MedalType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[511]
+	return &file_xls_enum_proto_enumTypes[512]
 }
 
 func (x MedalType) Number() protoreflect.EnumNumber {
@@ -44797,7 +44874,7 @@ func (x *MedalType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use MedalType.Descriptor instead.
 func (MedalType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{511}
+	return file_xls_enum_proto_rawDescGZIP(), []int{512}
 }
 
 type MedalSource int32
@@ -44836,11 +44913,11 @@ func (x MedalSource) String() string {
 }
 
 func (MedalSource) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[512].Descriptor()
+	return file_xls_enum_proto_enumTypes[513].Descriptor()
 }
 
 func (MedalSource) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[512]
+	return &file_xls_enum_proto_enumTypes[513]
 }
 
 func (x MedalSource) Number() protoreflect.EnumNumber {
@@ -44859,7 +44936,7 @@ func (x *MedalSource) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use MedalSource.Descriptor instead.
 func (MedalSource) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{512}
+	return file_xls_enum_proto_rawDescGZIP(), []int{513}
 }
 
 type MedalGetCondition int32
@@ -44967,11 +45044,11 @@ func (x MedalGetCondition) String() string {
 }
 
 func (MedalGetCondition) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[513].Descriptor()
+	return file_xls_enum_proto_enumTypes[514].Descriptor()
 }
 
 func (MedalGetCondition) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[513]
+	return &file_xls_enum_proto_enumTypes[514]
 }
 
 func (x MedalGetCondition) Number() protoreflect.EnumNumber {
@@ -44990,7 +45067,7 @@ func (x *MedalGetCondition) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use MedalGetCondition.Descriptor instead.
 func (MedalGetCondition) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{513}
+	return file_xls_enum_proto_rawDescGZIP(), []int{514}
 }
 
 type RobotNameType int32
@@ -45023,11 +45100,11 @@ func (x RobotNameType) String() string {
 }
 
 func (RobotNameType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[514].Descriptor()
+	return file_xls_enum_proto_enumTypes[515].Descriptor()
 }
 
 func (RobotNameType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[514]
+	return &file_xls_enum_proto_enumTypes[515]
 }
 
 func (x RobotNameType) Number() protoreflect.EnumNumber {
@@ -45046,7 +45123,7 @@ func (x *RobotNameType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use RobotNameType.Descriptor instead.
 func (RobotNameType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{514}
+	return file_xls_enum_proto_rawDescGZIP(), []int{515}
 }
 
 type ActivityTypeIcon int32
@@ -45076,11 +45153,11 @@ func (x ActivityTypeIcon) String() string {
 }
 
 func (ActivityTypeIcon) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[515].Descriptor()
+	return file_xls_enum_proto_enumTypes[516].Descriptor()
 }
 
 func (ActivityTypeIcon) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[515]
+	return &file_xls_enum_proto_enumTypes[516]
 }
 
 func (x ActivityTypeIcon) Number() protoreflect.EnumNumber {
@@ -45099,7 +45176,7 @@ func (x *ActivityTypeIcon) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use ActivityTypeIcon.Descriptor instead.
 func (ActivityTypeIcon) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{515}
+	return file_xls_enum_proto_rawDescGZIP(), []int{516}
 }
 
 type ActivityDevelopTaskType int32
@@ -45135,11 +45212,11 @@ func (x ActivityDevelopTaskType) String() string {
 }
 
 func (ActivityDevelopTaskType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[516].Descriptor()
+	return file_xls_enum_proto_enumTypes[517].Descriptor()
 }
 
 func (ActivityDevelopTaskType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[516]
+	return &file_xls_enum_proto_enumTypes[517]
 }
 
 func (x ActivityDevelopTaskType) Number() protoreflect.EnumNumber {
@@ -45158,7 +45235,7 @@ func (x *ActivityDevelopTaskType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use ActivityDevelopTaskType.Descriptor instead.
 func (ActivityDevelopTaskType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{516}
+	return file_xls_enum_proto_rawDescGZIP(), []int{517}
 }
 
 type SpecFlowerSeedPetId int32
@@ -45191,11 +45268,11 @@ func (x SpecFlowerSeedPetId) String() string {
 }
 
 func (SpecFlowerSeedPetId) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[517].Descriptor()
+	return file_xls_enum_proto_enumTypes[518].Descriptor()
 }
 
 func (SpecFlowerSeedPetId) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[517]
+	return &file_xls_enum_proto_enumTypes[518]
 }
 
 func (x SpecFlowerSeedPetId) Number() protoreflect.EnumNumber {
@@ -45214,7 +45291,7 @@ func (x *SpecFlowerSeedPetId) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use SpecFlowerSeedPetId.Descriptor instead.
 func (SpecFlowerSeedPetId) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{517}
+	return file_xls_enum_proto_rawDescGZIP(), []int{518}
 }
 
 type SpecFlowerSeedStar int32
@@ -45247,11 +45324,11 @@ func (x SpecFlowerSeedStar) String() string {
 }
 
 func (SpecFlowerSeedStar) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[518].Descriptor()
+	return file_xls_enum_proto_enumTypes[519].Descriptor()
 }
 
 func (SpecFlowerSeedStar) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[518]
+	return &file_xls_enum_proto_enumTypes[519]
 }
 
 func (x SpecFlowerSeedStar) Number() protoreflect.EnumNumber {
@@ -45270,7 +45347,7 @@ func (x *SpecFlowerSeedStar) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use SpecFlowerSeedStar.Descriptor instead.
 func (SpecFlowerSeedStar) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{518}
+	return file_xls_enum_proto_rawDescGZIP(), []int{519}
 }
 
 type SpecFlowerSeedRewardCondition int32
@@ -45303,11 +45380,11 @@ func (x SpecFlowerSeedRewardCondition) String() string {
 }
 
 func (SpecFlowerSeedRewardCondition) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[519].Descriptor()
+	return file_xls_enum_proto_enumTypes[520].Descriptor()
 }
 
 func (SpecFlowerSeedRewardCondition) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[519]
+	return &file_xls_enum_proto_enumTypes[520]
 }
 
 func (x SpecFlowerSeedRewardCondition) Number() protoreflect.EnumNumber {
@@ -45326,7 +45403,7 @@ func (x *SpecFlowerSeedRewardCondition) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use SpecFlowerSeedRewardCondition.Descriptor instead.
 func (SpecFlowerSeedRewardCondition) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{519}
+	return file_xls_enum_proto_rawDescGZIP(), []int{520}
 }
 
 type SpecFlowerSeedReward int32
@@ -45359,11 +45436,11 @@ func (x SpecFlowerSeedReward) String() string {
 }
 
 func (SpecFlowerSeedReward) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[520].Descriptor()
+	return file_xls_enum_proto_enumTypes[521].Descriptor()
 }
 
 func (SpecFlowerSeedReward) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[520]
+	return &file_xls_enum_proto_enumTypes[521]
 }
 
 func (x SpecFlowerSeedReward) Number() protoreflect.EnumNumber {
@@ -45382,7 +45459,7 @@ func (x *SpecFlowerSeedReward) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use SpecFlowerSeedReward.Descriptor instead.
 func (SpecFlowerSeedReward) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{520}
+	return file_xls_enum_proto_rawDescGZIP(), []int{521}
 }
 
 type WeekendDoubleRefresh int32
@@ -45415,11 +45492,11 @@ func (x WeekendDoubleRefresh) String() string {
 }
 
 func (WeekendDoubleRefresh) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[521].Descriptor()
+	return file_xls_enum_proto_enumTypes[522].Descriptor()
 }
 
 func (WeekendDoubleRefresh) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[521]
+	return &file_xls_enum_proto_enumTypes[522]
 }
 
 func (x WeekendDoubleRefresh) Number() protoreflect.EnumNumber {
@@ -45438,7 +45515,7 @@ func (x *WeekendDoubleRefresh) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use WeekendDoubleRefresh.Descriptor instead.
 func (WeekendDoubleRefresh) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{521}
+	return file_xls_enum_proto_rawDescGZIP(), []int{522}
 }
 
 type MonthlyPassRewardType int32
@@ -45480,11 +45557,11 @@ func (x MonthlyPassRewardType) String() string {
 }
 
 func (MonthlyPassRewardType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[522].Descriptor()
+	return file_xls_enum_proto_enumTypes[523].Descriptor()
 }
 
 func (MonthlyPassRewardType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[522]
+	return &file_xls_enum_proto_enumTypes[523]
 }
 
 func (x MonthlyPassRewardType) Number() protoreflect.EnumNumber {
@@ -45503,7 +45580,7 @@ func (x *MonthlyPassRewardType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use MonthlyPassRewardType.Descriptor instead.
 func (MonthlyPassRewardType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{522}
+	return file_xls_enum_proto_rawDescGZIP(), []int{523}
 }
 
 type AIUniqGroupMemGetType int32
@@ -45536,11 +45613,11 @@ func (x AIUniqGroupMemGetType) String() string {
 }
 
 func (AIUniqGroupMemGetType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[523].Descriptor()
+	return file_xls_enum_proto_enumTypes[524].Descriptor()
 }
 
 func (AIUniqGroupMemGetType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[523]
+	return &file_xls_enum_proto_enumTypes[524]
 }
 
 func (x AIUniqGroupMemGetType) Number() protoreflect.EnumNumber {
@@ -45559,7 +45636,7 @@ func (x *AIUniqGroupMemGetType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use AIUniqGroupMemGetType.Descriptor instead.
 func (AIUniqGroupMemGetType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{523}
+	return file_xls_enum_proto_rawDescGZIP(), []int{524}
 }
 
 type MusicType int32
@@ -45595,11 +45672,11 @@ func (x MusicType) String() string {
 }
 
 func (MusicType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[524].Descriptor()
+	return file_xls_enum_proto_enumTypes[525].Descriptor()
 }
 
 func (MusicType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[524]
+	return &file_xls_enum_proto_enumTypes[525]
 }
 
 func (x MusicType) Number() protoreflect.EnumNumber {
@@ -45618,7 +45695,7 @@ func (x *MusicType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use MusicType.Descriptor instead.
 func (MusicType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{524}
+	return file_xls_enum_proto_rawDescGZIP(), []int{525}
 }
 
 type MusicApplyType int32
@@ -45651,11 +45728,11 @@ func (x MusicApplyType) String() string {
 }
 
 func (MusicApplyType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[525].Descriptor()
+	return file_xls_enum_proto_enumTypes[526].Descriptor()
 }
 
 func (MusicApplyType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[525]
+	return &file_xls_enum_proto_enumTypes[526]
 }
 
 func (x MusicApplyType) Number() protoreflect.EnumNumber {
@@ -45674,7 +45751,7 @@ func (x *MusicApplyType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use MusicApplyType.Descriptor instead.
 func (MusicApplyType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{525}
+	return file_xls_enum_proto_rawDescGZIP(), []int{526}
 }
 
 type InterfaceType int32
@@ -45758,11 +45835,11 @@ func (x InterfaceType) String() string {
 }
 
 func (InterfaceType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[526].Descriptor()
+	return file_xls_enum_proto_enumTypes[527].Descriptor()
 }
 
 func (InterfaceType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[526]
+	return &file_xls_enum_proto_enumTypes[527]
 }
 
 func (x InterfaceType) Number() protoreflect.EnumNumber {
@@ -45781,7 +45858,7 @@ func (x *InterfaceType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use InterfaceType.Descriptor instead.
 func (InterfaceType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{526}
+	return file_xls_enum_proto_rawDescGZIP(), []int{527}
 }
 
 type TaskPetType int32
@@ -45814,11 +45891,11 @@ func (x TaskPetType) String() string {
 }
 
 func (TaskPetType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[527].Descriptor()
+	return file_xls_enum_proto_enumTypes[528].Descriptor()
 }
 
 func (TaskPetType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[527]
+	return &file_xls_enum_proto_enumTypes[528]
 }
 
 func (x TaskPetType) Number() protoreflect.EnumNumber {
@@ -45837,7 +45914,7 @@ func (x *TaskPetType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use TaskPetType.Descriptor instead.
 func (TaskPetType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{527}
+	return file_xls_enum_proto_rawDescGZIP(), []int{528}
 }
 
 type TaskBehaviorType int32
@@ -45891,11 +45968,11 @@ func (x TaskBehaviorType) String() string {
 }
 
 func (TaskBehaviorType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[528].Descriptor()
+	return file_xls_enum_proto_enumTypes[529].Descriptor()
 }
 
 func (TaskBehaviorType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[528]
+	return &file_xls_enum_proto_enumTypes[529]
 }
 
 func (x TaskBehaviorType) Number() protoreflect.EnumNumber {
@@ -45914,7 +45991,7 @@ func (x *TaskBehaviorType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use TaskBehaviorType.Descriptor instead.
 func (TaskBehaviorType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{528}
+	return file_xls_enum_proto_rawDescGZIP(), []int{529}
 }
 
 type WhitelistTagType int32
@@ -45965,11 +46042,11 @@ func (x WhitelistTagType) String() string {
 }
 
 func (WhitelistTagType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[529].Descriptor()
+	return file_xls_enum_proto_enumTypes[530].Descriptor()
 }
 
 func (WhitelistTagType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[529]
+	return &file_xls_enum_proto_enumTypes[530]
 }
 
 func (x WhitelistTagType) Number() protoreflect.EnumNumber {
@@ -45988,7 +46065,7 @@ func (x *WhitelistTagType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use WhitelistTagType.Descriptor instead.
 func (WhitelistTagType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{529}
+	return file_xls_enum_proto_rawDescGZIP(), []int{530}
 }
 
 type AxisType int32
@@ -46024,11 +46101,11 @@ func (x AxisType) String() string {
 }
 
 func (AxisType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[530].Descriptor()
+	return file_xls_enum_proto_enumTypes[531].Descriptor()
 }
 
 func (AxisType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[530]
+	return &file_xls_enum_proto_enumTypes[531]
 }
 
 func (x AxisType) Number() protoreflect.EnumNumber {
@@ -46047,7 +46124,7 @@ func (x *AxisType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use AxisType.Descriptor instead.
 func (AxisType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{530}
+	return file_xls_enum_proto_rawDescGZIP(), []int{531}
 }
 
 type ActivityActionType int32
@@ -46083,11 +46160,11 @@ func (x ActivityActionType) String() string {
 }
 
 func (ActivityActionType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[531].Descriptor()
+	return file_xls_enum_proto_enumTypes[532].Descriptor()
 }
 
 func (ActivityActionType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[531]
+	return &file_xls_enum_proto_enumTypes[532]
 }
 
 func (x ActivityActionType) Number() protoreflect.EnumNumber {
@@ -46106,7 +46183,7 @@ func (x *ActivityActionType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use ActivityActionType.Descriptor instead.
 func (ActivityActionType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{531}
+	return file_xls_enum_proto_rawDescGZIP(), []int{532}
 }
 
 type ActivityConditionType int32
@@ -46145,11 +46222,11 @@ func (x ActivityConditionType) String() string {
 }
 
 func (ActivityConditionType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[532].Descriptor()
+	return file_xls_enum_proto_enumTypes[533].Descriptor()
 }
 
 func (ActivityConditionType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[532]
+	return &file_xls_enum_proto_enumTypes[533]
 }
 
 func (x ActivityConditionType) Number() protoreflect.EnumNumber {
@@ -46168,7 +46245,7 @@ func (x *ActivityConditionType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use ActivityConditionType.Descriptor instead.
 func (ActivityConditionType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{532}
+	return file_xls_enum_proto_rawDescGZIP(), []int{533}
 }
 
 type StaminaStatus int32
@@ -46210,11 +46287,11 @@ func (x StaminaStatus) String() string {
 }
 
 func (StaminaStatus) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[533].Descriptor()
+	return file_xls_enum_proto_enumTypes[534].Descriptor()
 }
 
 func (StaminaStatus) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[533]
+	return &file_xls_enum_proto_enumTypes[534]
 }
 
 func (x StaminaStatus) Number() protoreflect.EnumNumber {
@@ -46233,7 +46310,7 @@ func (x *StaminaStatus) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use StaminaStatus.Descriptor instead.
 func (StaminaStatus) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{533}
+	return file_xls_enum_proto_rawDescGZIP(), []int{534}
 }
 
 type AreaHandbookType int32
@@ -46275,11 +46352,11 @@ func (x AreaHandbookType) String() string {
 }
 
 func (AreaHandbookType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[534].Descriptor()
+	return file_xls_enum_proto_enumTypes[535].Descriptor()
 }
 
 func (AreaHandbookType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[534]
+	return &file_xls_enum_proto_enumTypes[535]
 }
 
 func (x AreaHandbookType) Number() protoreflect.EnumNumber {
@@ -46298,7 +46375,7 @@ func (x *AreaHandbookType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use AreaHandbookType.Descriptor instead.
 func (AreaHandbookType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{534}
+	return file_xls_enum_proto_rawDescGZIP(), []int{535}
 }
 
 type CameraBlendType int32
@@ -46343,11 +46420,11 @@ func (x CameraBlendType) String() string {
 }
 
 func (CameraBlendType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[535].Descriptor()
+	return file_xls_enum_proto_enumTypes[536].Descriptor()
 }
 
 func (CameraBlendType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[535]
+	return &file_xls_enum_proto_enumTypes[536]
 }
 
 func (x CameraBlendType) Number() protoreflect.EnumNumber {
@@ -46366,7 +46443,7 @@ func (x *CameraBlendType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use CameraBlendType.Descriptor instead.
 func (CameraBlendType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{535}
+	return file_xls_enum_proto_rawDescGZIP(), []int{536}
 }
 
 type WorldCombatBossSensedPlayerType int32
@@ -46402,11 +46479,11 @@ func (x WorldCombatBossSensedPlayerType) String() string {
 }
 
 func (WorldCombatBossSensedPlayerType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[536].Descriptor()
+	return file_xls_enum_proto_enumTypes[537].Descriptor()
 }
 
 func (WorldCombatBossSensedPlayerType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[536]
+	return &file_xls_enum_proto_enumTypes[537]
 }
 
 func (x WorldCombatBossSensedPlayerType) Number() protoreflect.EnumNumber {
@@ -46425,7 +46502,7 @@ func (x *WorldCombatBossSensedPlayerType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use WorldCombatBossSensedPlayerType.Descriptor instead.
 func (WorldCombatBossSensedPlayerType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{536}
+	return file_xls_enum_proto_rawDescGZIP(), []int{537}
 }
 
 type ActivityDisplayRewardType int32
@@ -46455,11 +46532,11 @@ func (x ActivityDisplayRewardType) String() string {
 }
 
 func (ActivityDisplayRewardType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[537].Descriptor()
+	return file_xls_enum_proto_enumTypes[538].Descriptor()
 }
 
 func (ActivityDisplayRewardType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[537]
+	return &file_xls_enum_proto_enumTypes[538]
 }
 
 func (x ActivityDisplayRewardType) Number() protoreflect.EnumNumber {
@@ -46478,7 +46555,7 @@ func (x *ActivityDisplayRewardType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use ActivityDisplayRewardType.Descriptor instead.
 func (ActivityDisplayRewardType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{537}
+	return file_xls_enum_proto_rawDescGZIP(), []int{538}
 }
 
 type TconndEvHandlerType int32
@@ -46517,11 +46594,11 @@ func (x TconndEvHandlerType) String() string {
 }
 
 func (TconndEvHandlerType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[538].Descriptor()
+	return file_xls_enum_proto_enumTypes[539].Descriptor()
 }
 
 func (TconndEvHandlerType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[538]
+	return &file_xls_enum_proto_enumTypes[539]
 }
 
 func (x TconndEvHandlerType) Number() protoreflect.EnumNumber {
@@ -46540,7 +46617,7 @@ func (x *TconndEvHandlerType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use TconndEvHandlerType.Descriptor instead.
 func (TconndEvHandlerType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{538}
+	return file_xls_enum_proto_rawDescGZIP(), []int{539}
 }
 
 type PetStatType int32
@@ -46573,11 +46650,11 @@ func (x PetStatType) String() string {
 }
 
 func (PetStatType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[539].Descriptor()
+	return file_xls_enum_proto_enumTypes[540].Descriptor()
 }
 
 func (PetStatType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[539]
+	return &file_xls_enum_proto_enumTypes[540]
 }
 
 func (x PetStatType) Number() protoreflect.EnumNumber {
@@ -46596,7 +46673,7 @@ func (x *PetStatType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use PetStatType.Descriptor instead.
 func (PetStatType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{539}
+	return file_xls_enum_proto_rawDescGZIP(), []int{540}
 }
 
 type CloseExpActionType int32
@@ -46674,11 +46751,11 @@ func (x CloseExpActionType) String() string {
 }
 
 func (CloseExpActionType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[540].Descriptor()
+	return file_xls_enum_proto_enumTypes[541].Descriptor()
 }
 
 func (CloseExpActionType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[540]
+	return &file_xls_enum_proto_enumTypes[541]
 }
 
 func (x CloseExpActionType) Number() protoreflect.EnumNumber {
@@ -46697,7 +46774,7 @@ func (x *CloseExpActionType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use CloseExpActionType.Descriptor instead.
 func (CloseExpActionType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{540}
+	return file_xls_enum_proto_rawDescGZIP(), []int{541}
 }
 
 type PetLikeElementType int32
@@ -46784,11 +46861,11 @@ func (x PetLikeElementType) String() string {
 }
 
 func (PetLikeElementType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[541].Descriptor()
+	return file_xls_enum_proto_enumTypes[542].Descriptor()
 }
 
 func (PetLikeElementType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[541]
+	return &file_xls_enum_proto_enumTypes[542]
 }
 
 func (x PetLikeElementType) Number() protoreflect.EnumNumber {
@@ -46807,7 +46884,7 @@ func (x *PetLikeElementType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use PetLikeElementType.Descriptor instead.
 func (PetLikeElementType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{541}
+	return file_xls_enum_proto_rawDescGZIP(), []int{542}
 }
 
 type MidasPay int32
@@ -46870,11 +46947,11 @@ func (x MidasPay) String() string {
 }
 
 func (MidasPay) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[542].Descriptor()
+	return file_xls_enum_proto_enumTypes[543].Descriptor()
 }
 
 func (MidasPay) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[542]
+	return &file_xls_enum_proto_enumTypes[543]
 }
 
 func (x MidasPay) Number() protoreflect.EnumNumber {
@@ -46893,7 +46970,7 @@ func (x *MidasPay) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use MidasPay.Descriptor instead.
 func (MidasPay) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{542}
+	return file_xls_enum_proto_rawDescGZIP(), []int{543}
 }
 
 type FashionAITag int32
@@ -46932,11 +47009,11 @@ func (x FashionAITag) String() string {
 }
 
 func (FashionAITag) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[543].Descriptor()
+	return file_xls_enum_proto_enumTypes[544].Descriptor()
 }
 
 func (FashionAITag) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[543]
+	return &file_xls_enum_proto_enumTypes[544]
 }
 
 func (x FashionAITag) Number() protoreflect.EnumNumber {
@@ -46955,7 +47032,7 @@ func (x *FashionAITag) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use FashionAITag.Descriptor instead.
 func (FashionAITag) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{543}
+	return file_xls_enum_proto_rawDescGZIP(), []int{544}
 }
 
 type SuitAiEffect int32
@@ -47156,11 +47233,11 @@ func (x SuitAiEffect) String() string {
 }
 
 func (SuitAiEffect) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[544].Descriptor()
+	return file_xls_enum_proto_enumTypes[545].Descriptor()
 }
 
 func (SuitAiEffect) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[544]
+	return &file_xls_enum_proto_enumTypes[545]
 }
 
 func (x SuitAiEffect) Number() protoreflect.EnumNumber {
@@ -47179,7 +47256,7 @@ func (x *SuitAiEffect) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use SuitAiEffect.Descriptor instead.
 func (SuitAiEffect) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{544}
+	return file_xls_enum_proto_rawDescGZIP(), []int{545}
 }
 
 type SuitPrivilegeEffect int32
@@ -47218,11 +47295,11 @@ func (x SuitPrivilegeEffect) String() string {
 }
 
 func (SuitPrivilegeEffect) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[545].Descriptor()
+	return file_xls_enum_proto_enumTypes[546].Descriptor()
 }
 
 func (SuitPrivilegeEffect) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[545]
+	return &file_xls_enum_proto_enumTypes[546]
 }
 
 func (x SuitPrivilegeEffect) Number() protoreflect.EnumNumber {
@@ -47241,7 +47318,7 @@ func (x *SuitPrivilegeEffect) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use SuitPrivilegeEffect.Descriptor instead.
 func (SuitPrivilegeEffect) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{545}
+	return file_xls_enum_proto_rawDescGZIP(), []int{546}
 }
 
 type FashionBondBand int32
@@ -47283,11 +47360,11 @@ func (x FashionBondBand) String() string {
 }
 
 func (FashionBondBand) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[546].Descriptor()
+	return file_xls_enum_proto_enumTypes[547].Descriptor()
 }
 
 func (FashionBondBand) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[546]
+	return &file_xls_enum_proto_enumTypes[547]
 }
 
 func (x FashionBondBand) Number() protoreflect.EnumNumber {
@@ -47306,7 +47383,7 @@ func (x *FashionBondBand) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use FashionBondBand.Descriptor instead.
 func (FashionBondBand) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{546}
+	return file_xls_enum_proto_rawDescGZIP(), []int{547}
 }
 
 type FashionColorSuitsLaunch int32
@@ -47339,11 +47416,11 @@ func (x FashionColorSuitsLaunch) String() string {
 }
 
 func (FashionColorSuitsLaunch) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[547].Descriptor()
+	return file_xls_enum_proto_enumTypes[548].Descriptor()
 }
 
 func (FashionColorSuitsLaunch) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[547]
+	return &file_xls_enum_proto_enumTypes[548]
 }
 
 func (x FashionColorSuitsLaunch) Number() protoreflect.EnumNumber {
@@ -47362,7 +47439,7 @@ func (x *FashionColorSuitsLaunch) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use FashionColorSuitsLaunch.Descriptor instead.
 func (FashionColorSuitsLaunch) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{547}
+	return file_xls_enum_proto_rawDescGZIP(), []int{548}
 }
 
 type FashionBondQuality int32
@@ -47401,11 +47478,11 @@ func (x FashionBondQuality) String() string {
 }
 
 func (FashionBondQuality) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[548].Descriptor()
+	return file_xls_enum_proto_enumTypes[549].Descriptor()
 }
 
 func (FashionBondQuality) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[548]
+	return &file_xls_enum_proto_enumTypes[549]
 }
 
 func (x FashionBondQuality) Number() protoreflect.EnumNumber {
@@ -47424,7 +47501,7 @@ func (x *FashionBondQuality) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use FashionBondQuality.Descriptor instead.
 func (FashionBondQuality) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{548}
+	return file_xls_enum_proto_rawDescGZIP(), []int{549}
 }
 
 type FashionBondSource int32
@@ -47457,11 +47534,11 @@ func (x FashionBondSource) String() string {
 }
 
 func (FashionBondSource) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[549].Descriptor()
+	return file_xls_enum_proto_enumTypes[550].Descriptor()
 }
 
 func (FashionBondSource) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[549]
+	return &file_xls_enum_proto_enumTypes[550]
 }
 
 func (x FashionBondSource) Number() protoreflect.EnumNumber {
@@ -47480,7 +47557,7 @@ func (x *FashionBondSource) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use FashionBondSource.Descriptor instead.
 func (FashionBondSource) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{549}
+	return file_xls_enum_proto_rawDescGZIP(), []int{550}
 }
 
 type BagCharm int32
@@ -47519,11 +47596,11 @@ func (x BagCharm) String() string {
 }
 
 func (BagCharm) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[550].Descriptor()
+	return file_xls_enum_proto_enumTypes[551].Descriptor()
 }
 
 func (BagCharm) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[550]
+	return &file_xls_enum_proto_enumTypes[551]
 }
 
 func (x BagCharm) Number() protoreflect.EnumNumber {
@@ -47542,7 +47619,7 @@ func (x *BagCharm) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use BagCharm.Descriptor instead.
 func (BagCharm) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{550}
+	return file_xls_enum_proto_rawDescGZIP(), []int{551}
 }
 
 type BagCharmPrivilegeEffect int32
@@ -47632,11 +47709,11 @@ func (x BagCharmPrivilegeEffect) String() string {
 }
 
 func (BagCharmPrivilegeEffect) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[551].Descriptor()
+	return file_xls_enum_proto_enumTypes[552].Descriptor()
 }
 
 func (BagCharmPrivilegeEffect) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[551]
+	return &file_xls_enum_proto_enumTypes[552]
 }
 
 func (x BagCharmPrivilegeEffect) Number() protoreflect.EnumNumber {
@@ -47655,7 +47732,7 @@ func (x *BagCharmPrivilegeEffect) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use BagCharmPrivilegeEffect.Descriptor instead.
 func (BagCharmPrivilegeEffect) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{551}
+	return file_xls_enum_proto_rawDescGZIP(), []int{552}
 }
 
 type FashionTopsTag int32
@@ -47691,11 +47768,11 @@ func (x FashionTopsTag) String() string {
 }
 
 func (FashionTopsTag) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[552].Descriptor()
+	return file_xls_enum_proto_enumTypes[553].Descriptor()
 }
 
 func (FashionTopsTag) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[552]
+	return &file_xls_enum_proto_enumTypes[553]
 }
 
 func (x FashionTopsTag) Number() protoreflect.EnumNumber {
@@ -47714,7 +47791,7 @@ func (x *FashionTopsTag) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use FashionTopsTag.Descriptor instead.
 func (FashionTopsTag) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{552}
+	return file_xls_enum_proto_rawDescGZIP(), []int{553}
 }
 
 type FashionRingsTag int32
@@ -47750,11 +47827,11 @@ func (x FashionRingsTag) String() string {
 }
 
 func (FashionRingsTag) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[553].Descriptor()
+	return file_xls_enum_proto_enumTypes[554].Descriptor()
 }
 
 func (FashionRingsTag) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[553]
+	return &file_xls_enum_proto_enumTypes[554]
 }
 
 func (x FashionRingsTag) Number() protoreflect.EnumNumber {
@@ -47773,7 +47850,7 @@ func (x *FashionRingsTag) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use FashionRingsTag.Descriptor instead.
 func (FashionRingsTag) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{553}
+	return file_xls_enum_proto_rawDescGZIP(), []int{554}
 }
 
 type FashionBottomsTag int32
@@ -47818,11 +47895,11 @@ func (x FashionBottomsTag) String() string {
 }
 
 func (FashionBottomsTag) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[554].Descriptor()
+	return file_xls_enum_proto_enumTypes[555].Descriptor()
 }
 
 func (FashionBottomsTag) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[554]
+	return &file_xls_enum_proto_enumTypes[555]
 }
 
 func (x FashionBottomsTag) Number() protoreflect.EnumNumber {
@@ -47841,7 +47918,7 @@ func (x *FashionBottomsTag) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use FashionBottomsTag.Descriptor instead.
 func (FashionBottomsTag) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{554}
+	return file_xls_enum_proto_rawDescGZIP(), []int{555}
 }
 
 type FashionShoesTag int32
@@ -47883,11 +47960,11 @@ func (x FashionShoesTag) String() string {
 }
 
 func (FashionShoesTag) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[555].Descriptor()
+	return file_xls_enum_proto_enumTypes[556].Descriptor()
 }
 
 func (FashionShoesTag) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[555]
+	return &file_xls_enum_proto_enumTypes[556]
 }
 
 func (x FashionShoesTag) Number() protoreflect.EnumNumber {
@@ -47906,7 +47983,7 @@ func (x *FashionShoesTag) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use FashionShoesTag.Descriptor instead.
 func (FashionShoesTag) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{555}
+	return file_xls_enum_proto_rawDescGZIP(), []int{556}
 }
 
 type FashionSocksTag int32
@@ -47942,11 +48019,11 @@ func (x FashionSocksTag) String() string {
 }
 
 func (FashionSocksTag) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[556].Descriptor()
+	return file_xls_enum_proto_enumTypes[557].Descriptor()
 }
 
 func (FashionSocksTag) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[556]
+	return &file_xls_enum_proto_enumTypes[557]
 }
 
 func (x FashionSocksTag) Number() protoreflect.EnumNumber {
@@ -47965,7 +48042,7 @@ func (x *FashionSocksTag) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use FashionSocksTag.Descriptor instead.
 func (FashionSocksTag) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{556}
+	return file_xls_enum_proto_rawDescGZIP(), []int{557}
 }
 
 type FashionWandSource int32
@@ -48001,11 +48078,11 @@ func (x FashionWandSource) String() string {
 }
 
 func (FashionWandSource) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[557].Descriptor()
+	return file_xls_enum_proto_enumTypes[558].Descriptor()
 }
 
 func (FashionWandSource) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[557]
+	return &file_xls_enum_proto_enumTypes[558]
 }
 
 func (x FashionWandSource) Number() protoreflect.EnumNumber {
@@ -48024,7 +48101,7 @@ func (x *FashionWandSource) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use FashionWandSource.Descriptor instead.
 func (FashionWandSource) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{557}
+	return file_xls_enum_proto_rawDescGZIP(), []int{558}
 }
 
 type AutoIncrementType int32
@@ -48078,11 +48155,11 @@ func (x AutoIncrementType) String() string {
 }
 
 func (AutoIncrementType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[558].Descriptor()
+	return file_xls_enum_proto_enumTypes[559].Descriptor()
 }
 
 func (AutoIncrementType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[558]
+	return &file_xls_enum_proto_enumTypes[559]
 }
 
 func (x AutoIncrementType) Number() protoreflect.EnumNumber {
@@ -48101,7 +48178,7 @@ func (x *AutoIncrementType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use AutoIncrementType.Descriptor instead.
 func (AutoIncrementType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{558}
+	return file_xls_enum_proto_rawDescGZIP(), []int{559}
 }
 
 type AreaMailAITType int32
@@ -48134,11 +48211,11 @@ func (x AreaMailAITType) String() string {
 }
 
 func (AreaMailAITType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[559].Descriptor()
+	return file_xls_enum_proto_enumTypes[560].Descriptor()
 }
 
 func (AreaMailAITType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[559]
+	return &file_xls_enum_proto_enumTypes[560]
 }
 
 func (x AreaMailAITType) Number() protoreflect.EnumNumber {
@@ -48157,7 +48234,7 @@ func (x *AreaMailAITType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use AreaMailAITType.Descriptor instead.
 func (AreaMailAITType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{559}
+	return file_xls_enum_proto_rawDescGZIP(), []int{560}
 }
 
 type OpponentType int32
@@ -48190,11 +48267,11 @@ func (x OpponentType) String() string {
 }
 
 func (OpponentType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[560].Descriptor()
+	return file_xls_enum_proto_enumTypes[561].Descriptor()
 }
 
 func (OpponentType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[560]
+	return &file_xls_enum_proto_enumTypes[561]
 }
 
 func (x OpponentType) Number() protoreflect.EnumNumber {
@@ -48213,7 +48290,7 @@ func (x *OpponentType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use OpponentType.Descriptor instead.
 func (OpponentType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{560}
+	return file_xls_enum_proto_rawDescGZIP(), []int{561}
 }
 
 type ActivityUPType int32
@@ -48249,11 +48326,11 @@ func (x ActivityUPType) String() string {
 }
 
 func (ActivityUPType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[561].Descriptor()
+	return file_xls_enum_proto_enumTypes[562].Descriptor()
 }
 
 func (ActivityUPType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[561]
+	return &file_xls_enum_proto_enumTypes[562]
 }
 
 func (x ActivityUPType) Number() protoreflect.EnumNumber {
@@ -48272,7 +48349,7 @@ func (x *ActivityUPType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use ActivityUPType.Descriptor instead.
 func (ActivityUPType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{561}
+	return file_xls_enum_proto_rawDescGZIP(), []int{562}
 }
 
 type PlayerRange int32
@@ -48305,11 +48382,11 @@ func (x PlayerRange) String() string {
 }
 
 func (PlayerRange) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[562].Descriptor()
+	return file_xls_enum_proto_enumTypes[563].Descriptor()
 }
 
 func (PlayerRange) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[562]
+	return &file_xls_enum_proto_enumTypes[563]
 }
 
 func (x PlayerRange) Number() protoreflect.EnumNumber {
@@ -48328,7 +48405,7 @@ func (x *PlayerRange) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use PlayerRange.Descriptor instead.
 func (PlayerRange) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{562}
+	return file_xls_enum_proto_rawDescGZIP(), []int{563}
 }
 
 type RewardReceiveType int32
@@ -48364,11 +48441,11 @@ func (x RewardReceiveType) String() string {
 }
 
 func (RewardReceiveType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[563].Descriptor()
+	return file_xls_enum_proto_enumTypes[564].Descriptor()
 }
 
 func (RewardReceiveType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[563]
+	return &file_xls_enum_proto_enumTypes[564]
 }
 
 func (x RewardReceiveType) Number() protoreflect.EnumNumber {
@@ -48387,7 +48464,7 @@ func (x *RewardReceiveType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use RewardReceiveType.Descriptor instead.
 func (RewardReceiveType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{563}
+	return file_xls_enum_proto_rawDescGZIP(), []int{564}
 }
 
 type PetPartnerMarkType int32
@@ -48462,11 +48539,11 @@ func (x PetPartnerMarkType) String() string {
 }
 
 func (PetPartnerMarkType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[564].Descriptor()
+	return file_xls_enum_proto_enumTypes[565].Descriptor()
 }
 
 func (PetPartnerMarkType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[564]
+	return &file_xls_enum_proto_enumTypes[565]
 }
 
 func (x PetPartnerMarkType) Number() protoreflect.EnumNumber {
@@ -48485,7 +48562,7 @@ func (x *PetPartnerMarkType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use PetPartnerMarkType.Descriptor instead.
 func (PetPartnerMarkType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{564}
+	return file_xls_enum_proto_rawDescGZIP(), []int{565}
 }
 
 type SpecialAudioTag int32
@@ -48518,11 +48595,11 @@ func (x SpecialAudioTag) String() string {
 }
 
 func (SpecialAudioTag) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[565].Descriptor()
+	return file_xls_enum_proto_enumTypes[566].Descriptor()
 }
 
 func (SpecialAudioTag) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[565]
+	return &file_xls_enum_proto_enumTypes[566]
 }
 
 func (x SpecialAudioTag) Number() protoreflect.EnumNumber {
@@ -48541,7 +48618,7 @@ func (x *SpecialAudioTag) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use SpecialAudioTag.Descriptor instead.
 func (SpecialAudioTag) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{565}
+	return file_xls_enum_proto_rawDescGZIP(), []int{566}
 }
 
 type ActivityMonitorEvent int32
@@ -48646,11 +48723,11 @@ func (x ActivityMonitorEvent) String() string {
 }
 
 func (ActivityMonitorEvent) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[566].Descriptor()
+	return file_xls_enum_proto_enumTypes[567].Descriptor()
 }
 
 func (ActivityMonitorEvent) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[566]
+	return &file_xls_enum_proto_enumTypes[567]
 }
 
 func (x ActivityMonitorEvent) Number() protoreflect.EnumNumber {
@@ -48669,7 +48746,7 @@ func (x *ActivityMonitorEvent) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use ActivityMonitorEvent.Descriptor instead.
 func (ActivityMonitorEvent) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{566}
+	return file_xls_enum_proto_rawDescGZIP(), []int{567}
 }
 
 type ActivityDropTimeType int32
@@ -48702,11 +48779,11 @@ func (x ActivityDropTimeType) String() string {
 }
 
 func (ActivityDropTimeType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[567].Descriptor()
+	return file_xls_enum_proto_enumTypes[568].Descriptor()
 }
 
 func (ActivityDropTimeType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[567]
+	return &file_xls_enum_proto_enumTypes[568]
 }
 
 func (x ActivityDropTimeType) Number() protoreflect.EnumNumber {
@@ -48725,7 +48802,7 @@ func (x *ActivityDropTimeType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use ActivityDropTimeType.Descriptor instead.
 func (ActivityDropTimeType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{567}
+	return file_xls_enum_proto_rawDescGZIP(), []int{568}
 }
 
 type ActivityDropAreaTyep int32
@@ -48758,11 +48835,11 @@ func (x ActivityDropAreaTyep) String() string {
 }
 
 func (ActivityDropAreaTyep) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[568].Descriptor()
+	return file_xls_enum_proto_enumTypes[569].Descriptor()
 }
 
 func (ActivityDropAreaTyep) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[568]
+	return &file_xls_enum_proto_enumTypes[569]
 }
 
 func (x ActivityDropAreaTyep) Number() protoreflect.EnumNumber {
@@ -48781,7 +48858,7 @@ func (x *ActivityDropAreaTyep) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use ActivityDropAreaTyep.Descriptor instead.
 func (ActivityDropAreaTyep) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{568}
+	return file_xls_enum_proto_rawDescGZIP(), []int{569}
 }
 
 type ActivityDropShowArea int32
@@ -48820,11 +48897,11 @@ func (x ActivityDropShowArea) String() string {
 }
 
 func (ActivityDropShowArea) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[569].Descriptor()
+	return file_xls_enum_proto_enumTypes[570].Descriptor()
 }
 
 func (ActivityDropShowArea) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[569]
+	return &file_xls_enum_proto_enumTypes[570]
 }
 
 func (x ActivityDropShowArea) Number() protoreflect.EnumNumber {
@@ -48843,7 +48920,7 @@ func (x *ActivityDropShowArea) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use ActivityDropShowArea.Descriptor instead.
 func (ActivityDropShowArea) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{569}
+	return file_xls_enum_proto_rawDescGZIP(), []int{570}
 }
 
 type AcitivityDropAreaShow int32
@@ -48876,11 +48953,11 @@ func (x AcitivityDropAreaShow) String() string {
 }
 
 func (AcitivityDropAreaShow) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[570].Descriptor()
+	return file_xls_enum_proto_enumTypes[571].Descriptor()
 }
 
 func (AcitivityDropAreaShow) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[570]
+	return &file_xls_enum_proto_enumTypes[571]
 }
 
 func (x AcitivityDropAreaShow) Number() protoreflect.EnumNumber {
@@ -48899,7 +48976,7 @@ func (x *AcitivityDropAreaShow) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use AcitivityDropAreaShow.Descriptor instead.
 func (AcitivityDropAreaShow) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{570}
+	return file_xls_enum_proto_rawDescGZIP(), []int{571}
 }
 
 type ActivityResetType int32
@@ -48938,11 +49015,11 @@ func (x ActivityResetType) String() string {
 }
 
 func (ActivityResetType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[571].Descriptor()
+	return file_xls_enum_proto_enumTypes[572].Descriptor()
 }
 
 func (ActivityResetType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[571]
+	return &file_xls_enum_proto_enumTypes[572]
 }
 
 func (x ActivityResetType) Number() protoreflect.EnumNumber {
@@ -48961,7 +49038,7 @@ func (x *ActivityResetType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use ActivityResetType.Descriptor instead.
 func (ActivityResetType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{571}
+	return file_xls_enum_proto_rawDescGZIP(), []int{572}
 }
 
 type BloodMagicTempType int32
@@ -48994,11 +49071,11 @@ func (x BloodMagicTempType) String() string {
 }
 
 func (BloodMagicTempType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[572].Descriptor()
+	return file_xls_enum_proto_enumTypes[573].Descriptor()
 }
 
 func (BloodMagicTempType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[572]
+	return &file_xls_enum_proto_enumTypes[573]
 }
 
 func (x BloodMagicTempType) Number() protoreflect.EnumNumber {
@@ -49017,7 +49094,7 @@ func (x *BloodMagicTempType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use BloodMagicTempType.Descriptor instead.
 func (BloodMagicTempType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{572}
+	return file_xls_enum_proto_rawDescGZIP(), []int{573}
 }
 
 type ShareType int32
@@ -49059,11 +49136,11 @@ func (x ShareType) String() string {
 }
 
 func (ShareType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[573].Descriptor()
+	return file_xls_enum_proto_enumTypes[574].Descriptor()
 }
 
 func (ShareType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[573]
+	return &file_xls_enum_proto_enumTypes[574]
 }
 
 func (x ShareType) Number() protoreflect.EnumNumber {
@@ -49082,7 +49159,7 @@ func (x *ShareType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use ShareType.Descriptor instead.
 func (ShareType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{573}
+	return file_xls_enum_proto_rawDescGZIP(), []int{574}
 }
 
 type ShareQRcodeScenario int32
@@ -49115,11 +49192,11 @@ func (x ShareQRcodeScenario) String() string {
 }
 
 func (ShareQRcodeScenario) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[574].Descriptor()
+	return file_xls_enum_proto_enumTypes[575].Descriptor()
 }
 
 func (ShareQRcodeScenario) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[574]
+	return &file_xls_enum_proto_enumTypes[575]
 }
 
 func (x ShareQRcodeScenario) Number() protoreflect.EnumNumber {
@@ -49138,7 +49215,7 @@ func (x *ShareQRcodeScenario) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use ShareQRcodeScenario.Descriptor instead.
 func (ShareQRcodeScenario) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{574}
+	return file_xls_enum_proto_rawDescGZIP(), []int{575}
 }
 
 type SharePattern int32
@@ -49183,11 +49260,11 @@ func (x SharePattern) String() string {
 }
 
 func (SharePattern) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[575].Descriptor()
+	return file_xls_enum_proto_enumTypes[576].Descriptor()
 }
 
 func (SharePattern) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[575]
+	return &file_xls_enum_proto_enumTypes[576]
 }
 
 func (x SharePattern) Number() protoreflect.EnumNumber {
@@ -49206,7 +49283,7 @@ func (x *SharePattern) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use SharePattern.Descriptor instead.
 func (SharePattern) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{575}
+	return file_xls_enum_proto_rawDescGZIP(), []int{576}
 }
 
 type ShareButtonArea int32
@@ -49239,11 +49316,11 @@ func (x ShareButtonArea) String() string {
 }
 
 func (ShareButtonArea) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[576].Descriptor()
+	return file_xls_enum_proto_enumTypes[577].Descriptor()
 }
 
 func (ShareButtonArea) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[576]
+	return &file_xls_enum_proto_enumTypes[577]
 }
 
 func (x ShareButtonArea) Number() protoreflect.EnumNumber {
@@ -49262,7 +49339,7 @@ func (x *ShareButtonArea) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use ShareButtonArea.Descriptor instead.
 func (ShareButtonArea) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{576}
+	return file_xls_enum_proto_rawDescGZIP(), []int{577}
 }
 
 type ShareButtonType int32
@@ -49349,11 +49426,11 @@ func (x ShareButtonType) String() string {
 }
 
 func (ShareButtonType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[577].Descriptor()
+	return file_xls_enum_proto_enumTypes[578].Descriptor()
 }
 
 func (ShareButtonType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[577]
+	return &file_xls_enum_proto_enumTypes[578]
 }
 
 func (x ShareButtonType) Number() protoreflect.EnumNumber {
@@ -49372,7 +49449,7 @@ func (x *ShareButtonType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use ShareButtonType.Descriptor instead.
 func (ShareButtonType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{577}
+	return file_xls_enum_proto_rawDescGZIP(), []int{578}
 }
 
 type TipsShowType int32
@@ -49417,11 +49494,11 @@ func (x TipsShowType) String() string {
 }
 
 func (TipsShowType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[578].Descriptor()
+	return file_xls_enum_proto_enumTypes[579].Descriptor()
 }
 
 func (TipsShowType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[578]
+	return &file_xls_enum_proto_enumTypes[579]
 }
 
 func (x TipsShowType) Number() protoreflect.EnumNumber {
@@ -49440,7 +49517,7 @@ func (x *TipsShowType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use TipsShowType.Descriptor instead.
 func (TipsShowType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{578}
+	return file_xls_enum_proto_rawDescGZIP(), []int{579}
 }
 
 type NeedfulApp int32
@@ -49476,11 +49553,11 @@ func (x NeedfulApp) String() string {
 }
 
 func (NeedfulApp) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[579].Descriptor()
+	return file_xls_enum_proto_enumTypes[580].Descriptor()
 }
 
 func (NeedfulApp) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[579]
+	return &file_xls_enum_proto_enumTypes[580]
 }
 
 func (x NeedfulApp) Number() protoreflect.EnumNumber {
@@ -49499,7 +49576,7 @@ func (x *NeedfulApp) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use NeedfulApp.Descriptor instead.
 func (NeedfulApp) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{579}
+	return file_xls_enum_proto_rawDescGZIP(), []int{580}
 }
 
 type TaskTeleportType int32
@@ -49535,11 +49612,11 @@ func (x TaskTeleportType) String() string {
 }
 
 func (TaskTeleportType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[580].Descriptor()
+	return file_xls_enum_proto_enumTypes[581].Descriptor()
 }
 
 func (TaskTeleportType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[580]
+	return &file_xls_enum_proto_enumTypes[581]
 }
 
 func (x TaskTeleportType) Number() protoreflect.EnumNumber {
@@ -49558,7 +49635,7 @@ func (x *TaskTeleportType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use TaskTeleportType.Descriptor instead.
 func (TaskTeleportType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{580}
+	return file_xls_enum_proto_rawDescGZIP(), []int{581}
 }
 
 type PlantStage int32
@@ -49591,11 +49668,11 @@ func (x PlantStage) String() string {
 }
 
 func (PlantStage) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[581].Descriptor()
+	return file_xls_enum_proto_enumTypes[582].Descriptor()
 }
 
 func (PlantStage) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[581]
+	return &file_xls_enum_proto_enumTypes[582]
 }
 
 func (x PlantStage) Number() protoreflect.EnumNumber {
@@ -49614,7 +49691,7 @@ func (x *PlantStage) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use PlantStage.Descriptor instead.
 func (PlantStage) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{581}
+	return file_xls_enum_proto_rawDescGZIP(), []int{582}
 }
 
 type SceneCfgId int32
@@ -49647,11 +49724,11 @@ func (x SceneCfgId) String() string {
 }
 
 func (SceneCfgId) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[582].Descriptor()
+	return file_xls_enum_proto_enumTypes[583].Descriptor()
 }
 
 func (SceneCfgId) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[582]
+	return &file_xls_enum_proto_enumTypes[583]
 }
 
 func (x SceneCfgId) Number() protoreflect.EnumNumber {
@@ -49670,7 +49747,7 @@ func (x *SceneCfgId) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use SceneCfgId.Descriptor instead.
 func (SceneCfgId) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{582}
+	return file_xls_enum_proto_rawDescGZIP(), []int{583}
 }
 
 type PetTalentCondition int32
@@ -49760,11 +49837,11 @@ func (x PetTalentCondition) String() string {
 }
 
 func (PetTalentCondition) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[583].Descriptor()
+	return file_xls_enum_proto_enumTypes[584].Descriptor()
 }
 
 func (PetTalentCondition) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[583]
+	return &file_xls_enum_proto_enumTypes[584]
 }
 
 func (x PetTalentCondition) Number() protoreflect.EnumNumber {
@@ -49783,7 +49860,7 @@ func (x *PetTalentCondition) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use PetTalentCondition.Descriptor instead.
 func (PetTalentCondition) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{583}
+	return file_xls_enum_proto_rawDescGZIP(), []int{584}
 }
 
 type PetTalentEffect int32
@@ -49939,11 +50016,11 @@ func (x PetTalentEffect) String() string {
 }
 
 func (PetTalentEffect) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[584].Descriptor()
+	return file_xls_enum_proto_enumTypes[585].Descriptor()
 }
 
 func (PetTalentEffect) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[584]
+	return &file_xls_enum_proto_enumTypes[585]
 }
 
 func (x PetTalentEffect) Number() protoreflect.EnumNumber {
@@ -49962,7 +50039,7 @@ func (x *PetTalentEffect) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use PetTalentEffect.Descriptor instead.
 func (PetTalentEffect) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{584}
+	return file_xls_enum_proto_rawDescGZIP(), []int{585}
 }
 
 type PetTalentFilterName int32
@@ -50082,11 +50159,11 @@ func (x PetTalentFilterName) String() string {
 }
 
 func (PetTalentFilterName) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[585].Descriptor()
+	return file_xls_enum_proto_enumTypes[586].Descriptor()
 }
 
 func (PetTalentFilterName) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[585]
+	return &file_xls_enum_proto_enumTypes[586]
 }
 
 func (x PetTalentFilterName) Number() protoreflect.EnumNumber {
@@ -50105,7 +50182,7 @@ func (x *PetTalentFilterName) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use PetTalentFilterName.Descriptor instead.
 func (PetTalentFilterName) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{585}
+	return file_xls_enum_proto_rawDescGZIP(), []int{586}
 }
 
 type PetTalentBattleTriggerTime int32
@@ -50141,11 +50218,11 @@ func (x PetTalentBattleTriggerTime) String() string {
 }
 
 func (PetTalentBattleTriggerTime) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[586].Descriptor()
+	return file_xls_enum_proto_enumTypes[587].Descriptor()
 }
 
 func (PetTalentBattleTriggerTime) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[586]
+	return &file_xls_enum_proto_enumTypes[587]
 }
 
 func (x PetTalentBattleTriggerTime) Number() protoreflect.EnumNumber {
@@ -50164,7 +50241,7 @@ func (x *PetTalentBattleTriggerTime) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use PetTalentBattleTriggerTime.Descriptor instead.
 func (PetTalentBattleTriggerTime) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{586}
+	return file_xls_enum_proto_rawDescGZIP(), []int{587}
 }
 
 type TrackNewTask int32
@@ -50203,11 +50280,11 @@ func (x TrackNewTask) String() string {
 }
 
 func (TrackNewTask) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[587].Descriptor()
+	return file_xls_enum_proto_enumTypes[588].Descriptor()
 }
 
 func (TrackNewTask) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[587]
+	return &file_xls_enum_proto_enumTypes[588]
 }
 
 func (x TrackNewTask) Number() protoreflect.EnumNumber {
@@ -50226,7 +50303,7 @@ func (x *TrackNewTask) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use TrackNewTask.Descriptor instead.
 func (TrackNewTask) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{587}
+	return file_xls_enum_proto_rawDescGZIP(), []int{588}
 }
 
 type ShoesSoundEffect int32
@@ -50268,11 +50345,11 @@ func (x ShoesSoundEffect) String() string {
 }
 
 func (ShoesSoundEffect) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[588].Descriptor()
+	return file_xls_enum_proto_enumTypes[589].Descriptor()
 }
 
 func (ShoesSoundEffect) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[588]
+	return &file_xls_enum_proto_enumTypes[589]
 }
 
 func (x ShoesSoundEffect) Number() protoreflect.EnumNumber {
@@ -50291,7 +50368,7 @@ func (x *ShoesSoundEffect) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use ShoesSoundEffect.Descriptor instead.
 func (ShoesSoundEffect) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{588}
+	return file_xls_enum_proto_rawDescGZIP(), []int{589}
 }
 
 type MedaluiFormat int32
@@ -50333,11 +50410,11 @@ func (x MedaluiFormat) String() string {
 }
 
 func (MedaluiFormat) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[589].Descriptor()
+	return file_xls_enum_proto_enumTypes[590].Descriptor()
 }
 
 func (MedaluiFormat) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[589]
+	return &file_xls_enum_proto_enumTypes[590]
 }
 
 func (x MedaluiFormat) Number() protoreflect.EnumNumber {
@@ -50356,7 +50433,7 @@ func (x *MedaluiFormat) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use MedaluiFormat.Descriptor instead.
 func (MedaluiFormat) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{589}
+	return file_xls_enum_proto_rawDescGZIP(), []int{590}
 }
 
 type MarkGameplay int32
@@ -50398,11 +50475,11 @@ func (x MarkGameplay) String() string {
 }
 
 func (MarkGameplay) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[590].Descriptor()
+	return file_xls_enum_proto_enumTypes[591].Descriptor()
 }
 
 func (MarkGameplay) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[590]
+	return &file_xls_enum_proto_enumTypes[591]
 }
 
 func (x MarkGameplay) Number() protoreflect.EnumNumber {
@@ -50421,7 +50498,7 @@ func (x *MarkGameplay) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use MarkGameplay.Descriptor instead.
 func (MarkGameplay) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{590}
+	return file_xls_enum_proto_rawDescGZIP(), []int{591}
 }
 
 type ChildMessageMagic int32
@@ -50457,11 +50534,11 @@ func (x ChildMessageMagic) String() string {
 }
 
 func (ChildMessageMagic) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[591].Descriptor()
+	return file_xls_enum_proto_enumTypes[592].Descriptor()
 }
 
 func (ChildMessageMagic) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[591]
+	return &file_xls_enum_proto_enumTypes[592]
 }
 
 func (x ChildMessageMagic) Number() protoreflect.EnumNumber {
@@ -50480,7 +50557,7 @@ func (x *ChildMessageMagic) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use ChildMessageMagic.Descriptor instead.
 func (ChildMessageMagic) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{591}
+	return file_xls_enum_proto_rawDescGZIP(), []int{592}
 }
 
 type IncidentType int32
@@ -50522,11 +50599,11 @@ func (x IncidentType) String() string {
 }
 
 func (IncidentType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[592].Descriptor()
+	return file_xls_enum_proto_enumTypes[593].Descriptor()
 }
 
 func (IncidentType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[592]
+	return &file_xls_enum_proto_enumTypes[593]
 }
 
 func (x IncidentType) Number() protoreflect.EnumNumber {
@@ -50545,7 +50622,7 @@ func (x *IncidentType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use IncidentType.Descriptor instead.
 func (IncidentType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{592}
+	return file_xls_enum_proto_rawDescGZIP(), []int{593}
 }
 
 type WorldExploringStatisticType int32
@@ -50584,11 +50661,11 @@ func (x WorldExploringStatisticType) String() string {
 }
 
 func (WorldExploringStatisticType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[593].Descriptor()
+	return file_xls_enum_proto_enumTypes[594].Descriptor()
 }
 
 func (WorldExploringStatisticType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[593]
+	return &file_xls_enum_proto_enumTypes[594]
 }
 
 func (x WorldExploringStatisticType) Number() protoreflect.EnumNumber {
@@ -50607,7 +50684,7 @@ func (x *WorldExploringStatisticType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use WorldExploringStatisticType.Descriptor instead.
 func (WorldExploringStatisticType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{593}
+	return file_xls_enum_proto_rawDescGZIP(), []int{594}
 }
 
 type DisplayType int32
@@ -50643,11 +50720,11 @@ func (x DisplayType) String() string {
 }
 
 func (DisplayType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[594].Descriptor()
+	return file_xls_enum_proto_enumTypes[595].Descriptor()
 }
 
 func (DisplayType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[594]
+	return &file_xls_enum_proto_enumTypes[595]
 }
 
 func (x DisplayType) Number() protoreflect.EnumNumber {
@@ -50666,7 +50743,7 @@ func (x *DisplayType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use DisplayType.Descriptor instead.
 func (DisplayType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{594}
+	return file_xls_enum_proto_rawDescGZIP(), []int{595}
 }
 
 type SkillSequenceDefault int32
@@ -50702,11 +50779,11 @@ func (x SkillSequenceDefault) String() string {
 }
 
 func (SkillSequenceDefault) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[595].Descriptor()
+	return file_xls_enum_proto_enumTypes[596].Descriptor()
 }
 
 func (SkillSequenceDefault) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[595]
+	return &file_xls_enum_proto_enumTypes[596]
 }
 
 func (x SkillSequenceDefault) Number() protoreflect.EnumNumber {
@@ -50725,7 +50802,7 @@ func (x *SkillSequenceDefault) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use SkillSequenceDefault.Descriptor instead.
 func (SkillSequenceDefault) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{595}
+	return file_xls_enum_proto_rawDescGZIP(), []int{596}
 }
 
 type SkillSequenceSwitch int32
@@ -50761,11 +50838,11 @@ func (x SkillSequenceSwitch) String() string {
 }
 
 func (SkillSequenceSwitch) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[596].Descriptor()
+	return file_xls_enum_proto_enumTypes[597].Descriptor()
 }
 
 func (SkillSequenceSwitch) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[596]
+	return &file_xls_enum_proto_enumTypes[597]
 }
 
 func (x SkillSequenceSwitch) Number() protoreflect.EnumNumber {
@@ -50784,7 +50861,7 @@ func (x *SkillSequenceSwitch) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use SkillSequenceSwitch.Descriptor instead.
 func (SkillSequenceSwitch) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{596}
+	return file_xls_enum_proto_rawDescGZIP(), []int{597}
 }
 
 type AutoParamType int32
@@ -50838,11 +50915,11 @@ func (x AutoParamType) String() string {
 }
 
 func (AutoParamType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[597].Descriptor()
+	return file_xls_enum_proto_enumTypes[598].Descriptor()
 }
 
 func (AutoParamType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[597]
+	return &file_xls_enum_proto_enumTypes[598]
 }
 
 func (x AutoParamType) Number() protoreflect.EnumNumber {
@@ -50861,7 +50938,7 @@ func (x *AutoParamType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use AutoParamType.Descriptor instead.
 func (AutoParamType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{597}
+	return file_xls_enum_proto_rawDescGZIP(), []int{598}
 }
 
 type RoleCardModuleType int32
@@ -50897,11 +50974,11 @@ func (x RoleCardModuleType) String() string {
 }
 
 func (RoleCardModuleType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[598].Descriptor()
+	return file_xls_enum_proto_enumTypes[599].Descriptor()
 }
 
 func (RoleCardModuleType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[598]
+	return &file_xls_enum_proto_enumTypes[599]
 }
 
 func (x RoleCardModuleType) Number() protoreflect.EnumNumber {
@@ -50920,7 +50997,7 @@ func (x *RoleCardModuleType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use RoleCardModuleType.Descriptor instead.
 func (RoleCardModuleType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{598}
+	return file_xls_enum_proto_rawDescGZIP(), []int{599}
 }
 
 type RegionalDivision int32
@@ -50956,11 +51033,11 @@ func (x RegionalDivision) String() string {
 }
 
 func (RegionalDivision) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[599].Descriptor()
+	return file_xls_enum_proto_enumTypes[600].Descriptor()
 }
 
 func (RegionalDivision) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[599]
+	return &file_xls_enum_proto_enumTypes[600]
 }
 
 func (x RegionalDivision) Number() protoreflect.EnumNumber {
@@ -50979,7 +51056,7 @@ func (x *RegionalDivision) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use RegionalDivision.Descriptor instead.
 func (RegionalDivision) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{599}
+	return file_xls_enum_proto_rawDescGZIP(), []int{600}
 }
 
 type TravelGoal int32
@@ -51018,11 +51095,11 @@ func (x TravelGoal) String() string {
 }
 
 func (TravelGoal) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[600].Descriptor()
+	return file_xls_enum_proto_enumTypes[601].Descriptor()
 }
 
 func (TravelGoal) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[600]
+	return &file_xls_enum_proto_enumTypes[601]
 }
 
 func (x TravelGoal) Number() protoreflect.EnumNumber {
@@ -51041,7 +51118,7 @@ func (x *TravelGoal) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use TravelGoal.Descriptor instead.
 func (TravelGoal) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{600}
+	return file_xls_enum_proto_rawDescGZIP(), []int{601}
 }
 
 type ActivityTrailTipType int32
@@ -51077,11 +51154,11 @@ func (x ActivityTrailTipType) String() string {
 }
 
 func (ActivityTrailTipType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[601].Descriptor()
+	return file_xls_enum_proto_enumTypes[602].Descriptor()
 }
 
 func (ActivityTrailTipType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[601]
+	return &file_xls_enum_proto_enumTypes[602]
 }
 
 func (x ActivityTrailTipType) Number() protoreflect.EnumNumber {
@@ -51100,7 +51177,7 @@ func (x *ActivityTrailTipType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use ActivityTrailTipType.Descriptor instead.
 func (ActivityTrailTipType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{601}
+	return file_xls_enum_proto_rawDescGZIP(), []int{602}
 }
 
 type RelationTreeTypeDefault int32
@@ -51145,11 +51222,11 @@ func (x RelationTreeTypeDefault) String() string {
 }
 
 func (RelationTreeTypeDefault) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[602].Descriptor()
+	return file_xls_enum_proto_enumTypes[603].Descriptor()
 }
 
 func (RelationTreeTypeDefault) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[602]
+	return &file_xls_enum_proto_enumTypes[603]
 }
 
 func (x RelationTreeTypeDefault) Number() protoreflect.EnumNumber {
@@ -51168,7 +51245,7 @@ func (x *RelationTreeTypeDefault) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use RelationTreeTypeDefault.Descriptor instead.
 func (RelationTreeTypeDefault) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{602}
+	return file_xls_enum_proto_rawDescGZIP(), []int{603}
 }
 
 type RelationTreeType int32
@@ -51231,11 +51308,11 @@ func (x RelationTreeType) String() string {
 }
 
 func (RelationTreeType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[603].Descriptor()
+	return file_xls_enum_proto_enumTypes[604].Descriptor()
 }
 
 func (RelationTreeType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[603]
+	return &file_xls_enum_proto_enumTypes[604]
 }
 
 func (x RelationTreeType) Number() protoreflect.EnumNumber {
@@ -51254,7 +51331,7 @@ func (x *RelationTreeType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use RelationTreeType.Descriptor instead.
 func (RelationTreeType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{603}
+	return file_xls_enum_proto_rawDescGZIP(), []int{604}
 }
 
 type GlassType int32
@@ -51290,11 +51367,11 @@ func (x GlassType) String() string {
 }
 
 func (GlassType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[604].Descriptor()
+	return file_xls_enum_proto_enumTypes[605].Descriptor()
 }
 
 func (GlassType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[604]
+	return &file_xls_enum_proto_enumTypes[605]
 }
 
 func (x GlassType) Number() protoreflect.EnumNumber {
@@ -51313,7 +51390,7 @@ func (x *GlassType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use GlassType.Descriptor instead.
 func (GlassType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{604}
+	return file_xls_enum_proto_rawDescGZIP(), []int{605}
 }
 
 type HiddenGlassType int32
@@ -51346,11 +51423,11 @@ func (x HiddenGlassType) String() string {
 }
 
 func (HiddenGlassType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[605].Descriptor()
+	return file_xls_enum_proto_enumTypes[606].Descriptor()
 }
 
 func (HiddenGlassType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[605]
+	return &file_xls_enum_proto_enumTypes[606]
 }
 
 func (x HiddenGlassType) Number() protoreflect.EnumNumber {
@@ -51369,7 +51446,7 @@ func (x *HiddenGlassType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use HiddenGlassType.Descriptor instead.
 func (HiddenGlassType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{605}
+	return file_xls_enum_proto_rawDescGZIP(), []int{606}
 }
 
 type EggAcquireWayType int32
@@ -51417,11 +51494,11 @@ func (x EggAcquireWayType) String() string {
 }
 
 func (EggAcquireWayType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[606].Descriptor()
+	return file_xls_enum_proto_enumTypes[607].Descriptor()
 }
 
 func (EggAcquireWayType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[606]
+	return &file_xls_enum_proto_enumTypes[607]
 }
 
 func (x EggAcquireWayType) Number() protoreflect.EnumNumber {
@@ -51440,7 +51517,7 @@ func (x *EggAcquireWayType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use EggAcquireWayType.Descriptor instead.
 func (EggAcquireWayType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{606}
+	return file_xls_enum_proto_rawDescGZIP(), []int{607}
 }
 
 type EggShiningProbType int32
@@ -51473,11 +51550,11 @@ func (x EggShiningProbType) String() string {
 }
 
 func (EggShiningProbType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[607].Descriptor()
+	return file_xls_enum_proto_enumTypes[608].Descriptor()
 }
 
 func (EggShiningProbType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[607]
+	return &file_xls_enum_proto_enumTypes[608]
 }
 
 func (x EggShiningProbType) Number() protoreflect.EnumNumber {
@@ -51496,7 +51573,7 @@ func (x *EggShiningProbType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use EggShiningProbType.Descriptor instead.
 func (EggShiningProbType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{607}
+	return file_xls_enum_proto_rawDescGZIP(), []int{608}
 }
 
 type EggGlassProbType int32
@@ -51529,11 +51606,11 @@ func (x EggGlassProbType) String() string {
 }
 
 func (EggGlassProbType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[608].Descriptor()
+	return file_xls_enum_proto_enumTypes[609].Descriptor()
 }
 
 func (EggGlassProbType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[608]
+	return &file_xls_enum_proto_enumTypes[609]
 }
 
 func (x EggGlassProbType) Number() protoreflect.EnumNumber {
@@ -51552,7 +51629,7 @@ func (x *EggGlassProbType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use EggGlassProbType.Descriptor instead.
 func (EggGlassProbType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{608}
+	return file_xls_enum_proto_rawDescGZIP(), []int{609}
 }
 
 type DialogRatingType int32
@@ -51591,11 +51668,11 @@ func (x DialogRatingType) String() string {
 }
 
 func (DialogRatingType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[609].Descriptor()
+	return file_xls_enum_proto_enumTypes[610].Descriptor()
 }
 
 func (DialogRatingType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[609]
+	return &file_xls_enum_proto_enumTypes[610]
 }
 
 func (x DialogRatingType) Number() protoreflect.EnumNumber {
@@ -51614,7 +51691,7 @@ func (x *DialogRatingType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use DialogRatingType.Descriptor instead.
 func (DialogRatingType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{609}
+	return file_xls_enum_proto_rawDescGZIP(), []int{610}
 }
 
 type BattlePassGiftGrade int32
@@ -51653,11 +51730,11 @@ func (x BattlePassGiftGrade) String() string {
 }
 
 func (BattlePassGiftGrade) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[610].Descriptor()
+	return file_xls_enum_proto_enumTypes[611].Descriptor()
 }
 
 func (BattlePassGiftGrade) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[610]
+	return &file_xls_enum_proto_enumTypes[611]
 }
 
 func (x BattlePassGiftGrade) Number() protoreflect.EnumNumber {
@@ -51676,7 +51753,7 @@ func (x *BattlePassGiftGrade) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use BattlePassGiftGrade.Descriptor instead.
 func (BattlePassGiftGrade) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{610}
+	return file_xls_enum_proto_rawDescGZIP(), []int{611}
 }
 
 type ActivitySeasonItemJump int32
@@ -51718,11 +51795,11 @@ func (x ActivitySeasonItemJump) String() string {
 }
 
 func (ActivitySeasonItemJump) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[611].Descriptor()
+	return file_xls_enum_proto_enumTypes[612].Descriptor()
 }
 
 func (ActivitySeasonItemJump) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[611]
+	return &file_xls_enum_proto_enumTypes[612]
 }
 
 func (x ActivitySeasonItemJump) Number() protoreflect.EnumNumber {
@@ -51741,7 +51818,7 @@ func (x *ActivitySeasonItemJump) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use ActivitySeasonItemJump.Descriptor instead.
 func (ActivitySeasonItemJump) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{611}
+	return file_xls_enum_proto_rawDescGZIP(), []int{612}
 }
 
 type ActivitySeasonTimeShow int32
@@ -51780,11 +51857,11 @@ func (x ActivitySeasonTimeShow) String() string {
 }
 
 func (ActivitySeasonTimeShow) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[612].Descriptor()
+	return file_xls_enum_proto_enumTypes[613].Descriptor()
 }
 
 func (ActivitySeasonTimeShow) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[612]
+	return &file_xls_enum_proto_enumTypes[613]
 }
 
 func (x ActivitySeasonTimeShow) Number() protoreflect.EnumNumber {
@@ -51803,7 +51880,7 @@ func (x *ActivitySeasonTimeShow) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use ActivitySeasonTimeShow.Descriptor instead.
 func (ActivitySeasonTimeShow) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{612}
+	return file_xls_enum_proto_rawDescGZIP(), []int{613}
 }
 
 type SeasonItemAdditionalShow int32
@@ -51845,11 +51922,11 @@ func (x SeasonItemAdditionalShow) String() string {
 }
 
 func (SeasonItemAdditionalShow) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[613].Descriptor()
+	return file_xls_enum_proto_enumTypes[614].Descriptor()
 }
 
 func (SeasonItemAdditionalShow) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[613]
+	return &file_xls_enum_proto_enumTypes[614]
 }
 
 func (x SeasonItemAdditionalShow) Number() protoreflect.EnumNumber {
@@ -51868,7 +51945,7 @@ func (x *SeasonItemAdditionalShow) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use SeasonItemAdditionalShow.Descriptor instead.
 func (SeasonItemAdditionalShow) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{613}
+	return file_xls_enum_proto_rawDescGZIP(), []int{614}
 }
 
 type BelongSystem int32
@@ -51907,11 +51984,11 @@ func (x BelongSystem) String() string {
 }
 
 func (BelongSystem) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[614].Descriptor()
+	return file_xls_enum_proto_enumTypes[615].Descriptor()
 }
 
 func (BelongSystem) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[614]
+	return &file_xls_enum_proto_enumTypes[615]
 }
 
 func (x BelongSystem) Number() protoreflect.EnumNumber {
@@ -51930,7 +52007,7 @@ func (x *BelongSystem) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use BelongSystem.Descriptor instead.
 func (BelongSystem) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{614}
+	return file_xls_enum_proto_rawDescGZIP(), []int{615}
 }
 
 type SeasonKVType int32
@@ -51963,11 +52040,11 @@ func (x SeasonKVType) String() string {
 }
 
 func (SeasonKVType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[615].Descriptor()
+	return file_xls_enum_proto_enumTypes[616].Descriptor()
 }
 
 func (SeasonKVType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[615]
+	return &file_xls_enum_proto_enumTypes[616]
 }
 
 func (x SeasonKVType) Number() protoreflect.EnumNumber {
@@ -51986,7 +52063,7 @@ func (x *SeasonKVType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use SeasonKVType.Descriptor instead.
 func (SeasonKVType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{615}
+	return file_xls_enum_proto_rawDescGZIP(), []int{616}
 }
 
 type PetType int32
@@ -52019,11 +52096,11 @@ func (x PetType) String() string {
 }
 
 func (PetType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[616].Descriptor()
+	return file_xls_enum_proto_enumTypes[617].Descriptor()
 }
 
 func (PetType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[616]
+	return &file_xls_enum_proto_enumTypes[617]
 }
 
 func (x PetType) Number() protoreflect.EnumNumber {
@@ -52042,7 +52119,7 @@ func (x *PetType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use PetType.Descriptor instead.
 func (PetType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{616}
+	return file_xls_enum_proto_rawDescGZIP(), []int{617}
 }
 
 type SeasonPartSlotPosition int32
@@ -52099,11 +52176,11 @@ func (x SeasonPartSlotPosition) String() string {
 }
 
 func (SeasonPartSlotPosition) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[617].Descriptor()
+	return file_xls_enum_proto_enumTypes[618].Descriptor()
 }
 
 func (SeasonPartSlotPosition) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[617]
+	return &file_xls_enum_proto_enumTypes[618]
 }
 
 func (x SeasonPartSlotPosition) Number() protoreflect.EnumNumber {
@@ -52122,7 +52199,7 @@ func (x *SeasonPartSlotPosition) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use SeasonPartSlotPosition.Descriptor instead.
 func (SeasonPartSlotPosition) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{617}
+	return file_xls_enum_proto_rawDescGZIP(), []int{618}
 }
 
 type SeasonItemGoImgLocation int32
@@ -52158,11 +52235,11 @@ func (x SeasonItemGoImgLocation) String() string {
 }
 
 func (SeasonItemGoImgLocation) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[618].Descriptor()
+	return file_xls_enum_proto_enumTypes[619].Descriptor()
 }
 
 func (SeasonItemGoImgLocation) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[618]
+	return &file_xls_enum_proto_enumTypes[619]
 }
 
 func (x SeasonItemGoImgLocation) Number() protoreflect.EnumNumber {
@@ -52181,7 +52258,7 @@ func (x *SeasonItemGoImgLocation) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use SeasonItemGoImgLocation.Descriptor instead.
 func (SeasonItemGoImgLocation) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{618}
+	return file_xls_enum_proto_rawDescGZIP(), []int{619}
 }
 
 type RelationTreeBasic int32
@@ -52238,11 +52315,11 @@ func (x RelationTreeBasic) String() string {
 }
 
 func (RelationTreeBasic) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[619].Descriptor()
+	return file_xls_enum_proto_enumTypes[620].Descriptor()
 }
 
 func (RelationTreeBasic) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[619]
+	return &file_xls_enum_proto_enumTypes[620]
 }
 
 func (x RelationTreeBasic) Number() protoreflect.EnumNumber {
@@ -52261,7 +52338,7 @@ func (x *RelationTreeBasic) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use RelationTreeBasic.Descriptor instead.
 func (RelationTreeBasic) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{619}
+	return file_xls_enum_proto_rawDescGZIP(), []int{620}
 }
 
 type UserSubscribeTplType int32
@@ -52300,11 +52377,11 @@ func (x UserSubscribeTplType) String() string {
 }
 
 func (UserSubscribeTplType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[620].Descriptor()
+	return file_xls_enum_proto_enumTypes[621].Descriptor()
 }
 
 func (UserSubscribeTplType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[620]
+	return &file_xls_enum_proto_enumTypes[621]
 }
 
 func (x UserSubscribeTplType) Number() protoreflect.EnumNumber {
@@ -52323,7 +52400,7 @@ func (x *UserSubscribeTplType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use UserSubscribeTplType.Descriptor instead.
 func (UserSubscribeTplType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{620}
+	return file_xls_enum_proto_rawDescGZIP(), []int{621}
 }
 
 type UserSubscribeType int32
@@ -52374,11 +52451,11 @@ func (x UserSubscribeType) String() string {
 }
 
 func (UserSubscribeType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[621].Descriptor()
+	return file_xls_enum_proto_enumTypes[622].Descriptor()
 }
 
 func (UserSubscribeType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[621]
+	return &file_xls_enum_proto_enumTypes[622]
 }
 
 func (x UserSubscribeType) Number() protoreflect.EnumNumber {
@@ -52397,7 +52474,7 @@ func (x *UserSubscribeType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use UserSubscribeType.Descriptor instead.
 func (UserSubscribeType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{621}
+	return file_xls_enum_proto_rawDescGZIP(), []int{622}
 }
 
 type UserSubscribeSendScene int32
@@ -52439,11 +52516,11 @@ func (x UserSubscribeSendScene) String() string {
 }
 
 func (UserSubscribeSendScene) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[622].Descriptor()
+	return file_xls_enum_proto_enumTypes[623].Descriptor()
 }
 
 func (UserSubscribeSendScene) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[622]
+	return &file_xls_enum_proto_enumTypes[623]
 }
 
 func (x UserSubscribeSendScene) Number() protoreflect.EnumNumber {
@@ -52462,7 +52539,7 @@ func (x *UserSubscribeSendScene) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use UserSubscribeSendScene.Descriptor instead.
 func (UserSubscribeSendScene) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{622}
+	return file_xls_enum_proto_rawDescGZIP(), []int{623}
 }
 
 type LobbyMainInnerUIType int32
@@ -52534,11 +52611,11 @@ func (x LobbyMainInnerUIType) String() string {
 }
 
 func (LobbyMainInnerUIType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[623].Descriptor()
+	return file_xls_enum_proto_enumTypes[624].Descriptor()
 }
 
 func (LobbyMainInnerUIType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[623]
+	return &file_xls_enum_proto_enumTypes[624]
 }
 
 func (x LobbyMainInnerUIType) Number() protoreflect.EnumNumber {
@@ -52557,7 +52634,7 @@ func (x *LobbyMainInnerUIType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use LobbyMainInnerUIType.Descriptor instead.
 func (LobbyMainInnerUIType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{623}
+	return file_xls_enum_proto_rawDescGZIP(), []int{624}
 }
 
 type MapModuleDataUpdateReason int32
@@ -52602,11 +52679,11 @@ func (x MapModuleDataUpdateReason) String() string {
 }
 
 func (MapModuleDataUpdateReason) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[624].Descriptor()
+	return file_xls_enum_proto_enumTypes[625].Descriptor()
 }
 
 func (MapModuleDataUpdateReason) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[624]
+	return &file_xls_enum_proto_enumTypes[625]
 }
 
 func (x MapModuleDataUpdateReason) Number() protoreflect.EnumNumber {
@@ -52625,7 +52702,7 @@ func (x *MapModuleDataUpdateReason) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use MapModuleDataUpdateReason.Descriptor instead.
 func (MapModuleDataUpdateReason) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{624}
+	return file_xls_enum_proto_rawDescGZIP(), []int{625}
 }
 
 type NpcAttachItemType int32
@@ -52664,11 +52741,11 @@ func (x NpcAttachItemType) String() string {
 }
 
 func (NpcAttachItemType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[625].Descriptor()
+	return file_xls_enum_proto_enumTypes[626].Descriptor()
 }
 
 func (NpcAttachItemType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[625]
+	return &file_xls_enum_proto_enumTypes[626]
 }
 
 func (x NpcAttachItemType) Number() protoreflect.EnumNumber {
@@ -52687,7 +52764,7 @@ func (x *NpcAttachItemType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use NpcAttachItemType.Descriptor instead.
 func (NpcAttachItemType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{625}
+	return file_xls_enum_proto_rawDescGZIP(), []int{626}
 }
 
 type ReportCoinRatio int32
@@ -52735,11 +52812,11 @@ func (x ReportCoinRatio) String() string {
 }
 
 func (ReportCoinRatio) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[626].Descriptor()
+	return file_xls_enum_proto_enumTypes[627].Descriptor()
 }
 
 func (ReportCoinRatio) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[626]
+	return &file_xls_enum_proto_enumTypes[627]
 }
 
 func (x ReportCoinRatio) Number() protoreflect.EnumNumber {
@@ -52758,7 +52835,7 @@ func (x *ReportCoinRatio) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use ReportCoinRatio.Descriptor instead.
 func (ReportCoinRatio) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{626}
+	return file_xls_enum_proto_rawDescGZIP(), []int{627}
 }
 
 type MagicManualTab int32
@@ -52821,11 +52898,11 @@ func (x MagicManualTab) String() string {
 }
 
 func (MagicManualTab) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[627].Descriptor()
+	return file_xls_enum_proto_enumTypes[628].Descriptor()
 }
 
 func (MagicManualTab) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[627]
+	return &file_xls_enum_proto_enumTypes[628]
 }
 
 func (x MagicManualTab) Number() protoreflect.EnumNumber {
@@ -52844,7 +52921,7 @@ func (x *MagicManualTab) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use MagicManualTab.Descriptor instead.
 func (MagicManualTab) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{627}
+	return file_xls_enum_proto_rawDescGZIP(), []int{628}
 }
 
 type SeasonGrowthType int32
@@ -52880,11 +52957,11 @@ func (x SeasonGrowthType) String() string {
 }
 
 func (SeasonGrowthType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[628].Descriptor()
+	return file_xls_enum_proto_enumTypes[629].Descriptor()
 }
 
 func (SeasonGrowthType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[628]
+	return &file_xls_enum_proto_enumTypes[629]
 }
 
 func (x SeasonGrowthType) Number() protoreflect.EnumNumber {
@@ -52903,7 +52980,7 @@ func (x *SeasonGrowthType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use SeasonGrowthType.Descriptor instead.
 func (SeasonGrowthType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{628}
+	return file_xls_enum_proto_rawDescGZIP(), []int{629}
 }
 
 type PlayerVisibleSpecialRule int32
@@ -52942,11 +53019,11 @@ func (x PlayerVisibleSpecialRule) String() string {
 }
 
 func (PlayerVisibleSpecialRule) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[629].Descriptor()
+	return file_xls_enum_proto_enumTypes[630].Descriptor()
 }
 
 func (PlayerVisibleSpecialRule) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[629]
+	return &file_xls_enum_proto_enumTypes[630]
 }
 
 func (x PlayerVisibleSpecialRule) Number() protoreflect.EnumNumber {
@@ -52965,7 +53042,7 @@ func (x *PlayerVisibleSpecialRule) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use PlayerVisibleSpecialRule.Descriptor instead.
 func (PlayerVisibleSpecialRule) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{629}
+	return file_xls_enum_proto_rawDescGZIP(), []int{630}
 }
 
 type InteractiveProp int32
@@ -53001,11 +53078,11 @@ func (x InteractiveProp) String() string {
 }
 
 func (InteractiveProp) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[630].Descriptor()
+	return file_xls_enum_proto_enumTypes[631].Descriptor()
 }
 
 func (InteractiveProp) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[630]
+	return &file_xls_enum_proto_enumTypes[631]
 }
 
 func (x InteractiveProp) Number() protoreflect.EnumNumber {
@@ -53024,7 +53101,7 @@ func (x *InteractiveProp) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use InteractiveProp.Descriptor instead.
 func (InteractiveProp) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{630}
+	return file_xls_enum_proto_rawDescGZIP(), []int{631}
 }
 
 type QQArkBusinessType int32
@@ -53060,11 +53137,11 @@ func (x QQArkBusinessType) String() string {
 }
 
 func (QQArkBusinessType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[631].Descriptor()
+	return file_xls_enum_proto_enumTypes[632].Descriptor()
 }
 
 func (QQArkBusinessType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[631]
+	return &file_xls_enum_proto_enumTypes[632]
 }
 
 func (x QQArkBusinessType) Number() protoreflect.EnumNumber {
@@ -53083,7 +53160,7 @@ func (x *QQArkBusinessType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use QQArkBusinessType.Descriptor instead.
 func (QQArkBusinessType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{631}
+	return file_xls_enum_proto_rawDescGZIP(), []int{632}
 }
 
 type QQArkShareType int32
@@ -53125,11 +53202,11 @@ func (x QQArkShareType) String() string {
 }
 
 func (QQArkShareType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[632].Descriptor()
+	return file_xls_enum_proto_enumTypes[633].Descriptor()
 }
 
 func (QQArkShareType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[632]
+	return &file_xls_enum_proto_enumTypes[633]
 }
 
 func (x QQArkShareType) Number() protoreflect.EnumNumber {
@@ -53148,7 +53225,7 @@ func (x *QQArkShareType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use QQArkShareType.Descriptor instead.
 func (QQArkShareType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{632}
+	return file_xls_enum_proto_rawDescGZIP(), []int{633}
 }
 
 type FurniturelnteractType int32
@@ -53193,11 +53270,11 @@ func (x FurniturelnteractType) String() string {
 }
 
 func (FurniturelnteractType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[633].Descriptor()
+	return file_xls_enum_proto_enumTypes[634].Descriptor()
 }
 
 func (FurniturelnteractType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[633]
+	return &file_xls_enum_proto_enumTypes[634]
 }
 
 func (x FurniturelnteractType) Number() protoreflect.EnumNumber {
@@ -53216,7 +53293,7 @@ func (x *FurniturelnteractType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use FurniturelnteractType.Descriptor instead.
 func (FurniturelnteractType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{633}
+	return file_xls_enum_proto_rawDescGZIP(), []int{634}
 }
 
 type InteractiontreeTypeDefault int32
@@ -53264,11 +53341,11 @@ func (x InteractiontreeTypeDefault) String() string {
 }
 
 func (InteractiontreeTypeDefault) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[634].Descriptor()
+	return file_xls_enum_proto_enumTypes[635].Descriptor()
 }
 
 func (InteractiontreeTypeDefault) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[634]
+	return &file_xls_enum_proto_enumTypes[635]
 }
 
 func (x InteractiontreeTypeDefault) Number() protoreflect.EnumNumber {
@@ -53287,7 +53364,7 @@ func (x *InteractiontreeTypeDefault) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use InteractiontreeTypeDefault.Descriptor instead.
 func (InteractiontreeTypeDefault) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{634}
+	return file_xls_enum_proto_rawDescGZIP(), []int{635}
 }
 
 type PlayerRelationshipType int32
@@ -53326,11 +53403,11 @@ func (x PlayerRelationshipType) String() string {
 }
 
 func (PlayerRelationshipType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[635].Descriptor()
+	return file_xls_enum_proto_enumTypes[636].Descriptor()
 }
 
 func (PlayerRelationshipType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[635]
+	return &file_xls_enum_proto_enumTypes[636]
 }
 
 func (x PlayerRelationshipType) Number() protoreflect.EnumNumber {
@@ -53349,7 +53426,7 @@ func (x *PlayerRelationshipType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use PlayerRelationshipType.Descriptor instead.
 func (PlayerRelationshipType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{635}
+	return file_xls_enum_proto_rawDescGZIP(), []int{636}
 }
 
 type BonusProbType int32
@@ -53385,11 +53462,11 @@ func (x BonusProbType) String() string {
 }
 
 func (BonusProbType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[636].Descriptor()
+	return file_xls_enum_proto_enumTypes[637].Descriptor()
 }
 
 func (BonusProbType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[636]
+	return &file_xls_enum_proto_enumTypes[637]
 }
 
 func (x BonusProbType) Number() protoreflect.EnumNumber {
@@ -53408,7 +53485,7 @@ func (x *BonusProbType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use BonusProbType.Descriptor instead.
 func (BonusProbType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{636}
+	return file_xls_enum_proto_rawDescGZIP(), []int{637}
 }
 
 type BonusVariableType int32
@@ -53459,11 +53536,11 @@ func (x BonusVariableType) String() string {
 }
 
 func (BonusVariableType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[637].Descriptor()
+	return file_xls_enum_proto_enumTypes[638].Descriptor()
 }
 
 func (BonusVariableType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[637]
+	return &file_xls_enum_proto_enumTypes[638]
 }
 
 func (x BonusVariableType) Number() protoreflect.EnumNumber {
@@ -53482,7 +53559,7 @@ func (x *BonusVariableType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use BonusVariableType.Descriptor instead.
 func (BonusVariableType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{637}
+	return file_xls_enum_proto_rawDescGZIP(), []int{638}
 }
 
 type BonusBelongFactorType int32
@@ -53524,11 +53601,11 @@ func (x BonusBelongFactorType) String() string {
 }
 
 func (BonusBelongFactorType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[638].Descriptor()
+	return file_xls_enum_proto_enumTypes[639].Descriptor()
 }
 
 func (BonusBelongFactorType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[638]
+	return &file_xls_enum_proto_enumTypes[639]
 }
 
 func (x BonusBelongFactorType) Number() protoreflect.EnumNumber {
@@ -53547,7 +53624,7 @@ func (x *BonusBelongFactorType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use BonusBelongFactorType.Descriptor instead.
 func (BonusBelongFactorType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{638}
+	return file_xls_enum_proto_rawDescGZIP(), []int{639}
 }
 
 type BonusEventResultType int32
@@ -53589,11 +53666,11 @@ func (x BonusEventResultType) String() string {
 }
 
 func (BonusEventResultType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[639].Descriptor()
+	return file_xls_enum_proto_enumTypes[640].Descriptor()
 }
 
 func (BonusEventResultType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[639]
+	return &file_xls_enum_proto_enumTypes[640]
 }
 
 func (x BonusEventResultType) Number() protoreflect.EnumNumber {
@@ -53612,7 +53689,7 @@ func (x *BonusEventResultType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use BonusEventResultType.Descriptor instead.
 func (BonusEventResultType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{639}
+	return file_xls_enum_proto_rawDescGZIP(), []int{640}
 }
 
 type BonusRefreshType int32
@@ -53651,11 +53728,11 @@ func (x BonusRefreshType) String() string {
 }
 
 func (BonusRefreshType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[640].Descriptor()
+	return file_xls_enum_proto_enumTypes[641].Descriptor()
 }
 
 func (BonusRefreshType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[640]
+	return &file_xls_enum_proto_enumTypes[641]
 }
 
 func (x BonusRefreshType) Number() protoreflect.EnumNumber {
@@ -53674,7 +53751,7 @@ func (x *BonusRefreshType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use BonusRefreshType.Descriptor instead.
 func (BonusRefreshType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{640}
+	return file_xls_enum_proto_rawDescGZIP(), []int{641}
 }
 
 type BonusBoxIconType int32
@@ -53722,11 +53799,11 @@ func (x BonusBoxIconType) String() string {
 }
 
 func (BonusBoxIconType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[641].Descriptor()
+	return file_xls_enum_proto_enumTypes[642].Descriptor()
 }
 
 func (BonusBoxIconType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[641]
+	return &file_xls_enum_proto_enumTypes[642]
 }
 
 func (x BonusBoxIconType) Number() protoreflect.EnumNumber {
@@ -53745,7 +53822,7 @@ func (x *BonusBoxIconType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use BonusBoxIconType.Descriptor instead.
 func (BonusBoxIconType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{641}
+	return file_xls_enum_proto_rawDescGZIP(), []int{642}
 }
 
 type VisibleType int32
@@ -53781,11 +53858,11 @@ func (x VisibleType) String() string {
 }
 
 func (VisibleType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[642].Descriptor()
+	return file_xls_enum_proto_enumTypes[643].Descriptor()
 }
 
 func (VisibleType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[642]
+	return &file_xls_enum_proto_enumTypes[643]
 }
 
 func (x VisibleType) Number() protoreflect.EnumNumber {
@@ -53804,7 +53881,7 @@ func (x *VisibleType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use VisibleType.Descriptor instead.
 func (VisibleType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{642}
+	return file_xls_enum_proto_rawDescGZIP(), []int{643}
 }
 
 type AreaVisibleDensity int32
@@ -53840,11 +53917,11 @@ func (x AreaVisibleDensity) String() string {
 }
 
 func (AreaVisibleDensity) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[643].Descriptor()
+	return file_xls_enum_proto_enumTypes[644].Descriptor()
 }
 
 func (AreaVisibleDensity) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[643]
+	return &file_xls_enum_proto_enumTypes[644]
 }
 
 func (x AreaVisibleDensity) Number() protoreflect.EnumNumber {
@@ -53863,7 +53940,7 @@ func (x *AreaVisibleDensity) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use AreaVisibleDensity.Descriptor instead.
 func (AreaVisibleDensity) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{643}
+	return file_xls_enum_proto_rawDescGZIP(), []int{644}
 }
 
 type BonusPetFieldMatchType int32
@@ -53908,11 +53985,11 @@ func (x BonusPetFieldMatchType) String() string {
 }
 
 func (BonusPetFieldMatchType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[644].Descriptor()
+	return file_xls_enum_proto_enumTypes[645].Descriptor()
 }
 
 func (BonusPetFieldMatchType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[644]
+	return &file_xls_enum_proto_enumTypes[645]
 }
 
 func (x BonusPetFieldMatchType) Number() protoreflect.EnumNumber {
@@ -53931,7 +54008,7 @@ func (x *BonusPetFieldMatchType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use BonusPetFieldMatchType.Descriptor instead.
 func (BonusPetFieldMatchType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{644}
+	return file_xls_enum_proto_rawDescGZIP(), []int{645}
 }
 
 type SeasonTipsPageType int32
@@ -53970,11 +54047,11 @@ func (x SeasonTipsPageType) String() string {
 }
 
 func (SeasonTipsPageType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[645].Descriptor()
+	return file_xls_enum_proto_enumTypes[646].Descriptor()
 }
 
 func (SeasonTipsPageType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[645]
+	return &file_xls_enum_proto_enumTypes[646]
 }
 
 func (x SeasonTipsPageType) Number() protoreflect.EnumNumber {
@@ -53993,7 +54070,7 @@ func (x *SeasonTipsPageType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use SeasonTipsPageType.Descriptor instead.
 func (SeasonTipsPageType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{645}
+	return file_xls_enum_proto_rawDescGZIP(), []int{646}
 }
 
 type CloseConditionType int32
@@ -54029,11 +54106,11 @@ func (x CloseConditionType) String() string {
 }
 
 func (CloseConditionType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[646].Descriptor()
+	return file_xls_enum_proto_enumTypes[647].Descriptor()
 }
 
 func (CloseConditionType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[646]
+	return &file_xls_enum_proto_enumTypes[647]
 }
 
 func (x CloseConditionType) Number() protoreflect.EnumNumber {
@@ -54052,7 +54129,7 @@ func (x *CloseConditionType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use CloseConditionType.Descriptor instead.
 func (CloseConditionType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{646}
+	return file_xls_enum_proto_rawDescGZIP(), []int{647}
 }
 
 type ActivityPreviewPetShow int32
@@ -54097,11 +54174,11 @@ func (x ActivityPreviewPetShow) String() string {
 }
 
 func (ActivityPreviewPetShow) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[647].Descriptor()
+	return file_xls_enum_proto_enumTypes[648].Descriptor()
 }
 
 func (ActivityPreviewPetShow) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[647]
+	return &file_xls_enum_proto_enumTypes[648]
 }
 
 func (x ActivityPreviewPetShow) Number() protoreflect.EnumNumber {
@@ -54120,7 +54197,7 @@ func (x *ActivityPreviewPetShow) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use ActivityPreviewPetShow.Descriptor instead.
 func (ActivityPreviewPetShow) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{647}
+	return file_xls_enum_proto_rawDescGZIP(), []int{648}
 }
 
 type ActivityOptionType int32
@@ -54168,11 +54245,11 @@ func (x ActivityOptionType) String() string {
 }
 
 func (ActivityOptionType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[648].Descriptor()
+	return file_xls_enum_proto_enumTypes[649].Descriptor()
 }
 
 func (ActivityOptionType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[648]
+	return &file_xls_enum_proto_enumTypes[649]
 }
 
 func (x ActivityOptionType) Number() protoreflect.EnumNumber {
@@ -54191,7 +54268,7 @@ func (x *ActivityOptionType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use ActivityOptionType.Descriptor instead.
 func (ActivityOptionType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{648}
+	return file_xls_enum_proto_rawDescGZIP(), []int{649}
 }
 
 type ActivityTrackType int32
@@ -54230,11 +54307,11 @@ func (x ActivityTrackType) String() string {
 }
 
 func (ActivityTrackType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[649].Descriptor()
+	return file_xls_enum_proto_enumTypes[650].Descriptor()
 }
 
 func (ActivityTrackType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[649]
+	return &file_xls_enum_proto_enumTypes[650]
 }
 
 func (x ActivityTrackType) Number() protoreflect.EnumNumber {
@@ -54253,7 +54330,7 @@ func (x *ActivityTrackType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use ActivityTrackType.Descriptor instead.
 func (ActivityTrackType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{649}
+	return file_xls_enum_proto_rawDescGZIP(), []int{650}
 }
 
 type RideFootNumberType int32
@@ -54304,11 +54381,11 @@ func (x RideFootNumberType) String() string {
 }
 
 func (RideFootNumberType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[650].Descriptor()
+	return file_xls_enum_proto_enumTypes[651].Descriptor()
 }
 
 func (RideFootNumberType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[650]
+	return &file_xls_enum_proto_enumTypes[651]
 }
 
 func (x RideFootNumberType) Number() protoreflect.EnumNumber {
@@ -54327,7 +54404,7 @@ func (x *RideFootNumberType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use RideFootNumberType.Descriptor instead.
 func (RideFootNumberType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{650}
+	return file_xls_enum_proto_rawDescGZIP(), []int{651}
 }
 
 type FriendType int32
@@ -54369,11 +54446,11 @@ func (x FriendType) String() string {
 }
 
 func (FriendType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[651].Descriptor()
+	return file_xls_enum_proto_enumTypes[652].Descriptor()
 }
 
 func (FriendType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[651]
+	return &file_xls_enum_proto_enumTypes[652]
 }
 
 func (x FriendType) Number() protoreflect.EnumNumber {
@@ -54392,7 +54469,7 @@ func (x *FriendType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use FriendType.Descriptor instead.
 func (FriendType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{651}
+	return file_xls_enum_proto_rawDescGZIP(), []int{652}
 }
 
 type FriendRecommendSource int32
@@ -54443,11 +54520,11 @@ func (x FriendRecommendSource) String() string {
 }
 
 func (FriendRecommendSource) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[652].Descriptor()
+	return file_xls_enum_proto_enumTypes[653].Descriptor()
 }
 
 func (FriendRecommendSource) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[652]
+	return &file_xls_enum_proto_enumTypes[653]
 }
 
 func (x FriendRecommendSource) Number() protoreflect.EnumNumber {
@@ -54466,7 +54543,7 @@ func (x *FriendRecommendSource) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use FriendRecommendSource.Descriptor instead.
 func (FriendRecommendSource) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{652}
+	return file_xls_enum_proto_rawDescGZIP(), []int{653}
 }
 
 type PlayerSocialActionType int32
@@ -54508,11 +54585,11 @@ func (x PlayerSocialActionType) String() string {
 }
 
 func (PlayerSocialActionType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[653].Descriptor()
+	return file_xls_enum_proto_enumTypes[654].Descriptor()
 }
 
 func (PlayerSocialActionType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[653]
+	return &file_xls_enum_proto_enumTypes[654]
 }
 
 func (x PlayerSocialActionType) Number() protoreflect.EnumNumber {
@@ -54531,7 +54608,7 @@ func (x *PlayerSocialActionType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use PlayerSocialActionType.Descriptor instead.
 func (PlayerSocialActionType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{653}
+	return file_xls_enum_proto_rawDescGZIP(), []int{654}
 }
 
 type PlayerSocialBehaviorType int32
@@ -54570,11 +54647,11 @@ func (x PlayerSocialBehaviorType) String() string {
 }
 
 func (PlayerSocialBehaviorType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[654].Descriptor()
+	return file_xls_enum_proto_enumTypes[655].Descriptor()
 }
 
 func (PlayerSocialBehaviorType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[654]
+	return &file_xls_enum_proto_enumTypes[655]
 }
 
 func (x PlayerSocialBehaviorType) Number() protoreflect.EnumNumber {
@@ -54593,7 +54670,7 @@ func (x *PlayerSocialBehaviorType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use PlayerSocialBehaviorType.Descriptor instead.
 func (PlayerSocialBehaviorType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{654}
+	return file_xls_enum_proto_rawDescGZIP(), []int{655}
 }
 
 type TaskExpireTimeType int32
@@ -54632,11 +54709,11 @@ func (x TaskExpireTimeType) String() string {
 }
 
 func (TaskExpireTimeType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[655].Descriptor()
+	return file_xls_enum_proto_enumTypes[656].Descriptor()
 }
 
 func (TaskExpireTimeType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[655]
+	return &file_xls_enum_proto_enumTypes[656]
 }
 
 func (x TaskExpireTimeType) Number() protoreflect.EnumNumber {
@@ -54655,7 +54732,7 @@ func (x *TaskExpireTimeType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use TaskExpireTimeType.Descriptor instead.
 func (TaskExpireTimeType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{655}
+	return file_xls_enum_proto_rawDescGZIP(), []int{656}
 }
 
 type HomeAccessType int32
@@ -54691,11 +54768,11 @@ func (x HomeAccessType) String() string {
 }
 
 func (HomeAccessType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[656].Descriptor()
+	return file_xls_enum_proto_enumTypes[657].Descriptor()
 }
 
 func (HomeAccessType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[656]
+	return &file_xls_enum_proto_enumTypes[657]
 }
 
 func (x HomeAccessType) Number() protoreflect.EnumNumber {
@@ -54714,7 +54791,7 @@ func (x *HomeAccessType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use HomeAccessType.Descriptor instead.
 func (HomeAccessType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{656}
+	return file_xls_enum_proto_rawDescGZIP(), []int{657}
 }
 
 type PetBlessingTlogActionType int32
@@ -54756,11 +54833,11 @@ func (x PetBlessingTlogActionType) String() string {
 }
 
 func (PetBlessingTlogActionType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[657].Descriptor()
+	return file_xls_enum_proto_enumTypes[658].Descriptor()
 }
 
 func (PetBlessingTlogActionType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[657]
+	return &file_xls_enum_proto_enumTypes[658]
 }
 
 func (x PetBlessingTlogActionType) Number() protoreflect.EnumNumber {
@@ -54779,7 +54856,7 @@ func (x *PetBlessingTlogActionType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use PetBlessingTlogActionType.Descriptor instead.
 func (PetBlessingTlogActionType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{657}
+	return file_xls_enum_proto_rawDescGZIP(), []int{658}
 }
 
 type ActivityEmojiType int32
@@ -54815,11 +54892,11 @@ func (x ActivityEmojiType) String() string {
 }
 
 func (ActivityEmojiType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[658].Descriptor()
+	return file_xls_enum_proto_enumTypes[659].Descriptor()
 }
 
 func (ActivityEmojiType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[658]
+	return &file_xls_enum_proto_enumTypes[659]
 }
 
 func (x ActivityEmojiType) Number() protoreflect.EnumNumber {
@@ -54838,7 +54915,7 @@ func (x *ActivityEmojiType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use ActivityEmojiType.Descriptor instead.
 func (ActivityEmojiType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{658}
+	return file_xls_enum_proto_rawDescGZIP(), []int{659}
 }
 
 type ShopRandomType int32
@@ -54871,11 +54948,11 @@ func (x ShopRandomType) String() string {
 }
 
 func (ShopRandomType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[659].Descriptor()
+	return file_xls_enum_proto_enumTypes[660].Descriptor()
 }
 
 func (ShopRandomType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[659]
+	return &file_xls_enum_proto_enumTypes[660]
 }
 
 func (x ShopRandomType) Number() protoreflect.EnumNumber {
@@ -54894,7 +54971,7 @@ func (x *ShopRandomType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use ShopRandomType.Descriptor instead.
 func (ShopRandomType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{659}
+	return file_xls_enum_proto_rawDescGZIP(), []int{660}
 }
 
 type FixRandomType int32
@@ -54930,11 +55007,11 @@ func (x FixRandomType) String() string {
 }
 
 func (FixRandomType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[660].Descriptor()
+	return file_xls_enum_proto_enumTypes[661].Descriptor()
 }
 
 func (FixRandomType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[660]
+	return &file_xls_enum_proto_enumTypes[661]
 }
 
 func (x FixRandomType) Number() protoreflect.EnumNumber {
@@ -54953,7 +55030,7 @@ func (x *FixRandomType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use FixRandomType.Descriptor instead.
 func (FixRandomType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{660}
+	return file_xls_enum_proto_rawDescGZIP(), []int{661}
 }
 
 type RandomMutexType int32
@@ -54986,11 +55063,11 @@ func (x RandomMutexType) String() string {
 }
 
 func (RandomMutexType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[661].Descriptor()
+	return file_xls_enum_proto_enumTypes[662].Descriptor()
 }
 
 func (RandomMutexType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[661]
+	return &file_xls_enum_proto_enumTypes[662]
 }
 
 func (x RandomMutexType) Number() protoreflect.EnumNumber {
@@ -55009,7 +55086,7 @@ func (x *RandomMutexType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use RandomMutexType.Descriptor instead.
 func (RandomMutexType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{661}
+	return file_xls_enum_proto_rawDescGZIP(), []int{662}
 }
 
 type EmojiTopic int32
@@ -55039,11 +55116,11 @@ func (x EmojiTopic) String() string {
 }
 
 func (EmojiTopic) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[662].Descriptor()
+	return file_xls_enum_proto_enumTypes[663].Descriptor()
 }
 
 func (EmojiTopic) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[662]
+	return &file_xls_enum_proto_enumTypes[663]
 }
 
 func (x EmojiTopic) Number() protoreflect.EnumNumber {
@@ -55062,7 +55139,7 @@ func (x *EmojiTopic) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use EmojiTopic.Descriptor instead.
 func (EmojiTopic) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{662}
+	return file_xls_enum_proto_rawDescGZIP(), []int{663}
 }
 
 type PetCatchTime int32
@@ -55095,11 +55172,11 @@ func (x PetCatchTime) String() string {
 }
 
 func (PetCatchTime) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[663].Descriptor()
+	return file_xls_enum_proto_enumTypes[664].Descriptor()
 }
 
 func (PetCatchTime) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[663]
+	return &file_xls_enum_proto_enumTypes[664]
 }
 
 func (x PetCatchTime) Number() protoreflect.EnumNumber {
@@ -55118,7 +55195,7 @@ func (x *PetCatchTime) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use PetCatchTime.Descriptor instead.
 func (PetCatchTime) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{663}
+	return file_xls_enum_proto_rawDescGZIP(), []int{664}
 }
 
 type RollBack int32
@@ -55148,11 +55225,11 @@ func (x RollBack) String() string {
 }
 
 func (RollBack) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[664].Descriptor()
+	return file_xls_enum_proto_enumTypes[665].Descriptor()
 }
 
 func (RollBack) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[664]
+	return &file_xls_enum_proto_enumTypes[665]
 }
 
 func (x RollBack) Number() protoreflect.EnumNumber {
@@ -55171,7 +55248,7 @@ func (x *RollBack) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use RollBack.Descriptor instead.
 func (RollBack) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{664}
+	return file_xls_enum_proto_rawDescGZIP(), []int{665}
 }
 
 type ActivityMixSlot int32
@@ -55219,11 +55296,11 @@ func (x ActivityMixSlot) String() string {
 }
 
 func (ActivityMixSlot) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[665].Descriptor()
+	return file_xls_enum_proto_enumTypes[666].Descriptor()
 }
 
 func (ActivityMixSlot) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[665]
+	return &file_xls_enum_proto_enumTypes[666]
 }
 
 func (x ActivityMixSlot) Number() protoreflect.EnumNumber {
@@ -55242,7 +55319,7 @@ func (x *ActivityMixSlot) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use ActivityMixSlot.Descriptor instead.
 func (ActivityMixSlot) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{665}
+	return file_xls_enum_proto_rawDescGZIP(), []int{666}
 }
 
 type ActivitySLotFuctionType int32
@@ -55278,11 +55355,11 @@ func (x ActivitySLotFuctionType) String() string {
 }
 
 func (ActivitySLotFuctionType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[666].Descriptor()
+	return file_xls_enum_proto_enumTypes[667].Descriptor()
 }
 
 func (ActivitySLotFuctionType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[666]
+	return &file_xls_enum_proto_enumTypes[667]
 }
 
 func (x ActivitySLotFuctionType) Number() protoreflect.EnumNumber {
@@ -55301,7 +55378,7 @@ func (x *ActivitySLotFuctionType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use ActivitySLotFuctionType.Descriptor instead.
 func (ActivitySLotFuctionType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{666}
+	return file_xls_enum_proto_rawDescGZIP(), []int{667}
 }
 
 type ActivityFaction int32
@@ -55343,11 +55420,11 @@ func (x ActivityFaction) String() string {
 }
 
 func (ActivityFaction) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[667].Descriptor()
+	return file_xls_enum_proto_enumTypes[668].Descriptor()
 }
 
 func (ActivityFaction) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[667]
+	return &file_xls_enum_proto_enumTypes[668]
 }
 
 func (x ActivityFaction) Number() protoreflect.EnumNumber {
@@ -55366,7 +55443,7 @@ func (x *ActivityFaction) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use ActivityFaction.Descriptor instead.
 func (ActivityFaction) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{667}
+	return file_xls_enum_proto_rawDescGZIP(), []int{668}
 }
 
 type ActivityTaskRandomRule int32
@@ -55396,11 +55473,11 @@ func (x ActivityTaskRandomRule) String() string {
 }
 
 func (ActivityTaskRandomRule) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[668].Descriptor()
+	return file_xls_enum_proto_enumTypes[669].Descriptor()
 }
 
 func (ActivityTaskRandomRule) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[668]
+	return &file_xls_enum_proto_enumTypes[669]
 }
 
 func (x ActivityTaskRandomRule) Number() protoreflect.EnumNumber {
@@ -55419,7 +55496,7 @@ func (x *ActivityTaskRandomRule) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use ActivityTaskRandomRule.Descriptor instead.
 func (ActivityTaskRandomRule) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{668}
+	return file_xls_enum_proto_rawDescGZIP(), []int{669}
 }
 
 type ActivityConditionTaskGroup int32
@@ -55458,11 +55535,11 @@ func (x ActivityConditionTaskGroup) String() string {
 }
 
 func (ActivityConditionTaskGroup) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[669].Descriptor()
+	return file_xls_enum_proto_enumTypes[670].Descriptor()
 }
 
 func (ActivityConditionTaskGroup) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[669]
+	return &file_xls_enum_proto_enumTypes[670]
 }
 
 func (x ActivityConditionTaskGroup) Number() protoreflect.EnumNumber {
@@ -55481,7 +55558,7 @@ func (x *ActivityConditionTaskGroup) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use ActivityConditionTaskGroup.Descriptor instead.
 func (ActivityConditionTaskGroup) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{669}
+	return file_xls_enum_proto_rawDescGZIP(), []int{670}
 }
 
 type EnLotteryRewardState int32
@@ -55523,11 +55600,11 @@ func (x EnLotteryRewardState) String() string {
 }
 
 func (EnLotteryRewardState) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[670].Descriptor()
+	return file_xls_enum_proto_enumTypes[671].Descriptor()
 }
 
 func (EnLotteryRewardState) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[670]
+	return &file_xls_enum_proto_enumTypes[671]
 }
 
 func (x EnLotteryRewardState) Number() protoreflect.EnumNumber {
@@ -55546,7 +55623,7 @@ func (x *EnLotteryRewardState) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use EnLotteryRewardState.Descriptor instead.
 func (EnLotteryRewardState) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{670}
+	return file_xls_enum_proto_rawDescGZIP(), []int{671}
 }
 
 type EnLotteryRewardTransState int32
@@ -55585,11 +55662,11 @@ func (x EnLotteryRewardTransState) String() string {
 }
 
 func (EnLotteryRewardTransState) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[671].Descriptor()
+	return file_xls_enum_proto_enumTypes[672].Descriptor()
 }
 
 func (EnLotteryRewardTransState) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[671]
+	return &file_xls_enum_proto_enumTypes[672]
 }
 
 func (x EnLotteryRewardTransState) Number() protoreflect.EnumNumber {
@@ -55608,7 +55685,7 @@ func (x *EnLotteryRewardTransState) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use EnLotteryRewardTransState.Descriptor instead.
 func (EnLotteryRewardTransState) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{671}
+	return file_xls_enum_proto_rawDescGZIP(), []int{672}
 }
 
 type WeightChangeType int32
@@ -55647,11 +55724,11 @@ func (x WeightChangeType) String() string {
 }
 
 func (WeightChangeType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[672].Descriptor()
+	return file_xls_enum_proto_enumTypes[673].Descriptor()
 }
 
 func (WeightChangeType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[672]
+	return &file_xls_enum_proto_enumTypes[673]
 }
 
 func (x WeightChangeType) Number() protoreflect.EnumNumber {
@@ -55670,7 +55747,7 @@ func (x *WeightChangeType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use WeightChangeType.Descriptor instead.
 func (WeightChangeType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{672}
+	return file_xls_enum_proto_rawDescGZIP(), []int{673}
 }
 
 type InteractInviteType int32
@@ -55730,11 +55807,11 @@ func (x InteractInviteType) String() string {
 }
 
 func (InteractInviteType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[673].Descriptor()
+	return file_xls_enum_proto_enumTypes[674].Descriptor()
 }
 
 func (InteractInviteType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[673]
+	return &file_xls_enum_proto_enumTypes[674]
 }
 
 func (x InteractInviteType) Number() protoreflect.EnumNumber {
@@ -55753,7 +55830,7 @@ func (x *InteractInviteType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use InteractInviteType.Descriptor instead.
 func (InteractInviteType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{673}
+	return file_xls_enum_proto_rawDescGZIP(), []int{674}
 }
 
 type WarehouseUnlockCondition int32
@@ -55792,11 +55869,11 @@ func (x WarehouseUnlockCondition) String() string {
 }
 
 func (WarehouseUnlockCondition) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[674].Descriptor()
+	return file_xls_enum_proto_enumTypes[675].Descriptor()
 }
 
 func (WarehouseUnlockCondition) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[674]
+	return &file_xls_enum_proto_enumTypes[675]
 }
 
 func (x WarehouseUnlockCondition) Number() protoreflect.EnumNumber {
@@ -55815,7 +55892,7 @@ func (x *WarehouseUnlockCondition) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use WarehouseUnlockCondition.Descriptor instead.
 func (WarehouseUnlockCondition) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{674}
+	return file_xls_enum_proto_rawDescGZIP(), []int{675}
 }
 
 type WarehouseMarkType int32
@@ -55860,11 +55937,11 @@ func (x WarehouseMarkType) String() string {
 }
 
 func (WarehouseMarkType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[675].Descriptor()
+	return file_xls_enum_proto_enumTypes[676].Descriptor()
 }
 
 func (WarehouseMarkType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[675]
+	return &file_xls_enum_proto_enumTypes[676]
 }
 
 func (x WarehouseMarkType) Number() protoreflect.EnumNumber {
@@ -55883,7 +55960,7 @@ func (x *WarehouseMarkType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use WarehouseMarkType.Descriptor instead.
 func (WarehouseMarkType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{675}
+	return file_xls_enum_proto_rawDescGZIP(), []int{676}
 }
 
 type SpecialBattleLevelUnlockType int32
@@ -55916,11 +55993,11 @@ func (x SpecialBattleLevelUnlockType) String() string {
 }
 
 func (SpecialBattleLevelUnlockType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[676].Descriptor()
+	return file_xls_enum_proto_enumTypes[677].Descriptor()
 }
 
 func (SpecialBattleLevelUnlockType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[676]
+	return &file_xls_enum_proto_enumTypes[677]
 }
 
 func (x SpecialBattleLevelUnlockType) Number() protoreflect.EnumNumber {
@@ -55939,7 +56016,7 @@ func (x *SpecialBattleLevelUnlockType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use SpecialBattleLevelUnlockType.Descriptor instead.
 func (SpecialBattleLevelUnlockType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{676}
+	return file_xls_enum_proto_rawDescGZIP(), []int{677}
 }
 
 type PreciousEggType int32
@@ -55993,11 +56070,11 @@ func (x PreciousEggType) String() string {
 }
 
 func (PreciousEggType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[677].Descriptor()
+	return file_xls_enum_proto_enumTypes[678].Descriptor()
 }
 
 func (PreciousEggType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[677]
+	return &file_xls_enum_proto_enumTypes[678]
 }
 
 func (x PreciousEggType) Number() protoreflect.EnumNumber {
@@ -56016,7 +56093,7 @@ func (x *PreciousEggType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use PreciousEggType.Descriptor instead.
 func (PreciousEggType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{677}
+	return file_xls_enum_proto_rawDescGZIP(), []int{678}
 }
 
 type TypeAdvantageUnlockType int32
@@ -56049,11 +56126,11 @@ func (x TypeAdvantageUnlockType) String() string {
 }
 
 func (TypeAdvantageUnlockType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[678].Descriptor()
+	return file_xls_enum_proto_enumTypes[679].Descriptor()
 }
 
 func (TypeAdvantageUnlockType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[678]
+	return &file_xls_enum_proto_enumTypes[679]
 }
 
 func (x TypeAdvantageUnlockType) Number() protoreflect.EnumNumber {
@@ -56072,7 +56149,7 @@ func (x *TypeAdvantageUnlockType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use TypeAdvantageUnlockType.Descriptor instead.
 func (TypeAdvantageUnlockType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{678}
+	return file_xls_enum_proto_rawDescGZIP(), []int{679}
 }
 
 type TypeAdvantageTrainType int32
@@ -56102,11 +56179,11 @@ func (x TypeAdvantageTrainType) String() string {
 }
 
 func (TypeAdvantageTrainType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[679].Descriptor()
+	return file_xls_enum_proto_enumTypes[680].Descriptor()
 }
 
 func (TypeAdvantageTrainType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[679]
+	return &file_xls_enum_proto_enumTypes[680]
 }
 
 func (x TypeAdvantageTrainType) Number() protoreflect.EnumNumber {
@@ -56125,7 +56202,7 @@ func (x *TypeAdvantageTrainType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use TypeAdvantageTrainType.Descriptor instead.
 func (TypeAdvantageTrainType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{679}
+	return file_xls_enum_proto_rawDescGZIP(), []int{680}
 }
 
 type CombatTeachTrainType int32
@@ -56155,11 +56232,11 @@ func (x CombatTeachTrainType) String() string {
 }
 
 func (CombatTeachTrainType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[680].Descriptor()
+	return file_xls_enum_proto_enumTypes[681].Descriptor()
 }
 
 func (CombatTeachTrainType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[680]
+	return &file_xls_enum_proto_enumTypes[681]
 }
 
 func (x CombatTeachTrainType) Number() protoreflect.EnumNumber {
@@ -56178,7 +56255,7 @@ func (x *CombatTeachTrainType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use CombatTeachTrainType.Descriptor instead.
 func (CombatTeachTrainType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{680}
+	return file_xls_enum_proto_rawDescGZIP(), []int{681}
 }
 
 type BattleGuidanceLocation int32
@@ -56277,11 +56354,11 @@ func (x BattleGuidanceLocation) String() string {
 }
 
 func (BattleGuidanceLocation) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[681].Descriptor()
+	return file_xls_enum_proto_enumTypes[682].Descriptor()
 }
 
 func (BattleGuidanceLocation) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[681]
+	return &file_xls_enum_proto_enumTypes[682]
 }
 
 func (x BattleGuidanceLocation) Number() protoreflect.EnumNumber {
@@ -56300,7 +56377,7 @@ func (x *BattleGuidanceLocation) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use BattleGuidanceLocation.Descriptor instead.
 func (BattleGuidanceLocation) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{681}
+	return file_xls_enum_proto_rawDescGZIP(), []int{682}
 }
 
 type BattleLeadFinishType int32
@@ -56339,11 +56416,11 @@ func (x BattleLeadFinishType) String() string {
 }
 
 func (BattleLeadFinishType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[682].Descriptor()
+	return file_xls_enum_proto_enumTypes[683].Descriptor()
 }
 
 func (BattleLeadFinishType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[682]
+	return &file_xls_enum_proto_enumTypes[683]
 }
 
 func (x BattleLeadFinishType) Number() protoreflect.EnumNumber {
@@ -56362,7 +56439,7 @@ func (x *BattleLeadFinishType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use BattleLeadFinishType.Descriptor instead.
 func (BattleLeadFinishType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{682}
+	return file_xls_enum_proto_rawDescGZIP(), []int{683}
 }
 
 type TeamBattleStarRule int32
@@ -56395,11 +56472,11 @@ func (x TeamBattleStarRule) String() string {
 }
 
 func (TeamBattleStarRule) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[683].Descriptor()
+	return file_xls_enum_proto_enumTypes[684].Descriptor()
 }
 
 func (TeamBattleStarRule) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[683]
+	return &file_xls_enum_proto_enumTypes[684]
 }
 
 func (x TeamBattleStarRule) Number() protoreflect.EnumNumber {
@@ -56418,7 +56495,7 @@ func (x *TeamBattleStarRule) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use TeamBattleStarRule.Descriptor instead.
 func (TeamBattleStarRule) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{683}
+	return file_xls_enum_proto_rawDescGZIP(), []int{684}
 }
 
 type TeachingType int32
@@ -56454,11 +56531,11 @@ func (x TeachingType) String() string {
 }
 
 func (TeachingType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[684].Descriptor()
+	return file_xls_enum_proto_enumTypes[685].Descriptor()
 }
 
 func (TeachingType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[684]
+	return &file_xls_enum_proto_enumTypes[685]
 }
 
 func (x TeachingType) Number() protoreflect.EnumNumber {
@@ -56477,7 +56554,7 @@ func (x *TeachingType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use TeachingType.Descriptor instead.
 func (TeachingType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{684}
+	return file_xls_enum_proto_rawDescGZIP(), []int{685}
 }
 
 type FurnitureEffectSwitch int32
@@ -56510,11 +56587,11 @@ func (x FurnitureEffectSwitch) String() string {
 }
 
 func (FurnitureEffectSwitch) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[685].Descriptor()
+	return file_xls_enum_proto_enumTypes[686].Descriptor()
 }
 
 func (FurnitureEffectSwitch) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[685]
+	return &file_xls_enum_proto_enumTypes[686]
 }
 
 func (x FurnitureEffectSwitch) Number() protoreflect.EnumNumber {
@@ -56533,7 +56610,7 @@ func (x *FurnitureEffectSwitch) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use FurnitureEffectSwitch.Descriptor instead.
 func (FurnitureEffectSwitch) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{685}
+	return file_xls_enum_proto_rawDescGZIP(), []int{686}
 }
 
 type FurnitureEffectType int32
@@ -56566,11 +56643,11 @@ func (x FurnitureEffectType) String() string {
 }
 
 func (FurnitureEffectType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[686].Descriptor()
+	return file_xls_enum_proto_enumTypes[687].Descriptor()
 }
 
 func (FurnitureEffectType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[686]
+	return &file_xls_enum_proto_enumTypes[687]
 }
 
 func (x FurnitureEffectType) Number() protoreflect.EnumNumber {
@@ -56589,7 +56666,7 @@ func (x *FurnitureEffectType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use FurnitureEffectType.Descriptor instead.
 func (FurnitureEffectType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{686}
+	return file_xls_enum_proto_rawDescGZIP(), []int{687}
 }
 
 type ACTIVITY_FLOWER_APPEAR_TASK_TYPE int32
@@ -56625,11 +56702,11 @@ func (x ACTIVITY_FLOWER_APPEAR_TASK_TYPE) String() string {
 }
 
 func (ACTIVITY_FLOWER_APPEAR_TASK_TYPE) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[687].Descriptor()
+	return file_xls_enum_proto_enumTypes[688].Descriptor()
 }
 
 func (ACTIVITY_FLOWER_APPEAR_TASK_TYPE) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[687]
+	return &file_xls_enum_proto_enumTypes[688]
 }
 
 func (x ACTIVITY_FLOWER_APPEAR_TASK_TYPE) Number() protoreflect.EnumNumber {
@@ -56648,7 +56725,7 @@ func (x *ACTIVITY_FLOWER_APPEAR_TASK_TYPE) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use ACTIVITY_FLOWER_APPEAR_TASK_TYPE.Descriptor instead.
 func (ACTIVITY_FLOWER_APPEAR_TASK_TYPE) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{687}
+	return file_xls_enum_proto_rawDescGZIP(), []int{688}
 }
 
 type BuffCleanWhenRestType int32
@@ -56678,11 +56755,11 @@ func (x BuffCleanWhenRestType) String() string {
 }
 
 func (BuffCleanWhenRestType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[688].Descriptor()
+	return file_xls_enum_proto_enumTypes[689].Descriptor()
 }
 
 func (BuffCleanWhenRestType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[688]
+	return &file_xls_enum_proto_enumTypes[689]
 }
 
 func (x BuffCleanWhenRestType) Number() protoreflect.EnumNumber {
@@ -56701,7 +56778,7 @@ func (x *BuffCleanWhenRestType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use BuffCleanWhenRestType.Descriptor instead.
 func (BuffCleanWhenRestType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{688}
+	return file_xls_enum_proto_rawDescGZIP(), []int{689}
 }
 
 type TramplingLawnComp int32
@@ -56737,11 +56814,11 @@ func (x TramplingLawnComp) String() string {
 }
 
 func (TramplingLawnComp) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[689].Descriptor()
+	return file_xls_enum_proto_enumTypes[690].Descriptor()
 }
 
 func (TramplingLawnComp) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[689]
+	return &file_xls_enum_proto_enumTypes[690]
 }
 
 func (x TramplingLawnComp) Number() protoreflect.EnumNumber {
@@ -56760,7 +56837,7 @@ func (x *TramplingLawnComp) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use TramplingLawnComp.Descriptor instead.
 func (TramplingLawnComp) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{689}
+	return file_xls_enum_proto_rawDescGZIP(), []int{690}
 }
 
 type PetguardRequireWay int32
@@ -56808,11 +56885,11 @@ func (x PetguardRequireWay) String() string {
 }
 
 func (PetguardRequireWay) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[690].Descriptor()
+	return file_xls_enum_proto_enumTypes[691].Descriptor()
 }
 
 func (PetguardRequireWay) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[690]
+	return &file_xls_enum_proto_enumTypes[691]
 }
 
 func (x PetguardRequireWay) Number() protoreflect.EnumNumber {
@@ -56831,7 +56908,7 @@ func (x *PetguardRequireWay) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use PetguardRequireWay.Descriptor instead.
 func (PetguardRequireWay) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{690}
+	return file_xls_enum_proto_rawDescGZIP(), []int{691}
 }
 
 type PetguardBanFunc int32
@@ -56888,11 +56965,11 @@ func (x PetguardBanFunc) String() string {
 }
 
 func (PetguardBanFunc) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[691].Descriptor()
+	return file_xls_enum_proto_enumTypes[692].Descriptor()
 }
 
 func (PetguardBanFunc) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[691]
+	return &file_xls_enum_proto_enumTypes[692]
 }
 
 func (x PetguardBanFunc) Number() protoreflect.EnumNumber {
@@ -56911,7 +56988,7 @@ func (x *PetguardBanFunc) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use PetguardBanFunc.Descriptor instead.
 func (PetguardBanFunc) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{691}
+	return file_xls_enum_proto_rawDescGZIP(), []int{692}
 }
 
 type HabitatRestrainType int32
@@ -56950,11 +57027,11 @@ func (x HabitatRestrainType) String() string {
 }
 
 func (HabitatRestrainType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[692].Descriptor()
+	return file_xls_enum_proto_enumTypes[693].Descriptor()
 }
 
 func (HabitatRestrainType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[692]
+	return &file_xls_enum_proto_enumTypes[693]
 }
 
 func (x HabitatRestrainType) Number() protoreflect.EnumNumber {
@@ -56973,7 +57050,7 @@ func (x *HabitatRestrainType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use HabitatRestrainType.Descriptor instead.
 func (HabitatRestrainType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{692}
+	return file_xls_enum_proto_rawDescGZIP(), []int{693}
 }
 
 type FeatureResonanceType int32
@@ -57009,11 +57086,11 @@ func (x FeatureResonanceType) String() string {
 }
 
 func (FeatureResonanceType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[693].Descriptor()
+	return file_xls_enum_proto_enumTypes[694].Descriptor()
 }
 
 func (FeatureResonanceType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[693]
+	return &file_xls_enum_proto_enumTypes[694]
 }
 
 func (x FeatureResonanceType) Number() protoreflect.EnumNumber {
@@ -57032,7 +57109,7 @@ func (x *FeatureResonanceType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use FeatureResonanceType.Descriptor instead.
 func (FeatureResonanceType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{693}
+	return file_xls_enum_proto_rawDescGZIP(), []int{694}
 }
 
 type FilterShining int32
@@ -57065,11 +57142,11 @@ func (x FilterShining) String() string {
 }
 
 func (FilterShining) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[694].Descriptor()
+	return file_xls_enum_proto_enumTypes[695].Descriptor()
 }
 
 func (FilterShining) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[694]
+	return &file_xls_enum_proto_enumTypes[695]
 }
 
 func (x FilterShining) Number() protoreflect.EnumNumber {
@@ -57088,7 +57165,7 @@ func (x *FilterShining) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use FilterShining.Descriptor instead.
 func (FilterShining) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{694}
+	return file_xls_enum_proto_rawDescGZIP(), []int{695}
 }
 
 type SeaseonTipsShowType int32
@@ -57127,11 +57204,11 @@ func (x SeaseonTipsShowType) String() string {
 }
 
 func (SeaseonTipsShowType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[695].Descriptor()
+	return file_xls_enum_proto_enumTypes[696].Descriptor()
 }
 
 func (SeaseonTipsShowType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[695]
+	return &file_xls_enum_proto_enumTypes[696]
 }
 
 func (x SeaseonTipsShowType) Number() protoreflect.EnumNumber {
@@ -57150,7 +57227,7 @@ func (x *SeaseonTipsShowType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use SeaseonTipsShowType.Descriptor instead.
 func (SeaseonTipsShowType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{695}
+	return file_xls_enum_proto_rawDescGZIP(), []int{696}
 }
 
 type FakeFeedDecryptCondition int32
@@ -57183,11 +57260,11 @@ func (x FakeFeedDecryptCondition) String() string {
 }
 
 func (FakeFeedDecryptCondition) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[696].Descriptor()
+	return file_xls_enum_proto_enumTypes[697].Descriptor()
 }
 
 func (FakeFeedDecryptCondition) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[696]
+	return &file_xls_enum_proto_enumTypes[697]
 }
 
 func (x FakeFeedDecryptCondition) Number() protoreflect.EnumNumber {
@@ -57206,7 +57283,7 @@ func (x *FakeFeedDecryptCondition) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use FakeFeedDecryptCondition.Descriptor instead.
 func (FakeFeedDecryptCondition) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{696}
+	return file_xls_enum_proto_rawDescGZIP(), []int{697}
 }
 
 type LotteryPoolType int32
@@ -57242,11 +57319,11 @@ func (x LotteryPoolType) String() string {
 }
 
 func (LotteryPoolType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[697].Descriptor()
+	return file_xls_enum_proto_enumTypes[698].Descriptor()
 }
 
 func (LotteryPoolType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[697]
+	return &file_xls_enum_proto_enumTypes[698]
 }
 
 func (x LotteryPoolType) Number() protoreflect.EnumNumber {
@@ -57265,7 +57342,7 @@ func (x *LotteryPoolType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use LotteryPoolType.Descriptor instead.
 func (LotteryPoolType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{697}
+	return file_xls_enum_proto_rawDescGZIP(), []int{698}
 }
 
 type LotteryMoniterEvent int32
@@ -57310,11 +57387,11 @@ func (x LotteryMoniterEvent) String() string {
 }
 
 func (LotteryMoniterEvent) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[698].Descriptor()
+	return file_xls_enum_proto_enumTypes[699].Descriptor()
 }
 
 func (LotteryMoniterEvent) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[698]
+	return &file_xls_enum_proto_enumTypes[699]
 }
 
 func (x LotteryMoniterEvent) Number() protoreflect.EnumNumber {
@@ -57333,7 +57410,7 @@ func (x *LotteryMoniterEvent) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use LotteryMoniterEvent.Descriptor instead.
 func (LotteryMoniterEvent) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{698}
+	return file_xls_enum_proto_rawDescGZIP(), []int{699}
 }
 
 type FakeFeedValidity int32
@@ -57369,11 +57446,11 @@ func (x FakeFeedValidity) String() string {
 }
 
 func (FakeFeedValidity) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[699].Descriptor()
+	return file_xls_enum_proto_enumTypes[700].Descriptor()
 }
 
 func (FakeFeedValidity) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[699]
+	return &file_xls_enum_proto_enumTypes[700]
 }
 
 func (x FakeFeedValidity) Number() protoreflect.EnumNumber {
@@ -57392,7 +57469,7 @@ func (x *FakeFeedValidity) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use FakeFeedValidity.Descriptor instead.
 func (FakeFeedValidity) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{699}
+	return file_xls_enum_proto_rawDescGZIP(), []int{700}
 }
 
 type RankListType int32
@@ -57434,11 +57511,11 @@ func (x RankListType) String() string {
 }
 
 func (RankListType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[700].Descriptor()
+	return file_xls_enum_proto_enumTypes[701].Descriptor()
 }
 
 func (RankListType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[700]
+	return &file_xls_enum_proto_enumTypes[701]
 }
 
 func (x RankListType) Number() protoreflect.EnumNumber {
@@ -57457,7 +57534,7 @@ func (x *RankListType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use RankListType.Descriptor instead.
 func (RankListType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{700}
+	return file_xls_enum_proto_rawDescGZIP(), []int{701}
 }
 
 type BattleSettlementPetType int32
@@ -57520,11 +57597,11 @@ func (x BattleSettlementPetType) String() string {
 }
 
 func (BattleSettlementPetType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[701].Descriptor()
+	return file_xls_enum_proto_enumTypes[702].Descriptor()
 }
 
 func (BattleSettlementPetType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[701]
+	return &file_xls_enum_proto_enumTypes[702]
 }
 
 func (x BattleSettlementPetType) Number() protoreflect.EnumNumber {
@@ -57543,7 +57620,7 @@ func (x *BattleSettlementPetType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use BattleSettlementPetType.Descriptor instead.
 func (BattleSettlementPetType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{701}
+	return file_xls_enum_proto_rawDescGZIP(), []int{702}
 }
 
 type SeasonFocusImgOptionType int32
@@ -57576,11 +57653,11 @@ func (x SeasonFocusImgOptionType) String() string {
 }
 
 func (SeasonFocusImgOptionType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[702].Descriptor()
+	return file_xls_enum_proto_enumTypes[703].Descriptor()
 }
 
 func (SeasonFocusImgOptionType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[702]
+	return &file_xls_enum_proto_enumTypes[703]
 }
 
 func (x SeasonFocusImgOptionType) Number() protoreflect.EnumNumber {
@@ -57599,7 +57676,7 @@ func (x *SeasonFocusImgOptionType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use SeasonFocusImgOptionType.Descriptor instead.
 func (SeasonFocusImgOptionType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{702}
+	return file_xls_enum_proto_rawDescGZIP(), []int{703}
 }
 
 type GlobalCountType int32
@@ -57641,11 +57718,11 @@ func (x GlobalCountType) String() string {
 }
 
 func (GlobalCountType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[703].Descriptor()
+	return file_xls_enum_proto_enumTypes[704].Descriptor()
 }
 
 func (GlobalCountType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[703]
+	return &file_xls_enum_proto_enumTypes[704]
 }
 
 func (x GlobalCountType) Number() protoreflect.EnumNumber {
@@ -57664,7 +57741,7 @@ func (x *GlobalCountType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use GlobalCountType.Descriptor instead.
 func (GlobalCountType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{703}
+	return file_xls_enum_proto_rawDescGZIP(), []int{704}
 }
 
 type PetNameSource int32
@@ -57706,11 +57783,11 @@ func (x PetNameSource) String() string {
 }
 
 func (PetNameSource) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[704].Descriptor()
+	return file_xls_enum_proto_enumTypes[705].Descriptor()
 }
 
 func (PetNameSource) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[704]
+	return &file_xls_enum_proto_enumTypes[705]
 }
 
 func (x PetNameSource) Number() protoreflect.EnumNumber {
@@ -57729,7 +57806,7 @@ func (x *PetNameSource) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use PetNameSource.Descriptor instead.
 func (PetNameSource) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{704}
+	return file_xls_enum_proto_rawDescGZIP(), []int{705}
 }
 
 type LotteryPoolValidationCheck int32
@@ -57762,11 +57839,11 @@ func (x LotteryPoolValidationCheck) String() string {
 }
 
 func (LotteryPoolValidationCheck) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[705].Descriptor()
+	return file_xls_enum_proto_enumTypes[706].Descriptor()
 }
 
 func (LotteryPoolValidationCheck) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[705]
+	return &file_xls_enum_proto_enumTypes[706]
 }
 
 func (x LotteryPoolValidationCheck) Number() protoreflect.EnumNumber {
@@ -57785,7 +57862,7 @@ func (x *LotteryPoolValidationCheck) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use LotteryPoolValidationCheck.Descriptor instead.
 func (LotteryPoolValidationCheck) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{705}
+	return file_xls_enum_proto_rawDescGZIP(), []int{706}
 }
 
 type FilterSeasonPet int32
@@ -57824,11 +57901,11 @@ func (x FilterSeasonPet) String() string {
 }
 
 func (FilterSeasonPet) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[706].Descriptor()
+	return file_xls_enum_proto_enumTypes[707].Descriptor()
 }
 
 func (FilterSeasonPet) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[706]
+	return &file_xls_enum_proto_enumTypes[707]
 }
 
 func (x FilterSeasonPet) Number() protoreflect.EnumNumber {
@@ -57847,7 +57924,7 @@ func (x *FilterSeasonPet) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use FilterSeasonPet.Descriptor instead.
 func (FilterSeasonPet) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{706}
+	return file_xls_enum_proto_rawDescGZIP(), []int{707}
 }
 
 type WeightFixType int32
@@ -57886,11 +57963,11 @@ func (x WeightFixType) String() string {
 }
 
 func (WeightFixType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[707].Descriptor()
+	return file_xls_enum_proto_enumTypes[708].Descriptor()
 }
 
 func (WeightFixType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[707]
+	return &file_xls_enum_proto_enumTypes[708]
 }
 
 func (x WeightFixType) Number() protoreflect.EnumNumber {
@@ -57909,7 +57986,7 @@ func (x *WeightFixType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use WeightFixType.Descriptor instead.
 func (WeightFixType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{707}
+	return file_xls_enum_proto_rawDescGZIP(), []int{708}
 }
 
 type BonusPoolType int32
@@ -57948,11 +58025,11 @@ func (x BonusPoolType) String() string {
 }
 
 func (BonusPoolType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[708].Descriptor()
+	return file_xls_enum_proto_enumTypes[709].Descriptor()
 }
 
 func (BonusPoolType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[708]
+	return &file_xls_enum_proto_enumTypes[709]
 }
 
 func (x BonusPoolType) Number() protoreflect.EnumNumber {
@@ -57971,7 +58048,7 @@ func (x *BonusPoolType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use BonusPoolType.Descriptor instead.
 func (BonusPoolType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{708}
+	return file_xls_enum_proto_rawDescGZIP(), []int{709}
 }
 
 type BonusGiftConditionType int32
@@ -58004,11 +58081,11 @@ func (x BonusGiftConditionType) String() string {
 }
 
 func (BonusGiftConditionType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[709].Descriptor()
+	return file_xls_enum_proto_enumTypes[710].Descriptor()
 }
 
 func (BonusGiftConditionType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[709]
+	return &file_xls_enum_proto_enumTypes[710]
 }
 
 func (x BonusGiftConditionType) Number() protoreflect.EnumNumber {
@@ -58027,7 +58104,7 @@ func (x *BonusGiftConditionType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use BonusGiftConditionType.Descriptor instead.
 func (BonusGiftConditionType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{709}
+	return file_xls_enum_proto_rawDescGZIP(), []int{710}
 }
 
 type RecallPetEggType int32
@@ -58063,11 +58140,11 @@ func (x RecallPetEggType) String() string {
 }
 
 func (RecallPetEggType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[710].Descriptor()
+	return file_xls_enum_proto_enumTypes[711].Descriptor()
 }
 
 func (RecallPetEggType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[710]
+	return &file_xls_enum_proto_enumTypes[711]
 }
 
 func (x RecallPetEggType) Number() protoreflect.EnumNumber {
@@ -58086,7 +58163,7 @@ func (x *RecallPetEggType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use RecallPetEggType.Descriptor instead.
 func (RecallPetEggType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{710}
+	return file_xls_enum_proto_rawDescGZIP(), []int{711}
 }
 
 type EventType int32
@@ -58134,11 +58211,11 @@ func (x EventType) String() string {
 }
 
 func (EventType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[711].Descriptor()
+	return file_xls_enum_proto_enumTypes[712].Descriptor()
 }
 
 func (EventType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[711]
+	return &file_xls_enum_proto_enumTypes[712]
 }
 
 func (x EventType) Number() protoreflect.EnumNumber {
@@ -58157,7 +58234,7 @@ func (x *EventType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use EventType.Descriptor instead.
 func (EventType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{711}
+	return file_xls_enum_proto_rawDescGZIP(), []int{712}
 }
 
 type OptionEffect int32
@@ -58214,11 +58291,11 @@ func (x OptionEffect) String() string {
 }
 
 func (OptionEffect) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[712].Descriptor()
+	return file_xls_enum_proto_enumTypes[713].Descriptor()
 }
 
 func (OptionEffect) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[712]
+	return &file_xls_enum_proto_enumTypes[713]
 }
 
 func (x OptionEffect) Number() protoreflect.EnumNumber {
@@ -58237,7 +58314,7 @@ func (x *OptionEffect) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use OptionEffect.Descriptor instead.
 func (OptionEffect) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{712}
+	return file_xls_enum_proto_rawDescGZIP(), []int{713}
 }
 
 type GrassTrialState int32
@@ -58279,11 +58356,11 @@ func (x GrassTrialState) String() string {
 }
 
 func (GrassTrialState) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[713].Descriptor()
+	return file_xls_enum_proto_enumTypes[714].Descriptor()
 }
 
 func (GrassTrialState) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[713]
+	return &file_xls_enum_proto_enumTypes[714]
 }
 
 func (x GrassTrialState) Number() protoreflect.EnumNumber {
@@ -58302,7 +58379,7 @@ func (x *GrassTrialState) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use GrassTrialState.Descriptor instead.
 func (GrassTrialState) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{713}
+	return file_xls_enum_proto_rawDescGZIP(), []int{714}
 }
 
 type GrassTrialFusionType int32
@@ -58347,11 +58424,11 @@ func (x GrassTrialFusionType) String() string {
 }
 
 func (GrassTrialFusionType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[714].Descriptor()
+	return file_xls_enum_proto_enumTypes[715].Descriptor()
 }
 
 func (GrassTrialFusionType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[714]
+	return &file_xls_enum_proto_enumTypes[715]
 }
 
 func (x GrassTrialFusionType) Number() protoreflect.EnumNumber {
@@ -58370,7 +58447,7 @@ func (x *GrassTrialFusionType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use GrassTrialFusionType.Descriptor instead.
 func (GrassTrialFusionType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{714}
+	return file_xls_enum_proto_rawDescGZIP(), []int{715}
 }
 
 type GrassTrialEffectType int32
@@ -58403,11 +58480,11 @@ func (x GrassTrialEffectType) String() string {
 }
 
 func (GrassTrialEffectType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[715].Descriptor()
+	return file_xls_enum_proto_enumTypes[716].Descriptor()
 }
 
 func (GrassTrialEffectType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[715]
+	return &file_xls_enum_proto_enumTypes[716]
 }
 
 func (x GrassTrialEffectType) Number() protoreflect.EnumNumber {
@@ -58426,7 +58503,7 @@ func (x *GrassTrialEffectType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use GrassTrialEffectType.Descriptor instead.
 func (GrassTrialEffectType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{715}
+	return file_xls_enum_proto_rawDescGZIP(), []int{716}
 }
 
 type GrassTrialEffect int32
@@ -58468,11 +58545,11 @@ func (x GrassTrialEffect) String() string {
 }
 
 func (GrassTrialEffect) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[716].Descriptor()
+	return file_xls_enum_proto_enumTypes[717].Descriptor()
 }
 
 func (GrassTrialEffect) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[716]
+	return &file_xls_enum_proto_enumTypes[717]
 }
 
 func (x GrassTrialEffect) Number() protoreflect.EnumNumber {
@@ -58491,7 +58568,7 @@ func (x *GrassTrialEffect) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use GrassTrialEffect.Descriptor instead.
 func (GrassTrialEffect) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{716}
+	return file_xls_enum_proto_rawDescGZIP(), []int{717}
 }
 
 type GrassTrialMode int32
@@ -58524,11 +58601,11 @@ func (x GrassTrialMode) String() string {
 }
 
 func (GrassTrialMode) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[717].Descriptor()
+	return file_xls_enum_proto_enumTypes[718].Descriptor()
 }
 
 func (GrassTrialMode) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[717]
+	return &file_xls_enum_proto_enumTypes[718]
 }
 
 func (x GrassTrialMode) Number() protoreflect.EnumNumber {
@@ -58547,7 +58624,7 @@ func (x *GrassTrialMode) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use GrassTrialMode.Descriptor instead.
 func (GrassTrialMode) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{717}
+	return file_xls_enum_proto_rawDescGZIP(), []int{718}
 }
 
 type HandbookSlotType int32
@@ -58583,11 +58660,11 @@ func (x HandbookSlotType) String() string {
 }
 
 func (HandbookSlotType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[718].Descriptor()
+	return file_xls_enum_proto_enumTypes[719].Descriptor()
 }
 
 func (HandbookSlotType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[718]
+	return &file_xls_enum_proto_enumTypes[719]
 }
 
 func (x HandbookSlotType) Number() protoreflect.EnumNumber {
@@ -58606,7 +58683,7 @@ func (x *HandbookSlotType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use HandbookSlotType.Descriptor instead.
 func (HandbookSlotType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{718}
+	return file_xls_enum_proto_rawDescGZIP(), []int{719}
 }
 
 type GrassTrialTask int32
@@ -58636,11 +58713,11 @@ func (x GrassTrialTask) String() string {
 }
 
 func (GrassTrialTask) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[719].Descriptor()
+	return file_xls_enum_proto_enumTypes[720].Descriptor()
 }
 
 func (GrassTrialTask) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[719]
+	return &file_xls_enum_proto_enumTypes[720]
 }
 
 func (x GrassTrialTask) Number() protoreflect.EnumNumber {
@@ -58659,7 +58736,7 @@ func (x *GrassTrialTask) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use GrassTrialTask.Descriptor instead.
 func (GrassTrialTask) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{719}
+	return file_xls_enum_proto_rawDescGZIP(), []int{720}
 }
 
 type PutPropType int32
@@ -58698,11 +58775,11 @@ func (x PutPropType) String() string {
 }
 
 func (PutPropType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[720].Descriptor()
+	return file_xls_enum_proto_enumTypes[721].Descriptor()
 }
 
 func (PutPropType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[720]
+	return &file_xls_enum_proto_enumTypes[721]
 }
 
 func (x PutPropType) Number() protoreflect.EnumNumber {
@@ -58721,7 +58798,7 @@ func (x *PutPropType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use PutPropType.Descriptor instead.
 func (PutPropType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{720}
+	return file_xls_enum_proto_rawDescGZIP(), []int{721}
 }
 
 type ScenePropType int32
@@ -58766,11 +58843,11 @@ func (x ScenePropType) String() string {
 }
 
 func (ScenePropType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[721].Descriptor()
+	return file_xls_enum_proto_enumTypes[722].Descriptor()
 }
 
 func (ScenePropType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[721]
+	return &file_xls_enum_proto_enumTypes[722]
 }
 
 func (x ScenePropType) Number() protoreflect.EnumNumber {
@@ -58789,7 +58866,7 @@ func (x *ScenePropType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use ScenePropType.Descriptor instead.
 func (ScenePropType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{721}
+	return file_xls_enum_proto_rawDescGZIP(), []int{722}
 }
 
 type SceneSitBlurType int32
@@ -58828,11 +58905,11 @@ func (x SceneSitBlurType) String() string {
 }
 
 func (SceneSitBlurType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[722].Descriptor()
+	return file_xls_enum_proto_enumTypes[723].Descriptor()
 }
 
 func (SceneSitBlurType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[722]
+	return &file_xls_enum_proto_enumTypes[723]
 }
 
 func (x SceneSitBlurType) Number() protoreflect.EnumNumber {
@@ -58851,7 +58928,7 @@ func (x *SceneSitBlurType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use SceneSitBlurType.Descriptor instead.
 func (SceneSitBlurType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{722}
+	return file_xls_enum_proto_rawDescGZIP(), []int{723}
 }
 
 type PlayerTransformType int32
@@ -58890,11 +58967,11 @@ func (x PlayerTransformType) String() string {
 }
 
 func (PlayerTransformType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[723].Descriptor()
+	return file_xls_enum_proto_enumTypes[724].Descriptor()
 }
 
 func (PlayerTransformType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[723]
+	return &file_xls_enum_proto_enumTypes[724]
 }
 
 func (x PlayerTransformType) Number() protoreflect.EnumNumber {
@@ -58913,7 +58990,7 @@ func (x *PlayerTransformType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use PlayerTransformType.Descriptor instead.
 func (PlayerTransformType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{723}
+	return file_xls_enum_proto_rawDescGZIP(), []int{724}
 }
 
 type NpcSizeChangeType int32
@@ -58949,11 +59026,11 @@ func (x NpcSizeChangeType) String() string {
 }
 
 func (NpcSizeChangeType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[724].Descriptor()
+	return file_xls_enum_proto_enumTypes[725].Descriptor()
 }
 
 func (NpcSizeChangeType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[724]
+	return &file_xls_enum_proto_enumTypes[725]
 }
 
 func (x NpcSizeChangeType) Number() protoreflect.EnumNumber {
@@ -58972,7 +59049,7 @@ func (x *NpcSizeChangeType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use NpcSizeChangeType.Descriptor instead.
 func (NpcSizeChangeType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{724}
+	return file_xls_enum_proto_rawDescGZIP(), []int{725}
 }
 
 type AIcoachSceneType int32
@@ -59032,11 +59109,11 @@ func (x AIcoachSceneType) String() string {
 }
 
 func (AIcoachSceneType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[725].Descriptor()
+	return file_xls_enum_proto_enumTypes[726].Descriptor()
 }
 
 func (AIcoachSceneType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[725]
+	return &file_xls_enum_proto_enumTypes[726]
 }
 
 func (x AIcoachSceneType) Number() protoreflect.EnumNumber {
@@ -59055,7 +59132,7 @@ func (x *AIcoachSceneType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use AIcoachSceneType.Descriptor instead.
 func (AIcoachSceneType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{725}
+	return file_xls_enum_proto_rawDescGZIP(), []int{726}
 }
 
 type EnumHeadWearType int32
@@ -59097,11 +59174,11 @@ func (x EnumHeadWearType) String() string {
 }
 
 func (EnumHeadWearType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[726].Descriptor()
+	return file_xls_enum_proto_enumTypes[727].Descriptor()
 }
 
 func (EnumHeadWearType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[726]
+	return &file_xls_enum_proto_enumTypes[727]
 }
 
 func (x EnumHeadWearType) Number() protoreflect.EnumNumber {
@@ -59120,7 +59197,7 @@ func (x *EnumHeadWearType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use EnumHeadWearType.Descriptor instead.
 func (EnumHeadWearType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{726}
+	return file_xls_enum_proto_rawDescGZIP(), []int{727}
 }
 
 type OwlSanctuaryFeature int32
@@ -59180,11 +59257,11 @@ func (x OwlSanctuaryFeature) String() string {
 }
 
 func (OwlSanctuaryFeature) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[727].Descriptor()
+	return file_xls_enum_proto_enumTypes[728].Descriptor()
 }
 
 func (OwlSanctuaryFeature) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[727]
+	return &file_xls_enum_proto_enumTypes[728]
 }
 
 func (x OwlSanctuaryFeature) Number() protoreflect.EnumNumber {
@@ -59203,7 +59280,7 @@ func (x *OwlSanctuaryFeature) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use OwlSanctuaryFeature.Descriptor instead.
 func (OwlSanctuaryFeature) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{727}
+	return file_xls_enum_proto_rawDescGZIP(), []int{728}
 }
 
 type OwlFeatureAdverseStrategy int32
@@ -59239,11 +59316,11 @@ func (x OwlFeatureAdverseStrategy) String() string {
 }
 
 func (OwlFeatureAdverseStrategy) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[728].Descriptor()
+	return file_xls_enum_proto_enumTypes[729].Descriptor()
 }
 
 func (OwlFeatureAdverseStrategy) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[728]
+	return &file_xls_enum_proto_enumTypes[729]
 }
 
 func (x OwlFeatureAdverseStrategy) Number() protoreflect.EnumNumber {
@@ -59262,7 +59339,7 @@ func (x *OwlFeatureAdverseStrategy) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use OwlFeatureAdverseStrategy.Descriptor instead.
 func (OwlFeatureAdverseStrategy) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{728}
+	return file_xls_enum_proto_rawDescGZIP(), []int{729}
 }
 
 type NpcInfoChangeSuccessCostType int32
@@ -59295,11 +59372,11 @@ func (x NpcInfoChangeSuccessCostType) String() string {
 }
 
 func (NpcInfoChangeSuccessCostType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[729].Descriptor()
+	return file_xls_enum_proto_enumTypes[730].Descriptor()
 }
 
 func (NpcInfoChangeSuccessCostType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[729]
+	return &file_xls_enum_proto_enumTypes[730]
 }
 
 func (x NpcInfoChangeSuccessCostType) Number() protoreflect.EnumNumber {
@@ -59318,7 +59395,7 @@ func (x *NpcInfoChangeSuccessCostType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use NpcInfoChangeSuccessCostType.Descriptor instead.
 func (NpcInfoChangeSuccessCostType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{729}
+	return file_xls_enum_proto_rawDescGZIP(), []int{730}
 }
 
 type NpcInfoChangeFixNpcType int32
@@ -59354,11 +59431,11 @@ func (x NpcInfoChangeFixNpcType) String() string {
 }
 
 func (NpcInfoChangeFixNpcType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[730].Descriptor()
+	return file_xls_enum_proto_enumTypes[731].Descriptor()
 }
 
 func (NpcInfoChangeFixNpcType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[730]
+	return &file_xls_enum_proto_enumTypes[731]
 }
 
 func (x NpcInfoChangeFixNpcType) Number() protoreflect.EnumNumber {
@@ -59377,7 +59454,7 @@ func (x *NpcInfoChangeFixNpcType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use NpcInfoChangeFixNpcType.Descriptor instead.
 func (NpcInfoChangeFixNpcType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{730}
+	return file_xls_enum_proto_rawDescGZIP(), []int{731}
 }
 
 type NpcInfoChangeFixType int32
@@ -59413,11 +59490,11 @@ func (x NpcInfoChangeFixType) String() string {
 }
 
 func (NpcInfoChangeFixType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[731].Descriptor()
+	return file_xls_enum_proto_enumTypes[732].Descriptor()
 }
 
 func (NpcInfoChangeFixType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[731]
+	return &file_xls_enum_proto_enumTypes[732]
 }
 
 func (x NpcInfoChangeFixType) Number() protoreflect.EnumNumber {
@@ -59436,7 +59513,7 @@ func (x *NpcInfoChangeFixType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use NpcInfoChangeFixType.Descriptor instead.
 func (NpcInfoChangeFixType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{731}
+	return file_xls_enum_proto_rawDescGZIP(), []int{732}
 }
 
 type OwlSanctuaryEnhance int32
@@ -59469,11 +59546,11 @@ func (x OwlSanctuaryEnhance) String() string {
 }
 
 func (OwlSanctuaryEnhance) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[732].Descriptor()
+	return file_xls_enum_proto_enumTypes[733].Descriptor()
 }
 
 func (OwlSanctuaryEnhance) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[732]
+	return &file_xls_enum_proto_enumTypes[733]
 }
 
 func (x OwlSanctuaryEnhance) Number() protoreflect.EnumNumber {
@@ -59492,7 +59569,7 @@ func (x *OwlSanctuaryEnhance) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use OwlSanctuaryEnhance.Descriptor instead.
 func (OwlSanctuaryEnhance) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{732}
+	return file_xls_enum_proto_rawDescGZIP(), []int{733}
 }
 
 type NpcUpdateType int32
@@ -59525,11 +59602,11 @@ func (x NpcUpdateType) String() string {
 }
 
 func (NpcUpdateType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[733].Descriptor()
+	return file_xls_enum_proto_enumTypes[734].Descriptor()
 }
 
 func (NpcUpdateType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[733]
+	return &file_xls_enum_proto_enumTypes[734]
 }
 
 func (x NpcUpdateType) Number() protoreflect.EnumNumber {
@@ -59548,7 +59625,7 @@ func (x *NpcUpdateType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use NpcUpdateType.Descriptor instead.
 func (NpcUpdateType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{733}
+	return file_xls_enum_proto_rawDescGZIP(), []int{734}
 }
 
 type StockShopRank int32
@@ -59587,11 +59664,11 @@ func (x StockShopRank) String() string {
 }
 
 func (StockShopRank) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[734].Descriptor()
+	return file_xls_enum_proto_enumTypes[735].Descriptor()
 }
 
 func (StockShopRank) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[734]
+	return &file_xls_enum_proto_enumTypes[735]
 }
 
 func (x StockShopRank) Number() protoreflect.EnumNumber {
@@ -59610,7 +59687,7 @@ func (x *StockShopRank) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use StockShopRank.Descriptor instead.
 func (StockShopRank) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{734}
+	return file_xls_enum_proto_rawDescGZIP(), []int{735}
 }
 
 type WorldLordEvo int32
@@ -59652,11 +59729,11 @@ func (x WorldLordEvo) String() string {
 }
 
 func (WorldLordEvo) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[735].Descriptor()
+	return file_xls_enum_proto_enumTypes[736].Descriptor()
 }
 
 func (WorldLordEvo) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[735]
+	return &file_xls_enum_proto_enumTypes[736]
 }
 
 func (x WorldLordEvo) Number() protoreflect.EnumNumber {
@@ -59675,7 +59752,7 @@ func (x *WorldLordEvo) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use WorldLordEvo.Descriptor instead.
 func (WorldLordEvo) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{735}
+	return file_xls_enum_proto_rawDescGZIP(), []int{736}
 }
 
 type PetBoxTidyRuleType int32
@@ -59720,11 +59797,11 @@ func (x PetBoxTidyRuleType) String() string {
 }
 
 func (PetBoxTidyRuleType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[736].Descriptor()
+	return file_xls_enum_proto_enumTypes[737].Descriptor()
 }
 
 func (PetBoxTidyRuleType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[736]
+	return &file_xls_enum_proto_enumTypes[737]
 }
 
 func (x PetBoxTidyRuleType) Number() protoreflect.EnumNumber {
@@ -59743,7 +59820,7 @@ func (x *PetBoxTidyRuleType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use PetBoxTidyRuleType.Descriptor instead.
 func (PetBoxTidyRuleType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{736}
+	return file_xls_enum_proto_rawDescGZIP(), []int{737}
 }
 
 type ServerContributionType int32
@@ -59779,11 +59856,11 @@ func (x ServerContributionType) String() string {
 }
 
 func (ServerContributionType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[737].Descriptor()
+	return file_xls_enum_proto_enumTypes[738].Descriptor()
 }
 
 func (ServerContributionType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[737]
+	return &file_xls_enum_proto_enumTypes[738]
 }
 
 func (x ServerContributionType) Number() protoreflect.EnumNumber {
@@ -59802,7 +59879,7 @@ func (x *ServerContributionType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use ServerContributionType.Descriptor instead.
 func (ServerContributionType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{737}
+	return file_xls_enum_proto_rawDescGZIP(), []int{738}
 }
 
 type MultiMiniGameType int32
@@ -59832,11 +59909,11 @@ func (x MultiMiniGameType) String() string {
 }
 
 func (MultiMiniGameType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[738].Descriptor()
+	return file_xls_enum_proto_enumTypes[739].Descriptor()
 }
 
 func (MultiMiniGameType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[738]
+	return &file_xls_enum_proto_enumTypes[739]
 }
 
 func (x MultiMiniGameType) Number() protoreflect.EnumNumber {
@@ -59855,7 +59932,7 @@ func (x *MultiMiniGameType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use MultiMiniGameType.Descriptor instead.
 func (MultiMiniGameType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{738}
+	return file_xls_enum_proto_rawDescGZIP(), []int{739}
 }
 
 type MultiType int32
@@ -59888,11 +59965,11 @@ func (x MultiType) String() string {
 }
 
 func (MultiType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[739].Descriptor()
+	return file_xls_enum_proto_enumTypes[740].Descriptor()
 }
 
 func (MultiType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[739]
+	return &file_xls_enum_proto_enumTypes[740]
 }
 
 func (x MultiType) Number() protoreflect.EnumNumber {
@@ -59911,7 +59988,7 @@ func (x *MultiType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use MultiType.Descriptor instead.
 func (MultiType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{739}
+	return file_xls_enum_proto_rawDescGZIP(), []int{740}
 }
 
 type ReasoningPuzzleDialogueType int32
@@ -59953,11 +60030,11 @@ func (x ReasoningPuzzleDialogueType) String() string {
 }
 
 func (ReasoningPuzzleDialogueType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[740].Descriptor()
+	return file_xls_enum_proto_enumTypes[741].Descriptor()
 }
 
 func (ReasoningPuzzleDialogueType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[740]
+	return &file_xls_enum_proto_enumTypes[741]
 }
 
 func (x ReasoningPuzzleDialogueType) Number() protoreflect.EnumNumber {
@@ -59976,7 +60053,7 @@ func (x *ReasoningPuzzleDialogueType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use ReasoningPuzzleDialogueType.Descriptor instead.
 func (ReasoningPuzzleDialogueType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{740}
+	return file_xls_enum_proto_rawDescGZIP(), []int{741}
 }
 
 type HandheldMixedType int32
@@ -60012,11 +60089,11 @@ func (x HandheldMixedType) String() string {
 }
 
 func (HandheldMixedType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[741].Descriptor()
+	return file_xls_enum_proto_enumTypes[742].Descriptor()
 }
 
 func (HandheldMixedType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[741]
+	return &file_xls_enum_proto_enumTypes[742]
 }
 
 func (x HandheldMixedType) Number() protoreflect.EnumNumber {
@@ -60035,7 +60112,7 @@ func (x *HandheldMixedType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use HandheldMixedType.Descriptor instead.
 func (HandheldMixedType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{741}
+	return file_xls_enum_proto_rawDescGZIP(), []int{742}
 }
 
 type BALL_ABILITY int32
@@ -60065,11 +60142,11 @@ func (x BALL_ABILITY) String() string {
 }
 
 func (BALL_ABILITY) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[742].Descriptor()
+	return file_xls_enum_proto_enumTypes[743].Descriptor()
 }
 
 func (BALL_ABILITY) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[742]
+	return &file_xls_enum_proto_enumTypes[743]
 }
 
 func (x BALL_ABILITY) Number() protoreflect.EnumNumber {
@@ -60088,7 +60165,7 @@ func (x *BALL_ABILITY) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use BALL_ABILITY.Descriptor instead.
 func (BALL_ABILITY) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{742}
+	return file_xls_enum_proto_rawDescGZIP(), []int{743}
 }
 
 type DefaultButtonModifyType int32
@@ -60124,11 +60201,11 @@ func (x DefaultButtonModifyType) String() string {
 }
 
 func (DefaultButtonModifyType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[743].Descriptor()
+	return file_xls_enum_proto_enumTypes[744].Descriptor()
 }
 
 func (DefaultButtonModifyType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[743]
+	return &file_xls_enum_proto_enumTypes[744]
 }
 
 func (x DefaultButtonModifyType) Number() protoreflect.EnumNumber {
@@ -60147,7 +60224,7 @@ func (x *DefaultButtonModifyType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use DefaultButtonModifyType.Descriptor instead.
 func (DefaultButtonModifyType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{743}
+	return file_xls_enum_proto_rawDescGZIP(), []int{744}
 }
 
 type AVATAR_BODY int32
@@ -60255,11 +60332,11 @@ func (x AVATAR_BODY) String() string {
 }
 
 func (AVATAR_BODY) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[744].Descriptor()
+	return file_xls_enum_proto_enumTypes[745].Descriptor()
 }
 
 func (AVATAR_BODY) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[744]
+	return &file_xls_enum_proto_enumTypes[745]
 }
 
 func (x AVATAR_BODY) Number() protoreflect.EnumNumber {
@@ -60278,7 +60355,7 @@ func (x *AVATAR_BODY) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use AVATAR_BODY.Descriptor instead.
 func (AVATAR_BODY) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{744}
+	return file_xls_enum_proto_rawDescGZIP(), []int{745}
 }
 
 type LegendarySubType int32
@@ -60308,11 +60385,11 @@ func (x LegendarySubType) String() string {
 }
 
 func (LegendarySubType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[745].Descriptor()
+	return file_xls_enum_proto_enumTypes[746].Descriptor()
 }
 
 func (LegendarySubType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[745]
+	return &file_xls_enum_proto_enumTypes[746]
 }
 
 func (x LegendarySubType) Number() protoreflect.EnumNumber {
@@ -60331,7 +60408,7 @@ func (x *LegendarySubType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use LegendarySubType.Descriptor instead.
 func (LegendarySubType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{745}
+	return file_xls_enum_proto_rawDescGZIP(), []int{746}
 }
 
 type QTEPanelType int32
@@ -60370,11 +60447,11 @@ func (x QTEPanelType) String() string {
 }
 
 func (QTEPanelType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[746].Descriptor()
+	return file_xls_enum_proto_enumTypes[747].Descriptor()
 }
 
 func (QTEPanelType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[746]
+	return &file_xls_enum_proto_enumTypes[747]
 }
 
 func (x QTEPanelType) Number() protoreflect.EnumNumber {
@@ -60393,7 +60470,7 @@ func (x *QTEPanelType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use QTEPanelType.Descriptor instead.
 func (QTEPanelType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{746}
+	return file_xls_enum_proto_rawDescGZIP(), []int{747}
 }
 
 type SceneViewType int32
@@ -60426,11 +60503,11 @@ func (x SceneViewType) String() string {
 }
 
 func (SceneViewType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[747].Descriptor()
+	return file_xls_enum_proto_enumTypes[748].Descriptor()
 }
 
 func (SceneViewType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[747]
+	return &file_xls_enum_proto_enumTypes[748]
 }
 
 func (x SceneViewType) Number() protoreflect.EnumNumber {
@@ -60449,7 +60526,7 @@ func (x *SceneViewType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use SceneViewType.Descriptor instead.
 func (SceneViewType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{747}
+	return file_xls_enum_proto_rawDescGZIP(), []int{748}
 }
 
 type DefaultTrackType int32
@@ -60494,11 +60571,11 @@ func (x DefaultTrackType) String() string {
 }
 
 func (DefaultTrackType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[748].Descriptor()
+	return file_xls_enum_proto_enumTypes[749].Descriptor()
 }
 
 func (DefaultTrackType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[748]
+	return &file_xls_enum_proto_enumTypes[749]
 }
 
 func (x DefaultTrackType) Number() protoreflect.EnumNumber {
@@ -60517,7 +60594,7 @@ func (x *DefaultTrackType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use DefaultTrackType.Descriptor instead.
 func (DefaultTrackType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{748}
+	return file_xls_enum_proto_rawDescGZIP(), []int{749}
 }
 
 type DataFriendPositionDisplayType int32
@@ -60553,11 +60630,11 @@ func (x DataFriendPositionDisplayType) String() string {
 }
 
 func (DataFriendPositionDisplayType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[749].Descriptor()
+	return file_xls_enum_proto_enumTypes[750].Descriptor()
 }
 
 func (DataFriendPositionDisplayType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[749]
+	return &file_xls_enum_proto_enumTypes[750]
 }
 
 func (x DataFriendPositionDisplayType) Number() protoreflect.EnumNumber {
@@ -60576,7 +60653,7 @@ func (x *DataFriendPositionDisplayType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use DataFriendPositionDisplayType.Descriptor instead.
 func (DataFriendPositionDisplayType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{749}
+	return file_xls_enum_proto_rawDescGZIP(), []int{750}
 }
 
 type BattleFieldPointType int32
@@ -60612,11 +60689,11 @@ func (x BattleFieldPointType) String() string {
 }
 
 func (BattleFieldPointType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[750].Descriptor()
+	return file_xls_enum_proto_enumTypes[751].Descriptor()
 }
 
 func (BattleFieldPointType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[750]
+	return &file_xls_enum_proto_enumTypes[751]
 }
 
 func (x BattleFieldPointType) Number() protoreflect.EnumNumber {
@@ -60635,7 +60712,7 @@ func (x *BattleFieldPointType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use BattleFieldPointType.Descriptor instead.
 func (BattleFieldPointType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{750}
+	return file_xls_enum_proto_rawDescGZIP(), []int{751}
 }
 
 type TemperatureEffectType int32
@@ -60671,11 +60748,11 @@ func (x TemperatureEffectType) String() string {
 }
 
 func (TemperatureEffectType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[751].Descriptor()
+	return file_xls_enum_proto_enumTypes[752].Descriptor()
 }
 
 func (TemperatureEffectType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[751]
+	return &file_xls_enum_proto_enumTypes[752]
 }
 
 func (x TemperatureEffectType) Number() protoreflect.EnumNumber {
@@ -60694,7 +60771,7 @@ func (x *TemperatureEffectType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use TemperatureEffectType.Descriptor instead.
 func (TemperatureEffectType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{751}
+	return file_xls_enum_proto_rawDescGZIP(), []int{752}
 }
 
 type CatchResultType int32
@@ -60760,11 +60837,11 @@ func (x CatchResultType) String() string {
 }
 
 func (CatchResultType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[752].Descriptor()
+	return file_xls_enum_proto_enumTypes[753].Descriptor()
 }
 
 func (CatchResultType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[752]
+	return &file_xls_enum_proto_enumTypes[753]
 }
 
 func (x CatchResultType) Number() protoreflect.EnumNumber {
@@ -60783,7 +60860,7 @@ func (x *CatchResultType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use CatchResultType.Descriptor instead.
 func (CatchResultType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{752}
+	return file_xls_enum_proto_rawDescGZIP(), []int{753}
 }
 
 type UIEffectTargetType int32
@@ -60822,11 +60899,11 @@ func (x UIEffectTargetType) String() string {
 }
 
 func (UIEffectTargetType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[753].Descriptor()
+	return file_xls_enum_proto_enumTypes[754].Descriptor()
 }
 
 func (UIEffectTargetType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[753]
+	return &file_xls_enum_proto_enumTypes[754]
 }
 
 func (x UIEffectTargetType) Number() protoreflect.EnumNumber {
@@ -60845,7 +60922,7 @@ func (x *UIEffectTargetType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use UIEffectTargetType.Descriptor instead.
 func (UIEffectTargetType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{753}
+	return file_xls_enum_proto_rawDescGZIP(), []int{754}
 }
 
 type NpcRefreshBanType int32
@@ -60893,11 +60970,11 @@ func (x NpcRefreshBanType) String() string {
 }
 
 func (NpcRefreshBanType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[754].Descriptor()
+	return file_xls_enum_proto_enumTypes[755].Descriptor()
 }
 
 func (NpcRefreshBanType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[754]
+	return &file_xls_enum_proto_enumTypes[755]
 }
 
 func (x NpcRefreshBanType) Number() protoreflect.EnumNumber {
@@ -60916,7 +60993,7 @@ func (x *NpcRefreshBanType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use NpcRefreshBanType.Descriptor instead.
 func (NpcRefreshBanType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{754}
+	return file_xls_enum_proto_rawDescGZIP(), []int{755}
 }
 
 type AIPerformGroupOverrideSource int32
@@ -60961,11 +61038,11 @@ func (x AIPerformGroupOverrideSource) String() string {
 }
 
 func (AIPerformGroupOverrideSource) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[755].Descriptor()
+	return file_xls_enum_proto_enumTypes[756].Descriptor()
 }
 
 func (AIPerformGroupOverrideSource) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[755]
+	return &file_xls_enum_proto_enumTypes[756]
 }
 
 func (x AIPerformGroupOverrideSource) Number() protoreflect.EnumNumber {
@@ -60984,7 +61061,7 @@ func (x *AIPerformGroupOverrideSource) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use AIPerformGroupOverrideSource.Descriptor instead.
 func (AIPerformGroupOverrideSource) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{755}
+	return file_xls_enum_proto_rawDescGZIP(), []int{756}
 }
 
 type ShowGoddess int32
@@ -61014,11 +61091,11 @@ func (x ShowGoddess) String() string {
 }
 
 func (ShowGoddess) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[756].Descriptor()
+	return file_xls_enum_proto_enumTypes[757].Descriptor()
 }
 
 func (ShowGoddess) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[756]
+	return &file_xls_enum_proto_enumTypes[757]
 }
 
 func (x ShowGoddess) Number() protoreflect.EnumNumber {
@@ -61037,7 +61114,7 @@ func (x *ShowGoddess) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use ShowGoddess.Descriptor instead.
 func (ShowGoddess) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{756}
+	return file_xls_enum_proto_rawDescGZIP(), []int{757}
 }
 
 type PlayerAnimationCustomizeType int32
@@ -61076,11 +61153,11 @@ func (x PlayerAnimationCustomizeType) String() string {
 }
 
 func (PlayerAnimationCustomizeType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[757].Descriptor()
+	return file_xls_enum_proto_enumTypes[758].Descriptor()
 }
 
 func (PlayerAnimationCustomizeType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[757]
+	return &file_xls_enum_proto_enumTypes[758]
 }
 
 func (x PlayerAnimationCustomizeType) Number() protoreflect.EnumNumber {
@@ -61099,7 +61176,7 @@ func (x *PlayerAnimationCustomizeType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use PlayerAnimationCustomizeType.Descriptor instead.
 func (PlayerAnimationCustomizeType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{757}
+	return file_xls_enum_proto_rawDescGZIP(), []int{758}
 }
 
 type PvpPetTeamType int32
@@ -61138,11 +61215,11 @@ func (x PvpPetTeamType) String() string {
 }
 
 func (PvpPetTeamType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[758].Descriptor()
+	return file_xls_enum_proto_enumTypes[759].Descriptor()
 }
 
 func (PvpPetTeamType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[758]
+	return &file_xls_enum_proto_enumTypes[759]
 }
 
 func (x PvpPetTeamType) Number() protoreflect.EnumNumber {
@@ -61161,7 +61238,7 @@ func (x *PvpPetTeamType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use PvpPetTeamType.Descriptor instead.
 func (PvpPetTeamType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{758}
+	return file_xls_enum_proto_rawDescGZIP(), []int{759}
 }
 
 type FacePhotoLoginType int32
@@ -61194,11 +61271,11 @@ func (x FacePhotoLoginType) String() string {
 }
 
 func (FacePhotoLoginType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[759].Descriptor()
+	return file_xls_enum_proto_enumTypes[760].Descriptor()
 }
 
 func (FacePhotoLoginType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[759]
+	return &file_xls_enum_proto_enumTypes[760]
 }
 
 func (x FacePhotoLoginType) Number() protoreflect.EnumNumber {
@@ -61217,7 +61294,7 @@ func (x *FacePhotoLoginType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use FacePhotoLoginType.Descriptor instead.
 func (FacePhotoLoginType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{759}
+	return file_xls_enum_proto_rawDescGZIP(), []int{760}
 }
 
 type FacePhotoConditionType int32
@@ -61256,11 +61333,11 @@ func (x FacePhotoConditionType) String() string {
 }
 
 func (FacePhotoConditionType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[760].Descriptor()
+	return file_xls_enum_proto_enumTypes[761].Descriptor()
 }
 
 func (FacePhotoConditionType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[760]
+	return &file_xls_enum_proto_enumTypes[761]
 }
 
 func (x FacePhotoConditionType) Number() protoreflect.EnumNumber {
@@ -61279,7 +61356,7 @@ func (x *FacePhotoConditionType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use FacePhotoConditionType.Descriptor instead.
 func (FacePhotoConditionType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{760}
+	return file_xls_enum_proto_rawDescGZIP(), []int{761}
 }
 
 type SocialExtDataType int32
@@ -61315,11 +61392,11 @@ func (x SocialExtDataType) String() string {
 }
 
 func (SocialExtDataType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[761].Descriptor()
+	return file_xls_enum_proto_enumTypes[762].Descriptor()
 }
 
 func (SocialExtDataType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[761]
+	return &file_xls_enum_proto_enumTypes[762]
 }
 
 func (x SocialExtDataType) Number() protoreflect.EnumNumber {
@@ -61338,7 +61415,7 @@ func (x *SocialExtDataType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use SocialExtDataType.Descriptor instead.
 func (SocialExtDataType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{761}
+	return file_xls_enum_proto_rawDescGZIP(), []int{762}
 }
 
 type ActivityComposeVariableType int32
@@ -61374,11 +61451,11 @@ func (x ActivityComposeVariableType) String() string {
 }
 
 func (ActivityComposeVariableType) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[762].Descriptor()
+	return file_xls_enum_proto_enumTypes[763].Descriptor()
 }
 
 func (ActivityComposeVariableType) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[762]
+	return &file_xls_enum_proto_enumTypes[763]
 }
 
 func (x ActivityComposeVariableType) Number() protoreflect.EnumNumber {
@@ -61397,7 +61474,63 @@ func (x *ActivityComposeVariableType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use ActivityComposeVariableType.Descriptor instead.
 func (ActivityComposeVariableType) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{762}
+	return file_xls_enum_proto_rawDescGZIP(), []int{763}
+}
+
+type ActivityVirtualScoreType int32
+
+const (
+	ActivityVirtualScoreType_AVST_NONE                ActivityVirtualScoreType = 0
+	ActivityVirtualScoreType_AVST_GLOBAL_FLOWER_COUNT ActivityVirtualScoreType = 4
+)
+
+// Enum value maps for ActivityVirtualScoreType.
+var (
+	ActivityVirtualScoreType_name = map[int32]string{
+		0: "AVST_NONE",
+		4: "AVST_GLOBAL_FLOWER_COUNT",
+	}
+	ActivityVirtualScoreType_value = map[string]int32{
+		"AVST_NONE":                0,
+		"AVST_GLOBAL_FLOWER_COUNT": 4,
+	}
+)
+
+func (x ActivityVirtualScoreType) Enum() *ActivityVirtualScoreType {
+	p := new(ActivityVirtualScoreType)
+	*p = x
+	return p
+}
+
+func (x ActivityVirtualScoreType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (ActivityVirtualScoreType) Descriptor() protoreflect.EnumDescriptor {
+	return file_xls_enum_proto_enumTypes[764].Descriptor()
+}
+
+func (ActivityVirtualScoreType) Type() protoreflect.EnumType {
+	return &file_xls_enum_proto_enumTypes[764]
+}
+
+func (x ActivityVirtualScoreType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Do not use.
+func (x *ActivityVirtualScoreType) UnmarshalJSON(b []byte) error {
+	num, err := protoimpl.X.UnmarshalJSONEnum(x.Descriptor(), b)
+	if err != nil {
+		return err
+	}
+	*x = ActivityVirtualScoreType(num)
+	return nil
+}
+
+// Deprecated: Use ActivityVirtualScoreType.Descriptor instead.
+func (ActivityVirtualScoreType) EnumDescriptor() ([]byte, []int) {
+	return file_xls_enum_proto_rawDescGZIP(), []int{764}
 }
 
 type IdipPetStatusBit int32
@@ -61469,11 +61602,11 @@ func (x IdipPetStatusBit) String() string {
 }
 
 func (IdipPetStatusBit) Descriptor() protoreflect.EnumDescriptor {
-	return file_xls_enum_proto_enumTypes[763].Descriptor()
+	return file_xls_enum_proto_enumTypes[765].Descriptor()
 }
 
 func (IdipPetStatusBit) Type() protoreflect.EnumType {
-	return &file_xls_enum_proto_enumTypes[763]
+	return &file_xls_enum_proto_enumTypes[765]
 }
 
 func (x IdipPetStatusBit) Number() protoreflect.EnumNumber {
@@ -61492,7 +61625,7 @@ func (x *IdipPetStatusBit) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use IdipPetStatusBit.Descriptor instead.
 func (IdipPetStatusBit) EnumDescriptor() ([]byte, []int) {
-	return file_xls_enum_proto_rawDescGZIP(), []int{763}
+	return file_xls_enum_proto_rawDescGZIP(), []int{765}
 }
 
 var File_xls_enum_proto protoreflect.FileDescriptor
@@ -62386,7 +62519,7 @@ const file_xls_enum_proto_rawDesc = "" +
 	"\bCUT_NONE\x10\x00\x12\x14\n" +
 	"\x10CUT_RESET_OPTION\x10\x01\x12\x14\n" +
 	"\x10CUT_RESET_RESULT\x10\x02\x12\x11\n" +
-	"\rCUT_RESET_ALL\x10\x03*\xac\"\n" +
+	"\rCUT_RESET_ALL\x10\x03*\xc1\"\n" +
 	"\vTaskKeyType\x12\f\n" +
 	"\bTKT_NONE\x10\x00\x12\x0f\n" +
 	"\vTKT_BAT_MIN\x10\x01\x12\x18\n" +
@@ -62552,7 +62685,8 @@ const file_xls_enum_proto_rawDesc = "" +
 	"\x16TKT_GRASS_TRIAL_SETTLE\x10\x83\x03\x12*\n" +
 	"%TKT_GRASS_TRIAL_PREPARE_HAS_STORYFLAG\x10\x84\x03\x12\x1b\n" +
 	"\x16TKT_BUILDING_NPC_LEVEL\x10\x85\x03\x12\x1a\n" +
-	"\x15TKT_PET_BOND_PROGRESS\x10\x87\x03\x12\x12\n" +
+	"\x15TKT_PET_BOND_PROGRESS\x10\x87\x03\x12\x13\n" +
+	"\x0eTKT_WEAR_MEDAL\x10\x89\x03\x12\x12\n" +
 	"\rTKT_OTHER_MAX\x10\x90\x03*\x93\x04\n" +
 	"\rTaskClassType\x12\f\n" +
 	"\bTCT_NONE\x10\x00\x12\v\n" +
@@ -63411,7 +63545,7 @@ const file_xls_enum_proto_rawDesc = "" +
 	"\x12VI_OLDKINGDOM_COIN\x10O\x12\x12\n" +
 	"\x0eVI_PURE_BELIEF\x10P\x12\n" +
 	"\n" +
-	"\x06VI_MAX\x10c*\x97\x05\n" +
+	"\x06VI_MAX\x10c*\xb6\x05\n" +
 	"\tGoodsType\x12\v\n" +
 	"\aGT_NONE\x10\x00\x12\x0e\n" +
 	"\n" +
@@ -63454,7 +63588,8 @@ const file_xls_enum_proto_rawDesc = "" +
 	"\x14GT_PETBOX_PET_CHANGE\x10!\x12\x12\n" +
 	"\x0eGT_EMOJI_ALBUM\x10\"\x12\x12\n" +
 	"\x0eGT_CHAT_BUBBLE\x10#\x12\x13\n" +
-	"\x0fGT_PET_BAN_FLAG\x10$*&\n" +
+	"\x0fGT_PET_BAN_FLAG\x10$\x12\x1d\n" +
+	"\x19GT_ACTIVITY_VIRTUAL_SCORE\x10%*&\n" +
 	"\tLabelType\x12\f\n" +
 	"\bLT_FIRST\x10\x01\x12\v\n" +
 	"\aLT_LAST\x10\x02*J\n" +
@@ -65766,7 +65901,7 @@ const file_xls_enum_proto_rawDesc = "" +
 	"\x16HSD_SEQUENCE_NUMBER_UP\x10\x02*Q\n" +
 	"\x16HandbookSequenceSwitch\x12\x19\n" +
 	"\x15HSS_SEQUENCE_LEVEL_UP\x10\x01\x12\x1c\n" +
-	"\x18HSS_SEQUENCE_NUMBER_DOWN\x10\x02*\xef$\n" +
+	"\x18HSS_SEQUENCE_NUMBER_DOWN\x10\x02*\x88%\n" +
 	"\x15SpaceActorLogicStatus\x12\r\n" +
 	"\tSALS_NONE\x10\x00\x12\x0f\n" +
 	"\vSALS_NORMAL\x10\x01\x12\x14\n" +
@@ -65968,7 +66103,8 @@ const file_xls_enum_proto_rawDesc = "" +
 	"\x13SALS_HOME_PET_GUARD\x10\xa8\r\x12\x1b\n" +
 	"\x16SALS_HOME_PET_HOLD_EGG\x10\xa9\r\x12\x14\n" +
 	"\x0fSALS_THROWCATCH\x10\x89\x0e\x12\x14\n" +
-	"\x0fSALS_FIND_CHEST\x10\x8a\x0e*5\n" +
+	"\x0fSALS_FIND_CHEST\x10\x8a\x0e\x12\x17\n" +
+	"\x12SALS_THROW_CATCHED\x10\x8b\x0e*5\n" +
 	"\x0fSkillImpactType\x12\x10\n" +
 	"\fSIT_POSITIVE\x10\x01\x12\x10\n" +
 	"\fSIT_NEGATIVE\x10\x02*'\n" +
@@ -68331,7 +68467,7 @@ const file_xls_enum_proto_rawDesc = "" +
 	"\x10WCERS_PROCESSING\x10\x00\x12\x12\n" +
 	"\x0eWCERS_COMPLETE\x10\x01\x12\x0e\n" +
 	"\n" +
-	"WCERS_FAIL\x10\x02*\xdb\v\n" +
+	"WCERS_FAIL\x10\x02*\xf3\v\n" +
 	"\fActivityType\x12\x18\n" +
 	"\x14ATP_ACTIVITY_SPECIAL\x10\x01\x12 \n" +
 	"\x1cATP_ACTIVITY_REWARD_BY_STAGE\x10\x02\x12\x1d\n" +
@@ -68395,7 +68531,8 @@ const file_xls_enum_proto_rawDesc = "" +
 	"\x10ATP_EVENING_REST\x10;\x12\x13\n" +
 	"\x0fATP_PET_PRODUCT\x10<\x12\x15\n" +
 	"\x11ATP_SEASON_SPRINT\x10?\x12\x10\n" +
-	"\fATP_PET_GIFT\x10C*X\n" +
+	"\fATP_PET_GIFT\x10C\x12\x16\n" +
+	"\x12ATP_PUBLIC_WELFARE\x10H*X\n" +
 	"\x15ActivityLoginRequired\x12\x10\n" +
 	"\fALR_LOGIN_QQ\x10\x01\x12\x14\n" +
 	"\x10ALR_LOGIN_WECHAT\x10\x02\x12\x17\n" +
@@ -68409,7 +68546,7 @@ const file_xls_enum_proto_rawDesc = "" +
 	"\x1aActivityIconChangeRequired\x12\x16\n" +
 	"\x12AICR_SUCCESS_CLICK\x10\x01\x12\x15\n" +
 	"\x11AICR_RECEIVE_NOTE\x10\x02\x12\r\n" +
-	"\tAICR_NONE\x10\x03*\xaa\x03\n" +
+	"\tAICR_NONE\x10\x03*\x87\x04\n" +
 	"\x16ActiviyMixSlotFunciton\x12\r\n" +
 	"\tAMSF_NONE\x10\x00\x12\x14\n" +
 	"\x10AMSF_CHECK_VITEM\x10\x01\x12\x11\n" +
@@ -68425,11 +68562,18 @@ const file_xls_enum_proto_rawDesc = "" +
 	"\x12\x19\n" +
 	"\x15AMSF_SHOP_CHANGE_DONE\x10\v\x12\x11\n" +
 	"\rAMSF_PET_ATTR\x10\f\x12\x11\n" +
-	"\rAMSF_GET_TASK\x10\r\x12\x14\n" +
-	"\x10AMSF_SHOW_REWARD\x10\x13\x12\x14\n" +
+	"\rAMSF_GET_TASK\x10\r\x12\x19\n" +
+	"\x15AMSF_VIRTUAL_PROGRESS\x10\x11\x12\x1e\n" +
+	"\x1aAMSF_ACTIVITY_SCORE_RECORD\x10\x12\x12\x14\n" +
+	"\x10AMSF_SHOW_REWARD\x10\x13\x12 \n" +
+	"\x1cAMSF_CONDITION_REWARD_ACTION\x10\x16\x12\x14\n" +
 	"\x0fAMSF_CONFIG_MAX\x10\xe8\a\x12\x1c\n" +
 	"\x17AMSF_PREREQUISITE_TASKS\x10\xe9\a\x12\x17\n" +
-	"\x12AMSF_MUST_DO_TASKS\x10\xea\a*7\n" +
+	"\x12AMSF_MUST_DO_TASKS\x10\xea\a*M\n" +
+	"!ActivityComposeExternalActionType\x12\x0e\n" +
+	"\n" +
+	"ACEAT_NONE\x10\x00\x12\x18\n" +
+	"\x14ACEAT_CHARITY_FLOWER\x10\x01*7\n" +
 	"\x16MarqueeTextRefreshType\x12\r\n" +
 	"\tMTRT_TIME\x10\x00\x12\x0e\n" +
 	"\n" +
@@ -70654,7 +70798,10 @@ const file_xls_enum_proto_rawDesc = "" +
 	"\x1bActivityComposeVariableType\x12\r\n" +
 	"\tACVT_NONE\x10\x00\x12 \n" +
 	"\x1cACVT_MUST_DO_TASKS_DONE_TIME\x10\x01\x12%\n" +
-	"!ACVT_PREREQUISITE_TASKS_DONE_TIME\x10\x02*\xbe\x03\n" +
+	"!ACVT_PREREQUISITE_TASKS_DONE_TIME\x10\x02*G\n" +
+	"\x18ActivityVirtualScoreType\x12\r\n" +
+	"\tAVST_NONE\x10\x00\x12\x1c\n" +
+	"\x18AVST_GLOBAL_FLOWER_COUNT\x10\x04*\xbe\x03\n" +
 	"\x10IdipPetStatusBit\x12\x17\n" +
 	"\x13IPS_BIT_IN_PVP_TEAM\x10\x00\x12$\n" +
 	" IPS_BIT_IN_WEEKLY_CHALLENGE_TEAM\x10\x01\x12\x1a\n" +
@@ -70685,7 +70832,7 @@ func file_xls_enum_proto_rawDescGZIP() []byte {
 	return file_xls_enum_proto_rawDescData
 }
 
-var file_xls_enum_proto_enumTypes = make([]protoimpl.EnumInfo, 764)
+var file_xls_enum_proto_enumTypes = make([]protoimpl.EnumInfo, 766)
 var file_xls_enum_proto_goTypes = []any{
 	(ECOLOGY_FEATURE)(0),                     // 0: dataconfig.ECOLOGY_FEATURE
 	(HABITAT_FLAG)(0),                        // 1: dataconfig.HABITAT_FLAG
@@ -71136,321 +71283,323 @@ var file_xls_enum_proto_goTypes = []any{
 	(ActivitySpecialWebSite)(0),              // 446: dataconfig.ActivitySpecialWebSite
 	(ActivityIconChangeRequired)(0),          // 447: dataconfig.ActivityIconChangeRequired
 	(ActiviyMixSlotFunciton)(0),              // 448: dataconfig.ActiviyMixSlotFunciton
-	(MarqueeTextRefreshType)(0),              // 449: dataconfig.MarqueeTextRefreshType
-	(PETStoryPageType)(0),                    // 450: dataconfig.PETStoryPageType
-	(PetInformationUnlockType)(0),            // 451: dataconfig.PetInformationUnlockType
-	(RarityLevelEnumeration)(0),              // 452: dataconfig.RarityLevelEnumeration
-	(PetSotryDecorationImage)(0),             // 453: dataconfig.PetSotryDecorationImage
-	(PetSotryDecorationImageTxt)(0),          // 454: dataconfig.PetSotryDecorationImageTxt
-	(AvailableHpRule)(0),                     // 455: dataconfig.AvailableHpRule
-	(ReacallUnlockTriggerType)(0),            // 456: dataconfig.ReacallUnlockTriggerType
-	(TeachUnlockCondition)(0),                // 457: dataconfig.TeachUnlockCondition
-	(GuideSettingMode)(0),                    // 458: dataconfig.GuideSettingMode
-	(GuideActionType)(0),                     // 459: dataconfig.GuideActionType
-	(GuideActionBanType)(0),                  // 460: dataconfig.GuideActionBanType
-	(TeachClientTrigger)(0),                  // 461: dataconfig.TeachClientTrigger
-	(TriggerPlayerType)(0),                   // 462: dataconfig.TriggerPlayerType
-	(EventResultType)(0),                     // 463: dataconfig.EventResultType
-	(AdventureRecord)(0),                     // 464: dataconfig.AdventureRecord
-	(FaceToFaceType)(0),                      // 465: dataconfig.FaceToFaceType
-	(MegaMapObjectClass)(0),                  // 466: dataconfig.MegaMapObjectClass
-	(MegaMapPositionIndexMethod)(0),          // 467: dataconfig.MegaMapPositionIndexMethod
-	(MegaMapIdType)(0),                       // 468: dataconfig.MegaMapIdType
-	(PerceptionHudType)(0),                   // 469: dataconfig.PerceptionHudType
-	(MonsterDifficultyType)(0),               // 470: dataconfig.MonsterDifficultyType
-	(CampPetReportType)(0),                   // 471: dataconfig.CampPetReportType
-	(SvrAIReportType)(0),                     // 472: dataconfig.SvrAIReportType
-	(PlayerPetStorePlace)(0),                 // 473: dataconfig.PlayerPetStorePlace
-	(BotStatusType)(0),                       // 474: dataconfig.BotStatusType
-	(SetAvatarPosReason)(0),                  // 475: dataconfig.SetAvatarPosReason
-	(BehaviorOverridePriority)(0),            // 476: dataconfig.BehaviorOverridePriority
-	(BehaviorOverrideBackType)(0),            // 477: dataconfig.BehaviorOverrideBackType
-	(HandbookChangeType)(0),                  // 478: dataconfig.HandbookChangeType
-	(PetFeedType)(0),                         // 479: dataconfig.PetFeedType
-	(PetGrowthType)(0),                       // 480: dataconfig.PetGrowthType
-	(PetSkillChangeType)(0),                  // 481: dataconfig.PetSkillChangeType
-	(LocationInteractionBanType)(0),          // 482: dataconfig.LocationInteractionBanType
-	(LocationTag)(0),                         // 483: dataconfig.LocationTag
-	(MageListUnlockType)(0),                  // 484: dataconfig.MageListUnlockType
-	(MageListLockType)(0),                    // 485: dataconfig.MageListLockType
-	(MageInfoUnlockType)(0),                  // 486: dataconfig.MageInfoUnlockType
-	(MageRestUnlock)(0),                      // 487: dataconfig.MageRestUnlock
-	(SettingButtonType)(0),                   // 488: dataconfig.SettingButtonType
-	(PvpAwardCondition)(0),                   // 489: dataconfig.PvpAwardCondition
-	(PvpRandomSkill)(0),                      // 490: dataconfig.PvpRandomSkill
-	(PvpMatchType)(0),                        // 491: dataconfig.PvpMatchType
-	(FurnitureType)(0),                       // 492: dataconfig.FurnitureType
-	(InteriorFinishType)(0),                  // 493: dataconfig.InteriorFinishType
-	(FurnitureTabType)(0),                    // 494: dataconfig.FurnitureTabType
-	(HomeDiyVisualAngle)(0),                  // 495: dataconfig.HomeDiyVisualAngle
-	(TaskClientTriggerType)(0),               // 496: dataconfig.TaskClientTriggerType
-	(ReadType)(0),                            // 497: dataconfig.ReadType
-	(FollowConditionType)(0),                 // 498: dataconfig.FollowConditionType
-	(NPCFollowStateType)(0),                  // 499: dataconfig.NPCFollowStateType
-	(StickToSocket)(0),                       // 500: dataconfig.StickToSocket
-	(NpcFollowState)(0),                      // 501: dataconfig.NpcFollowState
-	(RequiredType)(0),                        // 502: dataconfig.RequiredType
-	(NpcrefreshOptionType)(0),                // 503: dataconfig.NpcrefreshOptionType
-	(PetFreeAwardType)(0),                    // 504: dataconfig.PetFreeAwardType
-	(MagicPageUnlockType)(0),                 // 505: dataconfig.MagicPageUnlockType
-	(NotebookType)(0),                        // 506: dataconfig.NotebookType
-	(StorybookType)(0),                       // 507: dataconfig.StorybookType
-	(TaleTaskType)(0),                        // 508: dataconfig.TaleTaskType
-	(RidePetCollect)(0),                      // 509: dataconfig.RidePetCollect
-	(AreaTrigResultType)(0),                  // 510: dataconfig.AreaTrigResultType
-	(MedalType)(0),                           // 511: dataconfig.MedalType
-	(MedalSource)(0),                         // 512: dataconfig.MedalSource
-	(MedalGetCondition)(0),                   // 513: dataconfig.MedalGetCondition
-	(RobotNameType)(0),                       // 514: dataconfig.RobotNameType
-	(ActivityTypeIcon)(0),                    // 515: dataconfig.ActivityTypeIcon
-	(ActivityDevelopTaskType)(0),             // 516: dataconfig.ActivityDevelopTaskType
-	(SpecFlowerSeedPetId)(0),                 // 517: dataconfig.SpecFlowerSeedPetId
-	(SpecFlowerSeedStar)(0),                  // 518: dataconfig.SpecFlowerSeedStar
-	(SpecFlowerSeedRewardCondition)(0),       // 519: dataconfig.SpecFlowerSeedRewardCondition
-	(SpecFlowerSeedReward)(0),                // 520: dataconfig.SpecFlowerSeedReward
-	(WeekendDoubleRefresh)(0),                // 521: dataconfig.WeekendDoubleRefresh
-	(MonthlyPassRewardType)(0),               // 522: dataconfig.MonthlyPassRewardType
-	(AIUniqGroupMemGetType)(0),               // 523: dataconfig.AIUniqGroupMemGetType
-	(MusicType)(0),                           // 524: dataconfig.MusicType
-	(MusicApplyType)(0),                      // 525: dataconfig.MusicApplyType
-	(InterfaceType)(0),                       // 526: dataconfig.InterfaceType
-	(TaskPetType)(0),                         // 527: dataconfig.TaskPetType
-	(TaskBehaviorType)(0),                    // 528: dataconfig.TaskBehaviorType
-	(WhitelistTagType)(0),                    // 529: dataconfig.WhitelistTagType
-	(AxisType)(0),                            // 530: dataconfig.AxisType
-	(ActivityActionType)(0),                  // 531: dataconfig.ActivityActionType
-	(ActivityConditionType)(0),               // 532: dataconfig.ActivityConditionType
-	(StaminaStatus)(0),                       // 533: dataconfig.StaminaStatus
-	(AreaHandbookType)(0),                    // 534: dataconfig.AreaHandbookType
-	(CameraBlendType)(0),                     // 535: dataconfig.CameraBlendType
-	(WorldCombatBossSensedPlayerType)(0),     // 536: dataconfig.WorldCombatBossSensedPlayerType
-	(ActivityDisplayRewardType)(0),           // 537: dataconfig.ActivityDisplayRewardType
-	(TconndEvHandlerType)(0),                 // 538: dataconfig.TconndEvHandlerType
-	(PetStatType)(0),                         // 539: dataconfig.PetStatType
-	(CloseExpActionType)(0),                  // 540: dataconfig.CloseExpActionType
-	(PetLikeElementType)(0),                  // 541: dataconfig.PetLikeElementType
-	(MidasPay)(0),                            // 542: dataconfig.MidasPay
-	(FashionAITag)(0),                        // 543: dataconfig.FashionAITag
-	(SuitAiEffect)(0),                        // 544: dataconfig.SuitAiEffect
-	(SuitPrivilegeEffect)(0),                 // 545: dataconfig.SuitPrivilegeEffect
-	(FashionBondBand)(0),                     // 546: dataconfig.FashionBondBand
-	(FashionColorSuitsLaunch)(0),             // 547: dataconfig.FashionColorSuitsLaunch
-	(FashionBondQuality)(0),                  // 548: dataconfig.FashionBondQuality
-	(FashionBondSource)(0),                   // 549: dataconfig.FashionBondSource
-	(BagCharm)(0),                            // 550: dataconfig.BagCharm
-	(BagCharmPrivilegeEffect)(0),             // 551: dataconfig.BagCharmPrivilegeEffect
-	(FashionTopsTag)(0),                      // 552: dataconfig.FashionTopsTag
-	(FashionRingsTag)(0),                     // 553: dataconfig.FashionRingsTag
-	(FashionBottomsTag)(0),                   // 554: dataconfig.FashionBottomsTag
-	(FashionShoesTag)(0),                     // 555: dataconfig.FashionShoesTag
-	(FashionSocksTag)(0),                     // 556: dataconfig.FashionSocksTag
-	(FashionWandSource)(0),                   // 557: dataconfig.FashionWandSource
-	(AutoIncrementType)(0),                   // 558: dataconfig.AutoIncrementType
-	(AreaMailAITType)(0),                     // 559: dataconfig.AreaMailAITType
-	(OpponentType)(0),                        // 560: dataconfig.OpponentType
-	(ActivityUPType)(0),                      // 561: dataconfig.ActivityUPType
-	(PlayerRange)(0),                         // 562: dataconfig.PlayerRange
-	(RewardReceiveType)(0),                   // 563: dataconfig.RewardReceiveType
-	(PetPartnerMarkType)(0),                  // 564: dataconfig.PetPartnerMarkType
-	(SpecialAudioTag)(0),                     // 565: dataconfig.SpecialAudioTag
-	(ActivityMonitorEvent)(0),                // 566: dataconfig.ActivityMonitorEvent
-	(ActivityDropTimeType)(0),                // 567: dataconfig.ActivityDropTimeType
-	(ActivityDropAreaTyep)(0),                // 568: dataconfig.ActivityDropAreaTyep
-	(ActivityDropShowArea)(0),                // 569: dataconfig.ActivityDropShowArea
-	(AcitivityDropAreaShow)(0),               // 570: dataconfig.AcitivityDropAreaShow
-	(ActivityResetType)(0),                   // 571: dataconfig.ActivityResetType
-	(BloodMagicTempType)(0),                  // 572: dataconfig.BloodMagicTempType
-	(ShareType)(0),                           // 573: dataconfig.ShareType
-	(ShareQRcodeScenario)(0),                 // 574: dataconfig.ShareQRcodeScenario
-	(SharePattern)(0),                        // 575: dataconfig.SharePattern
-	(ShareButtonArea)(0),                     // 576: dataconfig.ShareButtonArea
-	(ShareButtonType)(0),                     // 577: dataconfig.ShareButtonType
-	(TipsShowType)(0),                        // 578: dataconfig.TipsShowType
-	(NeedfulApp)(0),                          // 579: dataconfig.NeedfulApp
-	(TaskTeleportType)(0),                    // 580: dataconfig.TaskTeleportType
-	(PlantStage)(0),                          // 581: dataconfig.PlantStage
-	(SceneCfgId)(0),                          // 582: dataconfig.SceneCfgId
-	(PetTalentCondition)(0),                  // 583: dataconfig.PetTalentCondition
-	(PetTalentEffect)(0),                     // 584: dataconfig.PetTalentEffect
-	(PetTalentFilterName)(0),                 // 585: dataconfig.PetTalentFilterName
-	(PetTalentBattleTriggerTime)(0),          // 586: dataconfig.PetTalentBattleTriggerTime
-	(TrackNewTask)(0),                        // 587: dataconfig.TrackNewTask
-	(ShoesSoundEffect)(0),                    // 588: dataconfig.ShoesSoundEffect
-	(MedaluiFormat)(0),                       // 589: dataconfig.MedaluiFormat
-	(MarkGameplay)(0),                        // 590: dataconfig.MarkGameplay
-	(ChildMessageMagic)(0),                   // 591: dataconfig.ChildMessageMagic
-	(IncidentType)(0),                        // 592: dataconfig.IncidentType
-	(WorldExploringStatisticType)(0),         // 593: dataconfig.WorldExploringStatisticType
-	(DisplayType)(0),                         // 594: dataconfig.DisplayType
-	(SkillSequenceDefault)(0),                // 595: dataconfig.SkillSequenceDefault
-	(SkillSequenceSwitch)(0),                 // 596: dataconfig.SkillSequenceSwitch
-	(AutoParamType)(0),                       // 597: dataconfig.AutoParamType
-	(RoleCardModuleType)(0),                  // 598: dataconfig.RoleCardModuleType
-	(RegionalDivision)(0),                    // 599: dataconfig.RegionalDivision
-	(TravelGoal)(0),                          // 600: dataconfig.TravelGoal
-	(ActivityTrailTipType)(0),                // 601: dataconfig.ActivityTrailTipType
-	(RelationTreeTypeDefault)(0),             // 602: dataconfig.RelationTreeTypeDefault
-	(RelationTreeType)(0),                    // 603: dataconfig.RelationTreeType
-	(GlassType)(0),                           // 604: dataconfig.GlassType
-	(HiddenGlassType)(0),                     // 605: dataconfig.HiddenGlassType
-	(EggAcquireWayType)(0),                   // 606: dataconfig.EggAcquireWayType
-	(EggShiningProbType)(0),                  // 607: dataconfig.EggShiningProbType
-	(EggGlassProbType)(0),                    // 608: dataconfig.EggGlassProbType
-	(DialogRatingType)(0),                    // 609: dataconfig.DialogRatingType
-	(BattlePassGiftGrade)(0),                 // 610: dataconfig.BattlePassGiftGrade
-	(ActivitySeasonItemJump)(0),              // 611: dataconfig.ActivitySeasonItemJump
-	(ActivitySeasonTimeShow)(0),              // 612: dataconfig.ActivitySeasonTimeShow
-	(SeasonItemAdditionalShow)(0),            // 613: dataconfig.SeasonItemAdditionalShow
-	(BelongSystem)(0),                        // 614: dataconfig.BelongSystem
-	(SeasonKVType)(0),                        // 615: dataconfig.SeasonKVType
-	(PetType)(0),                             // 616: dataconfig.PetType
-	(SeasonPartSlotPosition)(0),              // 617: dataconfig.SeasonPartSlotPosition
-	(SeasonItemGoImgLocation)(0),             // 618: dataconfig.SeasonItemGoImgLocation
-	(RelationTreeBasic)(0),                   // 619: dataconfig.RelationTreeBasic
-	(UserSubscribeTplType)(0),                // 620: dataconfig.UserSubscribeTplType
-	(UserSubscribeType)(0),                   // 621: dataconfig.UserSubscribeType
-	(UserSubscribeSendScene)(0),              // 622: dataconfig.UserSubscribeSendScene
-	(LobbyMainInnerUIType)(0),                // 623: dataconfig.LobbyMainInnerUIType
-	(MapModuleDataUpdateReason)(0),           // 624: dataconfig.MapModuleDataUpdateReason
-	(NpcAttachItemType)(0),                   // 625: dataconfig.NpcAttachItemType
-	(ReportCoinRatio)(0),                     // 626: dataconfig.ReportCoinRatio
-	(MagicManualTab)(0),                      // 627: dataconfig.MagicManualTab
-	(SeasonGrowthType)(0),                    // 628: dataconfig.SeasonGrowthType
-	(PlayerVisibleSpecialRule)(0),            // 629: dataconfig.PlayerVisibleSpecialRule
-	(InteractiveProp)(0),                     // 630: dataconfig.InteractiveProp
-	(QQArkBusinessType)(0),                   // 631: dataconfig.QQArkBusinessType
-	(QQArkShareType)(0),                      // 632: dataconfig.QQArkShareType
-	(FurniturelnteractType)(0),               // 633: dataconfig.FurniturelnteractType
-	(InteractiontreeTypeDefault)(0),          // 634: dataconfig.InteractiontreeTypeDefault
-	(PlayerRelationshipType)(0),              // 635: dataconfig.PlayerRelationshipType
-	(BonusProbType)(0),                       // 636: dataconfig.BonusProbType
-	(BonusVariableType)(0),                   // 637: dataconfig.BonusVariableType
-	(BonusBelongFactorType)(0),               // 638: dataconfig.BonusBelongFactorType
-	(BonusEventResultType)(0),                // 639: dataconfig.BonusEventResultType
-	(BonusRefreshType)(0),                    // 640: dataconfig.BonusRefreshType
-	(BonusBoxIconType)(0),                    // 641: dataconfig.BonusBoxIconType
-	(VisibleType)(0),                         // 642: dataconfig.VisibleType
-	(AreaVisibleDensity)(0),                  // 643: dataconfig.AreaVisibleDensity
-	(BonusPetFieldMatchType)(0),              // 644: dataconfig.BonusPetFieldMatchType
-	(SeasonTipsPageType)(0),                  // 645: dataconfig.SeasonTipsPageType
-	(CloseConditionType)(0),                  // 646: dataconfig.CloseConditionType
-	(ActivityPreviewPetShow)(0),              // 647: dataconfig.ActivityPreviewPetShow
-	(ActivityOptionType)(0),                  // 648: dataconfig.ActivityOptionType
-	(ActivityTrackType)(0),                   // 649: dataconfig.ActivityTrackType
-	(RideFootNumberType)(0),                  // 650: dataconfig.RideFootNumberType
-	(FriendType)(0),                          // 651: dataconfig.FriendType
-	(FriendRecommendSource)(0),               // 652: dataconfig.FriendRecommendSource
-	(PlayerSocialActionType)(0),              // 653: dataconfig.PlayerSocialActionType
-	(PlayerSocialBehaviorType)(0),            // 654: dataconfig.PlayerSocialBehaviorType
-	(TaskExpireTimeType)(0),                  // 655: dataconfig.TaskExpireTimeType
-	(HomeAccessType)(0),                      // 656: dataconfig.HomeAccessType
-	(PetBlessingTlogActionType)(0),           // 657: dataconfig.PetBlessingTlogActionType
-	(ActivityEmojiType)(0),                   // 658: dataconfig.ActivityEmojiType
-	(ShopRandomType)(0),                      // 659: dataconfig.ShopRandomType
-	(FixRandomType)(0),                       // 660: dataconfig.FixRandomType
-	(RandomMutexType)(0),                     // 661: dataconfig.RandomMutexType
-	(EmojiTopic)(0),                          // 662: dataconfig.EmojiTopic
-	(PetCatchTime)(0),                        // 663: dataconfig.PetCatchTime
-	(RollBack)(0),                            // 664: dataconfig.RollBack
-	(ActivityMixSlot)(0),                     // 665: dataconfig.ActivityMixSlot
-	(ActivitySLotFuctionType)(0),             // 666: dataconfig.ActivitySLotFuctionType
-	(ActivityFaction)(0),                     // 667: dataconfig.ActivityFaction
-	(ActivityTaskRandomRule)(0),              // 668: dataconfig.ActivityTaskRandomRule
-	(ActivityConditionTaskGroup)(0),          // 669: dataconfig.ActivityConditionTaskGroup
-	(EnLotteryRewardState)(0),                // 670: dataconfig.EnLotteryRewardState
-	(EnLotteryRewardTransState)(0),           // 671: dataconfig.EnLotteryRewardTransState
-	(WeightChangeType)(0),                    // 672: dataconfig.WeightChangeType
-	(InteractInviteType)(0),                  // 673: dataconfig.InteractInviteType
-	(WarehouseUnlockCondition)(0),            // 674: dataconfig.WarehouseUnlockCondition
-	(WarehouseMarkType)(0),                   // 675: dataconfig.WarehouseMarkType
-	(SpecialBattleLevelUnlockType)(0),        // 676: dataconfig.SpecialBattleLevelUnlockType
-	(PreciousEggType)(0),                     // 677: dataconfig.PreciousEggType
-	(TypeAdvantageUnlockType)(0),             // 678: dataconfig.TypeAdvantageUnlockType
-	(TypeAdvantageTrainType)(0),              // 679: dataconfig.TypeAdvantageTrainType
-	(CombatTeachTrainType)(0),                // 680: dataconfig.CombatTeachTrainType
-	(BattleGuidanceLocation)(0),              // 681: dataconfig.BattleGuidanceLocation
-	(BattleLeadFinishType)(0),                // 682: dataconfig.BattleLeadFinishType
-	(TeamBattleStarRule)(0),                  // 683: dataconfig.TeamBattleStarRule
-	(TeachingType)(0),                        // 684: dataconfig.TeachingType
-	(FurnitureEffectSwitch)(0),               // 685: dataconfig.FurnitureEffectSwitch
-	(FurnitureEffectType)(0),                 // 686: dataconfig.FurnitureEffectType
-	(ACTIVITY_FLOWER_APPEAR_TASK_TYPE)(0),    // 687: dataconfig.ACTIVITY_FLOWER_APPEAR_TASK_TYPE
-	(BuffCleanWhenRestType)(0),               // 688: dataconfig.BuffCleanWhenRestType
-	(TramplingLawnComp)(0),                   // 689: dataconfig.TramplingLawnComp
-	(PetguardRequireWay)(0),                  // 690: dataconfig.PetguardRequireWay
-	(PetguardBanFunc)(0),                     // 691: dataconfig.PetguardBanFunc
-	(HabitatRestrainType)(0),                 // 692: dataconfig.HabitatRestrainType
-	(FeatureResonanceType)(0),                // 693: dataconfig.FeatureResonanceType
-	(FilterShining)(0),                       // 694: dataconfig.FilterShining
-	(SeaseonTipsShowType)(0),                 // 695: dataconfig.SeaseonTipsShowType
-	(FakeFeedDecryptCondition)(0),            // 696: dataconfig.FakeFeedDecryptCondition
-	(LotteryPoolType)(0),                     // 697: dataconfig.LotteryPoolType
-	(LotteryMoniterEvent)(0),                 // 698: dataconfig.LotteryMoniterEvent
-	(FakeFeedValidity)(0),                    // 699: dataconfig.FakeFeedValidity
-	(RankListType)(0),                        // 700: dataconfig.RankListType
-	(BattleSettlementPetType)(0),             // 701: dataconfig.BattleSettlementPetType
-	(SeasonFocusImgOptionType)(0),            // 702: dataconfig.SeasonFocusImgOptionType
-	(GlobalCountType)(0),                     // 703: dataconfig.GlobalCountType
-	(PetNameSource)(0),                       // 704: dataconfig.PetNameSource
-	(LotteryPoolValidationCheck)(0),          // 705: dataconfig.LotteryPoolValidationCheck
-	(FilterSeasonPet)(0),                     // 706: dataconfig.FilterSeasonPet
-	(WeightFixType)(0),                       // 707: dataconfig.WeightFixType
-	(BonusPoolType)(0),                       // 708: dataconfig.BonusPoolType
-	(BonusGiftConditionType)(0),              // 709: dataconfig.BonusGiftConditionType
-	(RecallPetEggType)(0),                    // 710: dataconfig.RecallPetEggType
-	(EventType)(0),                           // 711: dataconfig.EventType
-	(OptionEffect)(0),                        // 712: dataconfig.OptionEffect
-	(GrassTrialState)(0),                     // 713: dataconfig.GrassTrialState
-	(GrassTrialFusionType)(0),                // 714: dataconfig.GrassTrialFusionType
-	(GrassTrialEffectType)(0),                // 715: dataconfig.GrassTrialEffectType
-	(GrassTrialEffect)(0),                    // 716: dataconfig.GrassTrialEffect
-	(GrassTrialMode)(0),                      // 717: dataconfig.GrassTrialMode
-	(HandbookSlotType)(0),                    // 718: dataconfig.HandbookSlotType
-	(GrassTrialTask)(0),                      // 719: dataconfig.GrassTrialTask
-	(PutPropType)(0),                         // 720: dataconfig.PutPropType
-	(ScenePropType)(0),                       // 721: dataconfig.ScenePropType
-	(SceneSitBlurType)(0),                    // 722: dataconfig.SceneSitBlurType
-	(PlayerTransformType)(0),                 // 723: dataconfig.PlayerTransformType
-	(NpcSizeChangeType)(0),                   // 724: dataconfig.NpcSizeChangeType
-	(AIcoachSceneType)(0),                    // 725: dataconfig.AIcoachSceneType
-	(EnumHeadWearType)(0),                    // 726: dataconfig.EnumHeadWearType
-	(OwlSanctuaryFeature)(0),                 // 727: dataconfig.OwlSanctuaryFeature
-	(OwlFeatureAdverseStrategy)(0),           // 728: dataconfig.OwlFeatureAdverseStrategy
-	(NpcInfoChangeSuccessCostType)(0),        // 729: dataconfig.NpcInfoChangeSuccessCostType
-	(NpcInfoChangeFixNpcType)(0),             // 730: dataconfig.NpcInfoChangeFixNpcType
-	(NpcInfoChangeFixType)(0),                // 731: dataconfig.NpcInfoChangeFixType
-	(OwlSanctuaryEnhance)(0),                 // 732: dataconfig.OwlSanctuaryEnhance
-	(NpcUpdateType)(0),                       // 733: dataconfig.NpcUpdateType
-	(StockShopRank)(0),                       // 734: dataconfig.StockShopRank
-	(WorldLordEvo)(0),                        // 735: dataconfig.WorldLordEvo
-	(PetBoxTidyRuleType)(0),                  // 736: dataconfig.PetBoxTidyRuleType
-	(ServerContributionType)(0),              // 737: dataconfig.ServerContributionType
-	(MultiMiniGameType)(0),                   // 738: dataconfig.MultiMiniGameType
-	(MultiType)(0),                           // 739: dataconfig.MultiType
-	(ReasoningPuzzleDialogueType)(0),         // 740: dataconfig.ReasoningPuzzleDialogueType
-	(HandheldMixedType)(0),                   // 741: dataconfig.HandheldMixedType
-	(BALL_ABILITY)(0),                        // 742: dataconfig.BALL_ABILITY
-	(DefaultButtonModifyType)(0),             // 743: dataconfig.DefaultButtonModifyType
-	(AVATAR_BODY)(0),                         // 744: dataconfig.AVATAR_BODY
-	(LegendarySubType)(0),                    // 745: dataconfig.LegendarySubType
-	(QTEPanelType)(0),                        // 746: dataconfig.QTEPanelType
-	(SceneViewType)(0),                       // 747: dataconfig.SceneViewType
-	(DefaultTrackType)(0),                    // 748: dataconfig.DefaultTrackType
-	(DataFriendPositionDisplayType)(0),       // 749: dataconfig.DataFriendPositionDisplayType
-	(BattleFieldPointType)(0),                // 750: dataconfig.BattleFieldPointType
-	(TemperatureEffectType)(0),               // 751: dataconfig.TemperatureEffectType
-	(CatchResultType)(0),                     // 752: dataconfig.CatchResultType
-	(UIEffectTargetType)(0),                  // 753: dataconfig.UIEffectTargetType
-	(NpcRefreshBanType)(0),                   // 754: dataconfig.NpcRefreshBanType
-	(AIPerformGroupOverrideSource)(0),        // 755: dataconfig.AIPerformGroupOverrideSource
-	(ShowGoddess)(0),                         // 756: dataconfig.ShowGoddess
-	(PlayerAnimationCustomizeType)(0),        // 757: dataconfig.PlayerAnimationCustomizeType
-	(PvpPetTeamType)(0),                      // 758: dataconfig.PvpPetTeamType
-	(FacePhotoLoginType)(0),                  // 759: dataconfig.FacePhotoLoginType
-	(FacePhotoConditionType)(0),              // 760: dataconfig.FacePhotoConditionType
-	(SocialExtDataType)(0),                   // 761: dataconfig.SocialExtDataType
-	(ActivityComposeVariableType)(0),         // 762: dataconfig.ActivityComposeVariableType
-	(IdipPetStatusBit)(0),                    // 763: dataconfig.IdipPetStatusBit
+	(ActivityComposeExternalActionType)(0),   // 449: dataconfig.ActivityComposeExternalActionType
+	(MarqueeTextRefreshType)(0),              // 450: dataconfig.MarqueeTextRefreshType
+	(PETStoryPageType)(0),                    // 451: dataconfig.PETStoryPageType
+	(PetInformationUnlockType)(0),            // 452: dataconfig.PetInformationUnlockType
+	(RarityLevelEnumeration)(0),              // 453: dataconfig.RarityLevelEnumeration
+	(PetSotryDecorationImage)(0),             // 454: dataconfig.PetSotryDecorationImage
+	(PetSotryDecorationImageTxt)(0),          // 455: dataconfig.PetSotryDecorationImageTxt
+	(AvailableHpRule)(0),                     // 456: dataconfig.AvailableHpRule
+	(ReacallUnlockTriggerType)(0),            // 457: dataconfig.ReacallUnlockTriggerType
+	(TeachUnlockCondition)(0),                // 458: dataconfig.TeachUnlockCondition
+	(GuideSettingMode)(0),                    // 459: dataconfig.GuideSettingMode
+	(GuideActionType)(0),                     // 460: dataconfig.GuideActionType
+	(GuideActionBanType)(0),                  // 461: dataconfig.GuideActionBanType
+	(TeachClientTrigger)(0),                  // 462: dataconfig.TeachClientTrigger
+	(TriggerPlayerType)(0),                   // 463: dataconfig.TriggerPlayerType
+	(EventResultType)(0),                     // 464: dataconfig.EventResultType
+	(AdventureRecord)(0),                     // 465: dataconfig.AdventureRecord
+	(FaceToFaceType)(0),                      // 466: dataconfig.FaceToFaceType
+	(MegaMapObjectClass)(0),                  // 467: dataconfig.MegaMapObjectClass
+	(MegaMapPositionIndexMethod)(0),          // 468: dataconfig.MegaMapPositionIndexMethod
+	(MegaMapIdType)(0),                       // 469: dataconfig.MegaMapIdType
+	(PerceptionHudType)(0),                   // 470: dataconfig.PerceptionHudType
+	(MonsterDifficultyType)(0),               // 471: dataconfig.MonsterDifficultyType
+	(CampPetReportType)(0),                   // 472: dataconfig.CampPetReportType
+	(SvrAIReportType)(0),                     // 473: dataconfig.SvrAIReportType
+	(PlayerPetStorePlace)(0),                 // 474: dataconfig.PlayerPetStorePlace
+	(BotStatusType)(0),                       // 475: dataconfig.BotStatusType
+	(SetAvatarPosReason)(0),                  // 476: dataconfig.SetAvatarPosReason
+	(BehaviorOverridePriority)(0),            // 477: dataconfig.BehaviorOverridePriority
+	(BehaviorOverrideBackType)(0),            // 478: dataconfig.BehaviorOverrideBackType
+	(HandbookChangeType)(0),                  // 479: dataconfig.HandbookChangeType
+	(PetFeedType)(0),                         // 480: dataconfig.PetFeedType
+	(PetGrowthType)(0),                       // 481: dataconfig.PetGrowthType
+	(PetSkillChangeType)(0),                  // 482: dataconfig.PetSkillChangeType
+	(LocationInteractionBanType)(0),          // 483: dataconfig.LocationInteractionBanType
+	(LocationTag)(0),                         // 484: dataconfig.LocationTag
+	(MageListUnlockType)(0),                  // 485: dataconfig.MageListUnlockType
+	(MageListLockType)(0),                    // 486: dataconfig.MageListLockType
+	(MageInfoUnlockType)(0),                  // 487: dataconfig.MageInfoUnlockType
+	(MageRestUnlock)(0),                      // 488: dataconfig.MageRestUnlock
+	(SettingButtonType)(0),                   // 489: dataconfig.SettingButtonType
+	(PvpAwardCondition)(0),                   // 490: dataconfig.PvpAwardCondition
+	(PvpRandomSkill)(0),                      // 491: dataconfig.PvpRandomSkill
+	(PvpMatchType)(0),                        // 492: dataconfig.PvpMatchType
+	(FurnitureType)(0),                       // 493: dataconfig.FurnitureType
+	(InteriorFinishType)(0),                  // 494: dataconfig.InteriorFinishType
+	(FurnitureTabType)(0),                    // 495: dataconfig.FurnitureTabType
+	(HomeDiyVisualAngle)(0),                  // 496: dataconfig.HomeDiyVisualAngle
+	(TaskClientTriggerType)(0),               // 497: dataconfig.TaskClientTriggerType
+	(ReadType)(0),                            // 498: dataconfig.ReadType
+	(FollowConditionType)(0),                 // 499: dataconfig.FollowConditionType
+	(NPCFollowStateType)(0),                  // 500: dataconfig.NPCFollowStateType
+	(StickToSocket)(0),                       // 501: dataconfig.StickToSocket
+	(NpcFollowState)(0),                      // 502: dataconfig.NpcFollowState
+	(RequiredType)(0),                        // 503: dataconfig.RequiredType
+	(NpcrefreshOptionType)(0),                // 504: dataconfig.NpcrefreshOptionType
+	(PetFreeAwardType)(0),                    // 505: dataconfig.PetFreeAwardType
+	(MagicPageUnlockType)(0),                 // 506: dataconfig.MagicPageUnlockType
+	(NotebookType)(0),                        // 507: dataconfig.NotebookType
+	(StorybookType)(0),                       // 508: dataconfig.StorybookType
+	(TaleTaskType)(0),                        // 509: dataconfig.TaleTaskType
+	(RidePetCollect)(0),                      // 510: dataconfig.RidePetCollect
+	(AreaTrigResultType)(0),                  // 511: dataconfig.AreaTrigResultType
+	(MedalType)(0),                           // 512: dataconfig.MedalType
+	(MedalSource)(0),                         // 513: dataconfig.MedalSource
+	(MedalGetCondition)(0),                   // 514: dataconfig.MedalGetCondition
+	(RobotNameType)(0),                       // 515: dataconfig.RobotNameType
+	(ActivityTypeIcon)(0),                    // 516: dataconfig.ActivityTypeIcon
+	(ActivityDevelopTaskType)(0),             // 517: dataconfig.ActivityDevelopTaskType
+	(SpecFlowerSeedPetId)(0),                 // 518: dataconfig.SpecFlowerSeedPetId
+	(SpecFlowerSeedStar)(0),                  // 519: dataconfig.SpecFlowerSeedStar
+	(SpecFlowerSeedRewardCondition)(0),       // 520: dataconfig.SpecFlowerSeedRewardCondition
+	(SpecFlowerSeedReward)(0),                // 521: dataconfig.SpecFlowerSeedReward
+	(WeekendDoubleRefresh)(0),                // 522: dataconfig.WeekendDoubleRefresh
+	(MonthlyPassRewardType)(0),               // 523: dataconfig.MonthlyPassRewardType
+	(AIUniqGroupMemGetType)(0),               // 524: dataconfig.AIUniqGroupMemGetType
+	(MusicType)(0),                           // 525: dataconfig.MusicType
+	(MusicApplyType)(0),                      // 526: dataconfig.MusicApplyType
+	(InterfaceType)(0),                       // 527: dataconfig.InterfaceType
+	(TaskPetType)(0),                         // 528: dataconfig.TaskPetType
+	(TaskBehaviorType)(0),                    // 529: dataconfig.TaskBehaviorType
+	(WhitelistTagType)(0),                    // 530: dataconfig.WhitelistTagType
+	(AxisType)(0),                            // 531: dataconfig.AxisType
+	(ActivityActionType)(0),                  // 532: dataconfig.ActivityActionType
+	(ActivityConditionType)(0),               // 533: dataconfig.ActivityConditionType
+	(StaminaStatus)(0),                       // 534: dataconfig.StaminaStatus
+	(AreaHandbookType)(0),                    // 535: dataconfig.AreaHandbookType
+	(CameraBlendType)(0),                     // 536: dataconfig.CameraBlendType
+	(WorldCombatBossSensedPlayerType)(0),     // 537: dataconfig.WorldCombatBossSensedPlayerType
+	(ActivityDisplayRewardType)(0),           // 538: dataconfig.ActivityDisplayRewardType
+	(TconndEvHandlerType)(0),                 // 539: dataconfig.TconndEvHandlerType
+	(PetStatType)(0),                         // 540: dataconfig.PetStatType
+	(CloseExpActionType)(0),                  // 541: dataconfig.CloseExpActionType
+	(PetLikeElementType)(0),                  // 542: dataconfig.PetLikeElementType
+	(MidasPay)(0),                            // 543: dataconfig.MidasPay
+	(FashionAITag)(0),                        // 544: dataconfig.FashionAITag
+	(SuitAiEffect)(0),                        // 545: dataconfig.SuitAiEffect
+	(SuitPrivilegeEffect)(0),                 // 546: dataconfig.SuitPrivilegeEffect
+	(FashionBondBand)(0),                     // 547: dataconfig.FashionBondBand
+	(FashionColorSuitsLaunch)(0),             // 548: dataconfig.FashionColorSuitsLaunch
+	(FashionBondQuality)(0),                  // 549: dataconfig.FashionBondQuality
+	(FashionBondSource)(0),                   // 550: dataconfig.FashionBondSource
+	(BagCharm)(0),                            // 551: dataconfig.BagCharm
+	(BagCharmPrivilegeEffect)(0),             // 552: dataconfig.BagCharmPrivilegeEffect
+	(FashionTopsTag)(0),                      // 553: dataconfig.FashionTopsTag
+	(FashionRingsTag)(0),                     // 554: dataconfig.FashionRingsTag
+	(FashionBottomsTag)(0),                   // 555: dataconfig.FashionBottomsTag
+	(FashionShoesTag)(0),                     // 556: dataconfig.FashionShoesTag
+	(FashionSocksTag)(0),                     // 557: dataconfig.FashionSocksTag
+	(FashionWandSource)(0),                   // 558: dataconfig.FashionWandSource
+	(AutoIncrementType)(0),                   // 559: dataconfig.AutoIncrementType
+	(AreaMailAITType)(0),                     // 560: dataconfig.AreaMailAITType
+	(OpponentType)(0),                        // 561: dataconfig.OpponentType
+	(ActivityUPType)(0),                      // 562: dataconfig.ActivityUPType
+	(PlayerRange)(0),                         // 563: dataconfig.PlayerRange
+	(RewardReceiveType)(0),                   // 564: dataconfig.RewardReceiveType
+	(PetPartnerMarkType)(0),                  // 565: dataconfig.PetPartnerMarkType
+	(SpecialAudioTag)(0),                     // 566: dataconfig.SpecialAudioTag
+	(ActivityMonitorEvent)(0),                // 567: dataconfig.ActivityMonitorEvent
+	(ActivityDropTimeType)(0),                // 568: dataconfig.ActivityDropTimeType
+	(ActivityDropAreaTyep)(0),                // 569: dataconfig.ActivityDropAreaTyep
+	(ActivityDropShowArea)(0),                // 570: dataconfig.ActivityDropShowArea
+	(AcitivityDropAreaShow)(0),               // 571: dataconfig.AcitivityDropAreaShow
+	(ActivityResetType)(0),                   // 572: dataconfig.ActivityResetType
+	(BloodMagicTempType)(0),                  // 573: dataconfig.BloodMagicTempType
+	(ShareType)(0),                           // 574: dataconfig.ShareType
+	(ShareQRcodeScenario)(0),                 // 575: dataconfig.ShareQRcodeScenario
+	(SharePattern)(0),                        // 576: dataconfig.SharePattern
+	(ShareButtonArea)(0),                     // 577: dataconfig.ShareButtonArea
+	(ShareButtonType)(0),                     // 578: dataconfig.ShareButtonType
+	(TipsShowType)(0),                        // 579: dataconfig.TipsShowType
+	(NeedfulApp)(0),                          // 580: dataconfig.NeedfulApp
+	(TaskTeleportType)(0),                    // 581: dataconfig.TaskTeleportType
+	(PlantStage)(0),                          // 582: dataconfig.PlantStage
+	(SceneCfgId)(0),                          // 583: dataconfig.SceneCfgId
+	(PetTalentCondition)(0),                  // 584: dataconfig.PetTalentCondition
+	(PetTalentEffect)(0),                     // 585: dataconfig.PetTalentEffect
+	(PetTalentFilterName)(0),                 // 586: dataconfig.PetTalentFilterName
+	(PetTalentBattleTriggerTime)(0),          // 587: dataconfig.PetTalentBattleTriggerTime
+	(TrackNewTask)(0),                        // 588: dataconfig.TrackNewTask
+	(ShoesSoundEffect)(0),                    // 589: dataconfig.ShoesSoundEffect
+	(MedaluiFormat)(0),                       // 590: dataconfig.MedaluiFormat
+	(MarkGameplay)(0),                        // 591: dataconfig.MarkGameplay
+	(ChildMessageMagic)(0),                   // 592: dataconfig.ChildMessageMagic
+	(IncidentType)(0),                        // 593: dataconfig.IncidentType
+	(WorldExploringStatisticType)(0),         // 594: dataconfig.WorldExploringStatisticType
+	(DisplayType)(0),                         // 595: dataconfig.DisplayType
+	(SkillSequenceDefault)(0),                // 596: dataconfig.SkillSequenceDefault
+	(SkillSequenceSwitch)(0),                 // 597: dataconfig.SkillSequenceSwitch
+	(AutoParamType)(0),                       // 598: dataconfig.AutoParamType
+	(RoleCardModuleType)(0),                  // 599: dataconfig.RoleCardModuleType
+	(RegionalDivision)(0),                    // 600: dataconfig.RegionalDivision
+	(TravelGoal)(0),                          // 601: dataconfig.TravelGoal
+	(ActivityTrailTipType)(0),                // 602: dataconfig.ActivityTrailTipType
+	(RelationTreeTypeDefault)(0),             // 603: dataconfig.RelationTreeTypeDefault
+	(RelationTreeType)(0),                    // 604: dataconfig.RelationTreeType
+	(GlassType)(0),                           // 605: dataconfig.GlassType
+	(HiddenGlassType)(0),                     // 606: dataconfig.HiddenGlassType
+	(EggAcquireWayType)(0),                   // 607: dataconfig.EggAcquireWayType
+	(EggShiningProbType)(0),                  // 608: dataconfig.EggShiningProbType
+	(EggGlassProbType)(0),                    // 609: dataconfig.EggGlassProbType
+	(DialogRatingType)(0),                    // 610: dataconfig.DialogRatingType
+	(BattlePassGiftGrade)(0),                 // 611: dataconfig.BattlePassGiftGrade
+	(ActivitySeasonItemJump)(0),              // 612: dataconfig.ActivitySeasonItemJump
+	(ActivitySeasonTimeShow)(0),              // 613: dataconfig.ActivitySeasonTimeShow
+	(SeasonItemAdditionalShow)(0),            // 614: dataconfig.SeasonItemAdditionalShow
+	(BelongSystem)(0),                        // 615: dataconfig.BelongSystem
+	(SeasonKVType)(0),                        // 616: dataconfig.SeasonKVType
+	(PetType)(0),                             // 617: dataconfig.PetType
+	(SeasonPartSlotPosition)(0),              // 618: dataconfig.SeasonPartSlotPosition
+	(SeasonItemGoImgLocation)(0),             // 619: dataconfig.SeasonItemGoImgLocation
+	(RelationTreeBasic)(0),                   // 620: dataconfig.RelationTreeBasic
+	(UserSubscribeTplType)(0),                // 621: dataconfig.UserSubscribeTplType
+	(UserSubscribeType)(0),                   // 622: dataconfig.UserSubscribeType
+	(UserSubscribeSendScene)(0),              // 623: dataconfig.UserSubscribeSendScene
+	(LobbyMainInnerUIType)(0),                // 624: dataconfig.LobbyMainInnerUIType
+	(MapModuleDataUpdateReason)(0),           // 625: dataconfig.MapModuleDataUpdateReason
+	(NpcAttachItemType)(0),                   // 626: dataconfig.NpcAttachItemType
+	(ReportCoinRatio)(0),                     // 627: dataconfig.ReportCoinRatio
+	(MagicManualTab)(0),                      // 628: dataconfig.MagicManualTab
+	(SeasonGrowthType)(0),                    // 629: dataconfig.SeasonGrowthType
+	(PlayerVisibleSpecialRule)(0),            // 630: dataconfig.PlayerVisibleSpecialRule
+	(InteractiveProp)(0),                     // 631: dataconfig.InteractiveProp
+	(QQArkBusinessType)(0),                   // 632: dataconfig.QQArkBusinessType
+	(QQArkShareType)(0),                      // 633: dataconfig.QQArkShareType
+	(FurniturelnteractType)(0),               // 634: dataconfig.FurniturelnteractType
+	(InteractiontreeTypeDefault)(0),          // 635: dataconfig.InteractiontreeTypeDefault
+	(PlayerRelationshipType)(0),              // 636: dataconfig.PlayerRelationshipType
+	(BonusProbType)(0),                       // 637: dataconfig.BonusProbType
+	(BonusVariableType)(0),                   // 638: dataconfig.BonusVariableType
+	(BonusBelongFactorType)(0),               // 639: dataconfig.BonusBelongFactorType
+	(BonusEventResultType)(0),                // 640: dataconfig.BonusEventResultType
+	(BonusRefreshType)(0),                    // 641: dataconfig.BonusRefreshType
+	(BonusBoxIconType)(0),                    // 642: dataconfig.BonusBoxIconType
+	(VisibleType)(0),                         // 643: dataconfig.VisibleType
+	(AreaVisibleDensity)(0),                  // 644: dataconfig.AreaVisibleDensity
+	(BonusPetFieldMatchType)(0),              // 645: dataconfig.BonusPetFieldMatchType
+	(SeasonTipsPageType)(0),                  // 646: dataconfig.SeasonTipsPageType
+	(CloseConditionType)(0),                  // 647: dataconfig.CloseConditionType
+	(ActivityPreviewPetShow)(0),              // 648: dataconfig.ActivityPreviewPetShow
+	(ActivityOptionType)(0),                  // 649: dataconfig.ActivityOptionType
+	(ActivityTrackType)(0),                   // 650: dataconfig.ActivityTrackType
+	(RideFootNumberType)(0),                  // 651: dataconfig.RideFootNumberType
+	(FriendType)(0),                          // 652: dataconfig.FriendType
+	(FriendRecommendSource)(0),               // 653: dataconfig.FriendRecommendSource
+	(PlayerSocialActionType)(0),              // 654: dataconfig.PlayerSocialActionType
+	(PlayerSocialBehaviorType)(0),            // 655: dataconfig.PlayerSocialBehaviorType
+	(TaskExpireTimeType)(0),                  // 656: dataconfig.TaskExpireTimeType
+	(HomeAccessType)(0),                      // 657: dataconfig.HomeAccessType
+	(PetBlessingTlogActionType)(0),           // 658: dataconfig.PetBlessingTlogActionType
+	(ActivityEmojiType)(0),                   // 659: dataconfig.ActivityEmojiType
+	(ShopRandomType)(0),                      // 660: dataconfig.ShopRandomType
+	(FixRandomType)(0),                       // 661: dataconfig.FixRandomType
+	(RandomMutexType)(0),                     // 662: dataconfig.RandomMutexType
+	(EmojiTopic)(0),                          // 663: dataconfig.EmojiTopic
+	(PetCatchTime)(0),                        // 664: dataconfig.PetCatchTime
+	(RollBack)(0),                            // 665: dataconfig.RollBack
+	(ActivityMixSlot)(0),                     // 666: dataconfig.ActivityMixSlot
+	(ActivitySLotFuctionType)(0),             // 667: dataconfig.ActivitySLotFuctionType
+	(ActivityFaction)(0),                     // 668: dataconfig.ActivityFaction
+	(ActivityTaskRandomRule)(0),              // 669: dataconfig.ActivityTaskRandomRule
+	(ActivityConditionTaskGroup)(0),          // 670: dataconfig.ActivityConditionTaskGroup
+	(EnLotteryRewardState)(0),                // 671: dataconfig.EnLotteryRewardState
+	(EnLotteryRewardTransState)(0),           // 672: dataconfig.EnLotteryRewardTransState
+	(WeightChangeType)(0),                    // 673: dataconfig.WeightChangeType
+	(InteractInviteType)(0),                  // 674: dataconfig.InteractInviteType
+	(WarehouseUnlockCondition)(0),            // 675: dataconfig.WarehouseUnlockCondition
+	(WarehouseMarkType)(0),                   // 676: dataconfig.WarehouseMarkType
+	(SpecialBattleLevelUnlockType)(0),        // 677: dataconfig.SpecialBattleLevelUnlockType
+	(PreciousEggType)(0),                     // 678: dataconfig.PreciousEggType
+	(TypeAdvantageUnlockType)(0),             // 679: dataconfig.TypeAdvantageUnlockType
+	(TypeAdvantageTrainType)(0),              // 680: dataconfig.TypeAdvantageTrainType
+	(CombatTeachTrainType)(0),                // 681: dataconfig.CombatTeachTrainType
+	(BattleGuidanceLocation)(0),              // 682: dataconfig.BattleGuidanceLocation
+	(BattleLeadFinishType)(0),                // 683: dataconfig.BattleLeadFinishType
+	(TeamBattleStarRule)(0),                  // 684: dataconfig.TeamBattleStarRule
+	(TeachingType)(0),                        // 685: dataconfig.TeachingType
+	(FurnitureEffectSwitch)(0),               // 686: dataconfig.FurnitureEffectSwitch
+	(FurnitureEffectType)(0),                 // 687: dataconfig.FurnitureEffectType
+	(ACTIVITY_FLOWER_APPEAR_TASK_TYPE)(0),    // 688: dataconfig.ACTIVITY_FLOWER_APPEAR_TASK_TYPE
+	(BuffCleanWhenRestType)(0),               // 689: dataconfig.BuffCleanWhenRestType
+	(TramplingLawnComp)(0),                   // 690: dataconfig.TramplingLawnComp
+	(PetguardRequireWay)(0),                  // 691: dataconfig.PetguardRequireWay
+	(PetguardBanFunc)(0),                     // 692: dataconfig.PetguardBanFunc
+	(HabitatRestrainType)(0),                 // 693: dataconfig.HabitatRestrainType
+	(FeatureResonanceType)(0),                // 694: dataconfig.FeatureResonanceType
+	(FilterShining)(0),                       // 695: dataconfig.FilterShining
+	(SeaseonTipsShowType)(0),                 // 696: dataconfig.SeaseonTipsShowType
+	(FakeFeedDecryptCondition)(0),            // 697: dataconfig.FakeFeedDecryptCondition
+	(LotteryPoolType)(0),                     // 698: dataconfig.LotteryPoolType
+	(LotteryMoniterEvent)(0),                 // 699: dataconfig.LotteryMoniterEvent
+	(FakeFeedValidity)(0),                    // 700: dataconfig.FakeFeedValidity
+	(RankListType)(0),                        // 701: dataconfig.RankListType
+	(BattleSettlementPetType)(0),             // 702: dataconfig.BattleSettlementPetType
+	(SeasonFocusImgOptionType)(0),            // 703: dataconfig.SeasonFocusImgOptionType
+	(GlobalCountType)(0),                     // 704: dataconfig.GlobalCountType
+	(PetNameSource)(0),                       // 705: dataconfig.PetNameSource
+	(LotteryPoolValidationCheck)(0),          // 706: dataconfig.LotteryPoolValidationCheck
+	(FilterSeasonPet)(0),                     // 707: dataconfig.FilterSeasonPet
+	(WeightFixType)(0),                       // 708: dataconfig.WeightFixType
+	(BonusPoolType)(0),                       // 709: dataconfig.BonusPoolType
+	(BonusGiftConditionType)(0),              // 710: dataconfig.BonusGiftConditionType
+	(RecallPetEggType)(0),                    // 711: dataconfig.RecallPetEggType
+	(EventType)(0),                           // 712: dataconfig.EventType
+	(OptionEffect)(0),                        // 713: dataconfig.OptionEffect
+	(GrassTrialState)(0),                     // 714: dataconfig.GrassTrialState
+	(GrassTrialFusionType)(0),                // 715: dataconfig.GrassTrialFusionType
+	(GrassTrialEffectType)(0),                // 716: dataconfig.GrassTrialEffectType
+	(GrassTrialEffect)(0),                    // 717: dataconfig.GrassTrialEffect
+	(GrassTrialMode)(0),                      // 718: dataconfig.GrassTrialMode
+	(HandbookSlotType)(0),                    // 719: dataconfig.HandbookSlotType
+	(GrassTrialTask)(0),                      // 720: dataconfig.GrassTrialTask
+	(PutPropType)(0),                         // 721: dataconfig.PutPropType
+	(ScenePropType)(0),                       // 722: dataconfig.ScenePropType
+	(SceneSitBlurType)(0),                    // 723: dataconfig.SceneSitBlurType
+	(PlayerTransformType)(0),                 // 724: dataconfig.PlayerTransformType
+	(NpcSizeChangeType)(0),                   // 725: dataconfig.NpcSizeChangeType
+	(AIcoachSceneType)(0),                    // 726: dataconfig.AIcoachSceneType
+	(EnumHeadWearType)(0),                    // 727: dataconfig.EnumHeadWearType
+	(OwlSanctuaryFeature)(0),                 // 728: dataconfig.OwlSanctuaryFeature
+	(OwlFeatureAdverseStrategy)(0),           // 729: dataconfig.OwlFeatureAdverseStrategy
+	(NpcInfoChangeSuccessCostType)(0),        // 730: dataconfig.NpcInfoChangeSuccessCostType
+	(NpcInfoChangeFixNpcType)(0),             // 731: dataconfig.NpcInfoChangeFixNpcType
+	(NpcInfoChangeFixType)(0),                // 732: dataconfig.NpcInfoChangeFixType
+	(OwlSanctuaryEnhance)(0),                 // 733: dataconfig.OwlSanctuaryEnhance
+	(NpcUpdateType)(0),                       // 734: dataconfig.NpcUpdateType
+	(StockShopRank)(0),                       // 735: dataconfig.StockShopRank
+	(WorldLordEvo)(0),                        // 736: dataconfig.WorldLordEvo
+	(PetBoxTidyRuleType)(0),                  // 737: dataconfig.PetBoxTidyRuleType
+	(ServerContributionType)(0),              // 738: dataconfig.ServerContributionType
+	(MultiMiniGameType)(0),                   // 739: dataconfig.MultiMiniGameType
+	(MultiType)(0),                           // 740: dataconfig.MultiType
+	(ReasoningPuzzleDialogueType)(0),         // 741: dataconfig.ReasoningPuzzleDialogueType
+	(HandheldMixedType)(0),                   // 742: dataconfig.HandheldMixedType
+	(BALL_ABILITY)(0),                        // 743: dataconfig.BALL_ABILITY
+	(DefaultButtonModifyType)(0),             // 744: dataconfig.DefaultButtonModifyType
+	(AVATAR_BODY)(0),                         // 745: dataconfig.AVATAR_BODY
+	(LegendarySubType)(0),                    // 746: dataconfig.LegendarySubType
+	(QTEPanelType)(0),                        // 747: dataconfig.QTEPanelType
+	(SceneViewType)(0),                       // 748: dataconfig.SceneViewType
+	(DefaultTrackType)(0),                    // 749: dataconfig.DefaultTrackType
+	(DataFriendPositionDisplayType)(0),       // 750: dataconfig.DataFriendPositionDisplayType
+	(BattleFieldPointType)(0),                // 751: dataconfig.BattleFieldPointType
+	(TemperatureEffectType)(0),               // 752: dataconfig.TemperatureEffectType
+	(CatchResultType)(0),                     // 753: dataconfig.CatchResultType
+	(UIEffectTargetType)(0),                  // 754: dataconfig.UIEffectTargetType
+	(NpcRefreshBanType)(0),                   // 755: dataconfig.NpcRefreshBanType
+	(AIPerformGroupOverrideSource)(0),        // 756: dataconfig.AIPerformGroupOverrideSource
+	(ShowGoddess)(0),                         // 757: dataconfig.ShowGoddess
+	(PlayerAnimationCustomizeType)(0),        // 758: dataconfig.PlayerAnimationCustomizeType
+	(PvpPetTeamType)(0),                      // 759: dataconfig.PvpPetTeamType
+	(FacePhotoLoginType)(0),                  // 760: dataconfig.FacePhotoLoginType
+	(FacePhotoConditionType)(0),              // 761: dataconfig.FacePhotoConditionType
+	(SocialExtDataType)(0),                   // 762: dataconfig.SocialExtDataType
+	(ActivityComposeVariableType)(0),         // 763: dataconfig.ActivityComposeVariableType
+	(ActivityVirtualScoreType)(0),            // 764: dataconfig.ActivityVirtualScoreType
+	(IdipPetStatusBit)(0),                    // 765: dataconfig.IdipPetStatusBit
 }
 var file_xls_enum_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type
@@ -71470,7 +71619,7 @@ func file_xls_enum_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_xls_enum_proto_rawDesc), len(file_xls_enum_proto_rawDesc)),
-			NumEnums:      764,
+			NumEnums:      766,
 			NumMessages:   0,
 			NumExtensions: 0,
 			NumServices:   0,

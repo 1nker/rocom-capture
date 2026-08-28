@@ -129,7 +129,7 @@ hatched_secs = 250 + 倍率 × (last_hatch_update_sec − start_hatch_time)
 - `height`/`weight` 也就是按那个隐藏物种的蛋区间滚出来的。
 
 于是可以**反推候选物种**:`hatch_data == max_hatched_secs` 且 `height`/`weight` 落在
-该行区间内的所有 `PET_EGG_CONF` 行。916 行的表能收得很窄 —— 实测 14 个随机蛋里最窄的只剩
+该行区间内的所有 `PET_EGG_CONF` 行。917 行的表能收得很窄 —— 实测 14 个随机蛋里最窄的只剩
 1 个候选(菇菇丁),中位数十来个。候选集假设随机蛋的池子是全表,若实际池子更小
 (商人/活动限定)还能再收窄。
 
@@ -309,7 +309,7 @@ s2c 0x0262 ZoneShopBuyItemRsp{ret_info.goods_change_info.changes[].bag_item.egg_
 - 次序 = 背包原始次序(服务器下发顺序),故 `eggs` 表另存一列 `seq`,由背包全量对账时写入
   (`store.SetEggOrder`),`ListEggs` 按它排;
 - 列表 = 背包里能看见的那些,**在孵的蛋不算**(客户端先 `IsRemoveEggItem` 摘掉再排),
-  故 `handleEggs` 只对非孵化那部分调 `SortEggs`(`can_see` 那道过滤对蛋恒为真,918 件全是 1)。
+  故 `handleEggs` 只对非孵化那部分调 `SortEggs`(`can_see` 那道过滤对蛋恒为真,936 件全是 1)。
 **在孵的蛋不出现在背包格子里**:客户端 `IsRemoveEggItem` 把孵蛋器里的蛋从背包列表里摘掉,
 本页照此分两栏(左孵蛋器、右背包),因而不需要「背包中/孵化中」这类过滤。
 分栏依据是 `eggs.hatching` 那一列(权威列表订正过它,见 1 的「谁在孵蛋器里」),
