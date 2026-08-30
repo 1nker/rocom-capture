@@ -255,3 +255,57 @@ func TestMultiValueFiltersAreOr(t *testing.T) {
 		t.Errorf("盒1 ∩ (妖精|巨灵) = %d, 期望 2", n)
 	}
 }
+
+// TestBoxTeamSwapClearsStaleSide 复现拖动交换大世界队伍与宠物盒宠物后位置未同步的问题:
+// ZONE_PET_BOX_CHANGE_PET_RSP 只用 box_pet_change 增量带出"挤进盒子"那只的新盒位(ApplyBoxMoves
+// 借此清掉它残留的 pet_team 行),"挤进队伍"那只的新队位只在同包的完整队伍快照里(走
+// ReplacePetTeams);若 ReplacePetTeams 不顺手清掉它残留的 pet_box 行,它就会同时挂在盒子与
+// 队伍两张表下,列表页显示它仍留在盒子里(见 gid=6476 的复现步骤,数据取自实抓 pcap)。
+func TestBoxTeamSwapClearsStaleSide(t *testing.T) {
+	st := newTestStore(t)
+	sc := st.For(testAcc)
+
+	team := mkPet(st.gd, 12, 2000672, 3006)   // 迪莫:初始在大世界队伍
+	boxed := mkPet(st.gd, 6476, 2000672, 3006) // 岚鸟:初始在宠物盒
+	for _, p := range []*pet.Pet{team, boxed} {
+		if _, err := sc.UpsertPet(p); err != nil {
+			t.Fatalf("写入 gid=%d: %v", p.Gid, err)
+		}
+	}
+	if err := sc.ReplacePetTeams([]pet.TeamEntry{{Gid: 12, TeamIdx: 0, Pos: 0}}); err != nil {
+		t.Fatalf("初始化队伍: %v", err)
+	}
+	if err := sc.ReplacePetBoxes([]pet.BoxEntry{{Gid: 6476, BoxID: 1, Slot: 0}}); err != nil {
+		t.Fatalf("初始化盒子: %v", err)
+	}
+
+	// 拖动交换:12 队伍→盒子、6476 盒子→队伍。回包处理顺序与 pipeline.applyLayouts 一致:
+	// 先按完整队伍快照替换 pet_team(6476 顶替 12 的队位),再按 box_pet_change 增量落 12 的新盒位。
+	if err := sc.ReplacePetTeams([]pet.TeamEntry{{Gid: 6476, TeamIdx: 0, Pos: 0}}); err != nil {
+		t.Fatalf("替换队伍快照: %v", err)
+	}
+	if err := sc.ApplyBoxMoves([]pet.BoxEntry{{Gid: 12, BoxID: 1, Slot: 0}}); err != nil {
+		t.Fatalf("应用盒位移动: %v", err)
+	}
+
+	pets, _, err := sc.ListPets(Filter{})
+	if err != nil {
+		t.Fatalf("查询宠物列表: %v", err)
+	}
+	byGid := map[uint32]*pet.Pet{}
+	for _, p := range pets {
+		byGid[p.Gid] = p
+	}
+
+	if p := byGid[6476]; p.Box != nil {
+		t.Errorf("gid=6476 已移入队伍,盒子位置应清空,实得 %+v", p.Box)
+	} else if p.Team == nil || p.Team.TeamIdx != 0 || p.Team.Pos != 0 {
+		t.Errorf("gid=6476 队伍位置不对: %+v", p.Team)
+	}
+
+	if p := byGid[12]; p.Team != nil {
+		t.Errorf("gid=12 已移入盒子,队伍位置应清空,实得 %+v", p.Team)
+	} else if p.Box == nil || p.Box.BoxID != 1 || p.Box.Slot != 0 {
+		t.Errorf("gid=12 盒子位置不对: %+v", p.Box)
+	}
+}
